@@ -10,7 +10,7 @@
                 
         $.ajax({
           type: "POST",
-          url: 'http://localhost:8888/eval/index.php', 
+          url: 'http://phpepl.cloudcontrolled.com/eval/index.php', 
           data: {code: code},
           success: function (res) {
             $('.output span').html(res);
