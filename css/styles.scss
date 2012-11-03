@@ -1,0 +1,91 @@
+$page-width: 800px;
+@mixin border-radius($radius) {
+  border-top-radius: $radius;
+  -moz-border-radius-top: $radius;
+  -webkit-border-top-radius: $radius;
+}
+
+body {
+  width: $page-width;
+  margin: 0 auto;
+  font-family: sans-serif;
+}
+
+.container {
+  width: 100%;
+  height: auto;
+  float: left;  
+  .code {
+    font-family: Courier;
+  }
+  .header {
+    width: 100%;
+    float: left;
+    text-align: center;
+    margin: 10px 0 10px 0;
+    .title {
+      width: 100%;
+      float: left;
+      span {
+        color: black;
+        font-size: 46px;
+      }
+    }
+    .description {
+      width: 100%;
+      float: left;
+      span {
+        color: black;
+        font-size: 17px;
+        font-style: italic;
+      }
+    }
+  }
+
+  .codebox {
+    float: left;
+    width: $page-width;
+    #editor { 
+      font-size: 16px;
+      width: $page-width;
+      height: 400px;
+      border: 1px solid black;
+    }
+  }
+  .output {
+    float: left;
+    width: 100%;
+    height: 100px;
+    position: relative;
+    top: 420px;
+    border: 1px solid black;
+    background-color: #eee;
+    span {
+      top: 5px;
+      position: relative;
+      margin: 5px;
+      color: black;
+      font-size: 16px;
+    }
+  }
+  .submit {
+    width: 100%;
+    position: relative;
+    top: 480px;
+    float: left;
+    text-align: center;
+    span {
+      display: block;
+      font-family: Courier;
+      margin-bottom: 5px;
+    }
+    button {
+      width: 200px;
+      height: 50px;
+      cursor: pointer;
+      border-radius: 7px;
+      @include border-radius(10px);
+      font-size: 20px;
+    }
+  }
+}
