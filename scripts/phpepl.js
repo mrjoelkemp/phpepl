@@ -33,5 +33,20 @@
         e.preventDefault();
       }
     });
+  
+    // Preload where you last left off
+    if (window.localStorage) {
+      var result = localStorage.getItem('code'),
+          code   = ! result ? "" : result;
+      editor.setValue(code);
+    }
+    
+    $(window).unload(function () {
+      // Remember your last code
+      if (window.localStorage) {
+        var code = editor.getValue();
+        localStorage.setItem('code', code);
+      }
+    });
   });
 })(window, document, window.jQuery);
