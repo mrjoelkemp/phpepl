@@ -4,13 +4,15 @@
 
   var ace = window.ace,
       editor,
+      devURL = 'http://localhost:8888/eval/index.php',
+      liveURL = 'http://phpepl.cloudcontrolled.com/eval/index.php',
       
       processCode = function () {
         var code = editor.getValue();
                 
         $.ajax({
           type: "POST",
-          url: 'http://phpepl.cloudcontrolled.com/eval/index.php', 
+          url: devURL, 
           data: {code: code},
           success: function (res) {
             $('.output span').html(res);
