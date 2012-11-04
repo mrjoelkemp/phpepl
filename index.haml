@@ -3,7 +3,16 @@
   %head
     %title PHPepl
     %link{:rel => "stylesheet", :href => "css/styles.css"}
+    :javascript
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-36055599-1']);
+      _gaq.push(['_trackPageview']);
 
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
   %body
     /Built by @mrjoelkemp, www.mrjoelkemp.com
     .container
@@ -23,3 +32,5 @@
   %script{:src => "http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js", :type => "text/javascript", :charset => "utf-8"}
   %script{:src => "lib/jquery-1.8.2.min.js"}
   %script{:src => "scripts/phpepl-min.js"}
+
+  
