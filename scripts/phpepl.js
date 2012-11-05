@@ -1,5 +1,5 @@
 (function (window, document, $, undefined) {
-	
+	"use strict";
   if (! $) throw new Error('jquery not found');
 
   var ace = window.ace,
@@ -7,15 +7,23 @@
       devURL = 'http://localhost:8888/eval/index.php',
       liveURL = 'http://phpepl.cloudcontrolled.com/eval/index.php',
       
+      // Set the html of the output div
+      setOutput = function (text) {
+        $('.output span').html(text);
+      },
+      
       processCode = function () {
         var code = editor.getValue();
                 
         $.ajax({
           type: "POST",
-          url: devURL, 
+          url: liveURL, 
           data: {code: code},
           success: function (res) {
-            $('.output span').html(res);
+            setOutput(res);
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            setOutput("Whoopsie daisies!"); 
           }
         }); 
       };
@@ -39,7 +47,7 @@
     // Preload where you last left off
     if (window.localStorage) {
       var result = localStorage.getItem('code'),
-          code   = ! result ? "" : result;
+          code   = ! result ? 'echo "PHPepl";' : result;
       editor.setValue(code);
     }
     
