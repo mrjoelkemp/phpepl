@@ -12,7 +12,7 @@
 	
 	foreach ($bad as $badword) {
 		$pos = strpos($code, $badword);
-		if (! pos) {
+		if (! $pos) {
 			$code = 'echo "Butts";';
 		}
 	}
