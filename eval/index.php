@@ -9,13 +9,7 @@
 	$bad = array("phpInfo", "file_get_contents");
 	
 	$code = str_replace($toRemove, "", $code);
-	
-	foreach ($bad as $badword) {
-		$pos = strpos($code, $badword);
-		if (! $pos) {
-			$code = 'echo "Butts";';
-		}
-	}
+	$code = str_replace($bad, "", $code);
 	
 	// TODO: Need to prevent the parse error from bade code.
 	eval($code);
