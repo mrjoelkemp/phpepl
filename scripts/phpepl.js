@@ -14,6 +14,7 @@
       
       processCode = function () {
         var code = editor.getValue();
+        window._gaq.push(['_trackEvent', 'Run', code]);
                 
         $.ajax({
           type: "POST",
