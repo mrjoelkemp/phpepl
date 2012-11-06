@@ -14,10 +14,11 @@
       
       processCode = function () {
         var code = editor.getValue();
-        window._gaq.push(['_trackEvent', 'Run', code]);
+        window._gaq.push(['_trackEvent', 'Run']);
                 
         $.ajax({
           type: "POST",
+          //url: devURL, 
           url: liveURL, 
           data: {code: code},
           success: function (res) {

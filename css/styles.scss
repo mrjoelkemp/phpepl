@@ -61,12 +61,13 @@ body {
     border: 1px solid black;
     background-color: #eee;
     overflow: auto;
-    span {
-      top: 5px;
-      position: relative;
-      margin: 5px;
-      color: black;
-      font-size: 16px;
+    .output-container{
+      margin: 5px 10px;
+      span {       
+        font-family: "Lucida Console", Monaco, monospace;
+        color: black;
+        font-size: 16px;
+      }
     }
   }
   .submit {
