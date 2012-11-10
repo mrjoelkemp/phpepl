@@ -1,6 +1,7 @@
 (function (window, document, $, undefined) {
 	"use strict";
   if (! $) throw new Error('jquery not found');
+  if (! window.ace) throw new Error('ace not found');
 
   var ace = window.ace,
       editor,
