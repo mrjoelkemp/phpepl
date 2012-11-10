@@ -50,6 +50,8 @@ body {
         font-family: "Lucida Console", Monaco, monospace;
         color: black;
         font-size: 16px; }
+        .container .output .output-container span.error {
+          color: red; }
   .container .submit {
     width: 100%;
     position: relative;
@@ -79,3 +81,6 @@ body {
   .credits span, .credits a {
     font-style: italic;
     font-size: 13px; }
+
+.error-gutter {
+  background-color: red; }

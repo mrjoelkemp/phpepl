@@ -1,4 +1,6 @@
 $page-width: 800px;
+$error-red: #F00;
+
 @mixin border-radius($radius) {
   border-top-radius: $radius;
   -moz-border-radius-top: $radius;
@@ -67,6 +69,9 @@ body {
         font-family: "Lucida Console", Monaco, monospace;
         color: black;
         font-size: 16px;
+        &.error {
+          color: $error-red;
+        }
       }
     }
   }
@@ -102,4 +107,8 @@ body {
     font-style: italic;
     font-size: 13px;
   }
+}
+
+.error-gutter {
+  background-color: $error-red;
 }
