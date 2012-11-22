@@ -3,8 +3,8 @@
 	$inString = @ini_set('log_errors', false);
     $token = @ini_set('display_errors', true);
     
-	// TODO: Move to JSONP
 	header("Access-Control-Allow-Origin: *");
+	header("Content-type: application/json");
 	
 	$code = $_POST['code'];
 	
