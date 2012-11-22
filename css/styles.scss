@@ -114,16 +114,17 @@ body {
     }
   }
   .timestamp {
-    height: 15px;
-    width: 100px;
-    border: 1px solid blue;
+    height: 21px;
+    width: $page-width;
     position: absolute;
-    top: 50%;
-    left: 100%;
+    top: 595px;
+    text-align: right;
     span {
-      color: black;
+      color: #888;
       font-size: 15px;
       font-style: italic;
+      margin-top: 5px;
+      margin-right: 5px;
     }
   }
   .submit {

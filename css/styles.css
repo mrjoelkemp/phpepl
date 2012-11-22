@@ -115,16 +115,17 @@ body {
         .container .output .output-container span.error {
           color: red; }
   .container .timestamp {
-    height: 15px;
-    width: 100px;
-    border: 1px solid blue;
+    height: 21px;
+    width: 800px;
     position: absolute;
-    top: 50%;
-    left: 100%; }
+    top: 595px;
+    text-align: right; }
     .container .timestamp span {
-      color: black;
+      color: #888;
       font-size: 15px;
-      font-style: italic; }
+      font-style: italic;
+      margin-top: 5px;
+      margin-right: 5px; }
   .container .submit {
     width: 100%;
     position: relative;

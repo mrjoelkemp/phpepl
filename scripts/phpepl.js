@@ -8,17 +8,41 @@
       devURL = 'http://localhost:8888/eval/index.php',
       liveURL = 'http://phpepl.cloudcontrolled.com/eval/index.php',
       
+      // Format the time into a 12-hour, pretty format
+      getTimeString = function () {
+        var ct      = new Date(),
+            hours   = ct.getHours(),
+            minutes = ct.getMinutes(),
+            seconds = ct.getSeconds(),
+            timeString;
+          
+        // Scale the hours back
+        hours = (hours > 12) ? hours - 12 : hours;
+
+        //if 00 then it is 12 am
+        hours = hours === 0 ? 12 : hours;
+        
+        timeString = [hours, minutes, seconds].join(':');
+            
+        return timeString;
+      },
+      
       // Set the html of the output div
       setOutput = function (text) {
         var isError = !! arguments[1],
             $output = $('.output span');
-        
+            
         // Remove error classes if any
         $output.html(text).removeClass('error');
         
         if (isError) {
           $output.addClass('error');
         }
+        
+        // Turn off the spinner
+        $('.spinner').fadeOut('fast');
+        // Set the timestamp
+        $('.timestamp').find('span').html(getTimeString());
       },
       
       // Highlights the line in the gutter with the error
@@ -58,9 +82,6 @@
                 error   = res.error,
                 errorMsg;
             
-            // Turn off the spinner
-            $('.spinner').fadeOut('fast');
-            
             if (error) {
               // Show the line in red
               showLineError(error.line);
@@ -71,13 +92,31 @@
             }
             setOutput(result);
           },
-          error: function (jqXHR, textStatus, errorThrown) {
-            // Turn off the spinner
-            $('.spinner').fadeOut('fast');
-            
+          error: function (jqXHR, textStatus, errorThrown) {            
             setOutput("Whoopsie daisies!"); 
           }
         }); 
+      };
+      
+  // Local storage helpers
+  var 
+      saveCode = function () {
+        if (window.localStorage) {
+          var code = editor.getValue();
+          localStorage.setItem('code', code);
+          
+          // Show the saved message
+          $('.timestamp').find('span')
+            .html('Code Saved!');
+        }
+      },
+      loadSavedCode = function () {
+        // Preload where you last left off
+        if (window.localStorage) {
+          var result = localStorage.getItem('code'),
+              code   = ! result ? 'echo "PHPepl";' : result;
+          editor.setValue(code);
+        }
       };
       
   $(function () {
@@ -85,30 +124,29 @@
     editor.setTheme('ace/theme/textmate');
     editor.getSession().setMode('ace/mode/php');
     
+    loadSavedCode();
+    
     $('.submit button').click(function () {
       processCode();
     });
     
-    $(document).keydown(function (e) {    
-      if(e.which === 13 && (e.ctrlKey || e.metaKey)) {        
+    $(document).keydown(function (e) { 
+      // CMD + Enter or CTRL + Enter to run code   
+      if (e.which === 13 && (e.ctrlKey || e.metaKey)) {        
         processCode();
         e.preventDefault();
       }
+      
+      // CMD + S or CTRL + S to save code
+      if (e.which === 83 && (e.ctrlKey || e.metaKey)) {
+        saveCode();
+        e.preventDefault();
+      }
     });
-  
-    // Preload where you last left off
-    if (window.localStorage) {
-      var result = localStorage.getItem('code'),
-          code   = ! result ? 'echo "PHPepl";' : result;
-      editor.setValue(code);
-    }
     
     $(window).unload(function () {
       // Remember your last code
-      if (window.localStorage) {
-        var code = editor.getValue();
-        localStorage.setItem('code', code);
-      }
+      saveCode();
     });
   });
 })(window, document, window.jQuery);
