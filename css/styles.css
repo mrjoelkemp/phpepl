@@ -137,8 +137,8 @@ body {
       font-family: Courier;
       margin-bottom: 5px; }
     .container .submit button {
-      width: 200px;
-      height: 50px;
+      width: 150px;
+      height: 40px;
       cursor: pointer;
       border-radius: 7px;
       border-top-radius: 10px;
