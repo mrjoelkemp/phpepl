@@ -9,7 +9,6 @@
       liveURL = 'http://phpepl.cloudcontrolled.com/eval/index.php',
       
       // Set the html of the output div
-      // TODO: allow flag to set error class
       setOutput = function (text) {
         var isError = !! arguments[1],
             $output = $('.output span');
@@ -24,7 +23,6 @@
       
       // Highlights the line in the gutter with the error
       showLineError = function (line) {
-
         // Find the dom element in the ace gutter
         $('.ace_gutter-cell').each(function (idx) {
           // If the cell's line number matches the error line
@@ -36,6 +34,7 @@
         });
       },
       
+      // Handles the sending of the code to the eval server
       processCode = function () {
         var code = editor.getValue();
         
@@ -43,6 +42,8 @@
           setOutput("Please supply some code...");
           return;  
         }
+        
+        $('.spinner').fadeIn('fast');
         
         $.ajax({
           type: "POST",
@@ -56,7 +57,10 @@
             var result  = res.result,
                 error   = res.error,
                 errorMsg;
-
+            
+            // Turn off the spinner
+            $('.spinner').fadeOut('fast');
+            
             if (error) {
               // Show the line in red
               showLineError(error.line);
@@ -68,6 +72,9 @@
             setOutput(result);
           },
           error: function (jqXHR, textStatus, errorThrown) {
+            // Turn off the spinner
+            $('.spinner').fadeOut('fast');
+            
             setOutput("Whoopsie daisies!"); 
           }
         }); 
