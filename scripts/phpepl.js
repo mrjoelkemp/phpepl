@@ -1,12 +1,12 @@
 (function (window, document, $, undefined) {
-	"use strict";
+  "use strict";
   if (! $) throw new Error('jquery not found');
   if (! window.ace) throw new Error('ace not found');
 
   var ace = window.ace,
-      editor,
       devURL = 'http://localhost:8888/eval/index.php',
       liveURL = 'http://phpepl.cloudcontrolled.com/eval/index.php',
+      editor,
       
       // Format the time into a 12-hour, pretty format
       getTimeString = function () {
@@ -106,8 +106,9 @@
           localStorage.setItem('code', code);
           
           // Show the saved message
-          $('.timestamp').find('span')
-            .html('Code Saved!');
+          $('.timestamp')
+            .find('span')
+              .html('Code Saved!');
         }
       },
       loadSavedCode = function () {
@@ -144,8 +145,9 @@
       }
     });
     
+    // Remember the code in the editor
+    // before navigating away
     $(window).unload(function () {
-      // Remember your last code
       saveCode();
     });
   });
