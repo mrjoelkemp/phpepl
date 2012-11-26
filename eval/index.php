@@ -2,8 +2,8 @@
 	// Turn off errors since eval will throw them on invalid syntax
 	$inString = @ini_set('log_errors', false);
 	$token = @ini_set('display_errors', true);
-    
-    // CORS support
+	
+	// CORS support
 	header("Access-Control-Allow-Origin: *");
 	header("Content-type: application/json");
 	
