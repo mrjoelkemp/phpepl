@@ -3,7 +3,7 @@ PHPepl
 
 [The PHP Repl](http://phpepl.cloudcontrolled.com/)
 
-Created by: [@mrjoelkemp](www.twitter.com/mrjoelkemp)
+Created by: [@mrjoelkemp](http://www.twitter.com/mrjoelkemp)
 
 ### Purpose
 
