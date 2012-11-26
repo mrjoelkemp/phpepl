@@ -1,7 +1,7 @@
 <?php
 	// Turn off errors since eval will throw them on invalid syntax
 	$inString = @ini_set('log_errors', false);
-    $token = @ini_set('display_errors', true);
+	$token = @ini_set('display_errors', true);
     
     // CORS support
 	header("Access-Control-Allow-Origin: *");
