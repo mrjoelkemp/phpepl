@@ -3,16 +3,19 @@
 	$inString = @ini_set('log_errors', false);
     $token = @ini_set('display_errors', true);
     
+    // CORS support
 	header("Access-Control-Allow-Origin: *");
 	header("Content-type: application/json");
 	
 	$code = $_POST['code'];
 	
-	// Remove some unsafe and error prone snippets
+	// Naively remove some unsafe and error prone snippets
 	$toRemove 	= array("<?php", "?>", "<?");
 	$badMethods	= array("phpInfo", "file_get_contents");
 	$code = str_replace(array_merge($toRemove, $badMethods), "", $code);
 	
+	// Simple output buffering to capture
+	// error messages and send them to the user
 	ob_start();
 	
 	eval($code);
