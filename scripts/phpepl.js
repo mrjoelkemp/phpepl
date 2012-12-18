@@ -97,6 +97,10 @@
 
         $('.spinner').fadeIn('fast');
 
+        // Track it
+        window._gaq.push(['_setCustomVar', 1, 'code', code]);
+
+        // Send it for eval
         $.ajax({
           type: "POST",
           // url: devURL,
@@ -124,6 +128,7 @@
             var text_line = getPrettyFatalErrorMessage(error.responseText);
             setOutput(text_line[0], true);
             showLineError(text_line[1]);
+            window._gaq.push(['_setCustomVar', 2, 'error', error.responseText]);
           }
         });
       };
