@@ -98,7 +98,7 @@
         $('.spinner').fadeIn('fast');
 
         // Track it
-        window._gaq.push(['_setCustomVar', 1, 'code', code]);
+        window.mixpanel.track("Code Run", {'code': code});
 
         // Send it for eval
         $.ajax({
@@ -128,7 +128,7 @@
             var text_line = getPrettyFatalErrorMessage(error.responseText);
             setOutput(text_line[0], true);
             showLineError(text_line[1]);
-            window._gaq.push(['_setCustomVar', 2, 'error', error.responseText]);
+            window.mixpanel.track('Error', {'error' : error.responseText});
           }
         });
       };
@@ -144,6 +144,8 @@
           $('.timestamp')
             .find('span')
               .html('Code Saved!');
+
+          window.mixpanel.track('Code Saved');
         }
       },
       loadSavedCode = function () {
@@ -175,12 +177,14 @@
       if (e.which === 13 && (e.ctrlKey || e.metaKey)) {
         processCode();
         e.preventDefault();
+        window.mixpanel.track('Run Shortcut');
       }
 
       // CMD + S or CTRL + S to save code
       if (e.which === 83 && (e.ctrlKey || e.metaKey)) {
         saveCode();
         e.preventDefault();
+        window.mixpanel.track('Save Shortcut');
       }
     });
 
