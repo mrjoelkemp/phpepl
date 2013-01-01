@@ -6,7 +6,7 @@
     opacity: 0.25; } }
 
 body {
-  width: 900px;
+  width: 860px;
   margin: 0 auto;
   font-family: sans-serif; }
 
@@ -36,10 +36,10 @@ body {
         font-style: italic; }
   .container .codebox {
     float: left;
-    width: 900px; }
+    width: 860px; }
     .container .codebox #editor {
       font-size: 16px;
-      width: 900px;
+      width: 860px;
       height: 400px;
       border: 1px solid black; }
   .container .output {
@@ -116,7 +116,7 @@ body {
           color: red; }
   .container .timestamp {
     height: 21px;
-    width: 900px;
+    width: 860px;
     position: absolute;
     top: 595px;
     text-align: right; }

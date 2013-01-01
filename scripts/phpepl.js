@@ -156,9 +156,13 @@
       };
 
   $(function () {
+    // Set up the editor
     editor = ace.edit('editor');
     editor.setTheme('ace/theme/textmate');
     editor.getSession().setMode('ace/mode/php');
+    editor.getSession().setUseSoftTabs(true);
+    editor.getSession().setTabSize(2);
+    editor.setShowPrintMargin(false);
 
     loadSavedCode();
 
