@@ -3,8 +3,9 @@
   if (! $) throw new Error('jquery not found');
   if (! window.ace) throw new Error('ace not found');
 
-  var ace = window.ace,
-      devURL = 'http://localhost:8888/eval/index.php',
+  var ace     = window.ace,
+      mixpanel= window.mixpanel || {},
+      devURL  = 'http://localhost:8888/eval/index.php',
       liveURL = 'http://phpepl.cloudcontrolled.com/eval/index.php',
       editor,
 
@@ -98,7 +99,7 @@
         $('.spinner').fadeIn('fast');
 
         // Track it
-        window.mixpanel.track("Code Run", {'code': code});
+        mixpanel.track("Code Run", {'code': code});
 
         // Send it for eval
         $.ajax({
@@ -128,7 +129,7 @@
             var text_line = getPrettyFatalErrorMessage(error.responseText);
             setOutput(text_line[0], true);
             showLineError(text_line[1]);
-            window.mixpanel.track('Error', {'error' : error.responseText});
+            mixpanel.track('Error', {'error' : error.responseText});
           }
         });
       };
@@ -145,7 +146,7 @@
             .find('span')
               .html('Code Saved!');
 
-          window.mixpanel.track('Code Saved');
+          mixpanel.track('Code Saved');
         }
       },
       loadSavedCode = function () {
@@ -177,14 +178,14 @@
       if (e.which === 13 && (e.ctrlKey || e.metaKey)) {
         processCode();
         e.preventDefault();
-        window.mixpanel.track('Run Shortcut');
+        mixpanel.track('Run Shortcut');
       }
 
       // CMD + S or CTRL + S to save code
       if (e.which === 83 && (e.ctrlKey || e.metaKey)) {
         saveCode();
         e.preventDefault();
-        window.mixpanel.track('Save Shortcut');
+        mixpanel.track('Save Shortcut');
       }
     });
 
