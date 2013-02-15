@@ -5,7 +5,7 @@
 
   var ace     = window.ace,
       mixpanel= window.mixpanel || {},
-      devURL  = 'http://localhost:8888/eval/index.php',
+      devURL  = 'http://localhost/eval/index.php',
       liveURL = 'http://phpepl.cloudcontrolled.com/eval/index.php',
       editor,
 
@@ -65,10 +65,18 @@
       // FIXME: Implementation is fairly naive due to a lack of sample
       //        fatal errors to guide the parsing logic
       getPrettyFatalErrorMessage = function (responseText) {
+        if (! responseText.length) return;
+
         var text = responseText,
             tokensToReplace = ['\n', /<br \/>/g, /<b>/g,
                                 /<\/b>/g, /(Fatal error: +)/g],
             splitTokens, err, line, lineNum;
+
+        // If the error message doesn't contain 'fatal error',
+        // then just print it
+        if (! responseText.toLowerCase().indexOf('fatal error')) {
+          return [responseText, 1];
+        }
 
         $.each(tokensToReplace, function (idx, val) {
           text = text.replace(val, "");
@@ -111,22 +119,33 @@
           success: function (res) {
             if (! res) return;
 
-            var result  = res.result,
-                error   = res.error,
-                errorMsg;
+            var result    = res.result,
+                error     = res.error,
+                errorMsg  = '';
 
             if (error) {
-              // Show the line in red
-              showLineError(error.line);
-              // Show the error message
-              errorMsg = "Line " + error.line + ": " + error.message;
+              if (error.line && error.message) {
+                // Show the line in red
+                showLineError(error.line);
+
+                // Show the error message
+                errorMsg = "Line " + error.line + ": ";
+              }
+
+              errorMsg += error.message;
+
               setOutput(errorMsg, true);
               return;
             }
+
             setOutput(result);
           },
+
           error: function (error) {
+            if (! error) return;
+
             var text_line = getPrettyFatalErrorMessage(error.responseText);
+
             setOutput(text_line[0], true);
             showLineError(text_line[1]);
             mixpanel.track('Error', {'error' : error.responseText});
