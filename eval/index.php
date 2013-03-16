@@ -13,7 +13,7 @@
 	$toRemove 	= array("<?php", "?>", "<?");
 	$badMethods	= array("phpinfo", "file_get_contents", "exec", "passthru", 
 						"system", "shell_exec", "`", "popen", "proc_open", 
-						"pcntl_exec", "eval", "assert", "preg_replace", "create_function", 
+						"pcntl_exec", "eval", "assert", "create_function", 
 						"include", "include_once", "require", "require_once", "$_GET", 
 						"ReflectionFunction", "posix_mkfifo", "posix_getlogin", "posix_ttyname", "getenv", 
 						"get_current_user", "proc_get_status", "get_cfg_var", "disk_free_space", "disk_total_space", 
