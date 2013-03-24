@@ -190,7 +190,7 @@
       autofocus: true
     });
 
-    // loadSavedCode();
+    loadSavedCode();
 
     $('.submit button').click(function () {
       processCode();
