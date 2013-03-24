@@ -6,6 +6,7 @@
     %meta{:name=>"description", :content=>"A PHP read evaluate print loop (REPL) for executing PHP code in the browser."}
     %meta{:name=>"keywords", :content=>"PHP, repl, programming, read evaluate print loop"}
     %title PHPepl: The PHP REPL
+    %link{:rel => "stylesheet", :href => "lib/codemirror/lib/codemirror.css"}
     %link{:rel => "stylesheet", :href => "css/styles.css"}
     :javascript 
       var _gaq = _gaq || [];
@@ -24,43 +25,51 @@
   %body
     /Built by Mr. Joel Kemp, @mrjoelkemp, www.mrjoelkemp.com
     /Yes, there's php -a, but it stinks. I really wanted a repl to play with particular parts of PHP. 
-    /There's a chrome extension as well: https://chrome.google.com/webstore/detail/phpepl/aklmibnemhffjijocdnnphcifkdjabkc
     .container
       .header
         .title
           %span.code PHPepl: The PHP REPL
       .codebox
-        #editor
-      .output
-        .spinner
-          .bar1
-          .bar2
-          .bar3
-          .bar4
-          .bar5
-          .bar6
-          .bar7
-          .bar8
-          .bar9
-          .bar10
-          .bar11
-          .bar12
-        .output-container
-          %span
-      .timestamp
-        %span
+        .codebox-cont
+          #editor
+          .output
+            .spinner
+              .bar1
+              .bar2
+              .bar3
+              .bar4
+              .bar5
+              .bar6
+              .bar7
+              .bar8
+              .bar9
+              .bar10
+              .bar11
+              .bar12
+            .output-container
+              %span
+          .timestamp
+            %span
       .submit
         %span.code Ctrl + Enter or ⌘ + Enter 
         %button RUN
-    .credits
-      %span Built by: 
-      %a{:href=>"https://twitter.com/mrjoelkemp", :target=>"_blank"}@mrjoelkemp
+      .credits
+        %span Send feedback to: 
+        %a{:href=>"https://twitter.com/mrjoelkemp", :target=>"_blank"}@mrjoelkemp
     .mixpanel
       %a{:href=>"http://mixpanel.com/f/partner", :style=>"display:none"}
         %img{:src=>"http://mixpanel.com/site_media/images/partner/badge_blue.png", :alt=>"Real Time Web Analytics"}
-  %script{:src => "http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js", :type => "text/javascript", :charset => "utf-8"}
+  /%script{:src => "http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js", :type => "text/javascript", :charset => "utf-8"}
   %script{:src => "lib/jquery-1.8.2.min.js"}
-  %script{:src => "scripts/phpepl-min.js"}
+  %script{:src => "lib/codemirror/lib/codemirror.js"}
+  %script{:src => "lib/codemirror/addon/edit/matchbrackets.js"}
+  %script{:src => "lib/codemirror/mode/htmlmixed/htmlmixed.js"}
+  %script{:src => "lib/codemirror/mode/xml/xml.js"}
+  %script{:src => "lib/codemirror/mode/javascript/javascript.js"}
+  %script{:src => "lib/codemirror/mode/css/css.js"}
+  %script{:src => "lib/codemirror/mode/clike/clike.js"}
+  %script{:src => "lib/codemirror/mode/php/php.js"}
   / %script{:src => "scripts/phpepl.js"}
+  %script{:src => "scripts/phpepl.min.js"}
 
   
