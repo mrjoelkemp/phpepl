@@ -183,14 +183,10 @@
     // Set up the editor
     // editor = ace.edit('editor');
     editor = window.CodeMirror($('#editor')[0], {
-      value: 'echo "PHPepl";',
       lineNumbers: true,
       matchBrackets: true,
       mode: 'text/x-php',
       indentUnit: 2,
-      indentWithTabs: true,
-      enterMode: "keep",
-      tabMode: "shift",
       autofocus: true
     });
 
