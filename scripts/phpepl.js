@@ -1,14 +1,16 @@
 (function (window, document, $, undefined) {
   "use strict";
   if (! $) throw new Error('jquery not found');
-  if (! window.ace) throw new Error('ace not found');
+  // if (! window.ace) throw new Error('ace not found');
 
-  var ace     = window.ace,
-      mixpanel= window.mixpanel || {},
+  // COMMON
+  var mixpanel= window.mixpanel || {},
       devURL  = 'http://localhost/eval/index.php',
       liveURL = 'http://phpepl.cloudcontrolled.com/eval/index.php',
-      editor,
+      editor;
 
+  // HELPERS
+  var
       // Format the time into a 12-hour, pretty format
       getTimeString = function () {
         var ct      = new Date(),
@@ -48,8 +50,8 @@
 
       // Highlights the line in the gutter with the error
       showLineError = function (line) {
-        // Find the dom element in the ace gutter
-        $('.ace_gutter-cell').each(function (idx) {
+        // Find the dom element in the gutter
+        $('.CodeMirror-linenumber').each(function (idx) {
           // If the cell's line number matches the error line
           if (Number($(this).html()) === line) {
             // Make the background red
@@ -179,14 +181,20 @@
 
   $(function () {
     // Set up the editor
-    editor = ace.edit('editor');
-    editor.setTheme('ace/theme/textmate');
-    editor.getSession().setMode('ace/mode/php');
-    editor.getSession().setUseSoftTabs(true);
-    editor.getSession().setTabSize(2);
-    editor.setShowPrintMargin(false);
+    // editor = ace.edit('editor');
+    editor = window.CodeMirror($('#editor')[0], {
+      value: 'echo "PHPepl";',
+      lineNumbers: true,
+      matchBrackets: true,
+      mode: 'text/x-php',
+      indentUnit: 2,
+      indentWithTabs: true,
+      enterMode: "keep",
+      tabMode: "shift",
+      autofocus: true
+    });
 
-    loadSavedCode();
+    // loadSavedCode();
 
     $('.submit button').click(function () {
       processCode();
@@ -197,7 +205,6 @@
       if (e.which === 13 && (e.ctrlKey || e.metaKey)) {
         processCode();
         e.preventDefault();
-        mixpanel.track('Run Shortcut');
       }
 
       // CMD + S or CTRL + S to save code
