@@ -14,11 +14,6 @@ I've used this quick hack a ton since building it. I hope other people get some 
 
 ### Sandboxing
 
-The exposed `eval` is sandboxed at the server configuration layer. I really didn't want to spend too much time failing at sandboxing a language that I'm still learning. My hosting provider, cloudcontrolled, does a pretty good job at preventing use of the "dangerous" PHP methods.
+The exposed `eval` is sandboxed at the server configuration layer plus some blacklisting of methods at the application level.
 
-### Chrome Plugin
-
-https://chrome.google.com/webstore/detail/phpepl/aklmibnemhffjijocdnnphcifkdjabkc
-
-I really wanted a Chrome extension that I could open by a keyboard shortcut to run a quick snippet within any page. The keyboard shortcut has yet to be implemented, but the rest of the plugin works.
-
+Please play nice.
