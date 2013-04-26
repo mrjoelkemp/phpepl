@@ -1,7 +1,6 @@
 (function (window, document, $, undefined) {
-  "use strict";
-  if (! $) throw new Error('jquery not found');
-  // if (! window.ace) throw new Error('ace not found');
+  'use strict';
+  if (! $) throw 'jquery not found';
 
   // COMMON
   var mixpanel= window.mixpanel || {},
@@ -181,12 +180,12 @@
 
   $(function () {
     // Set up the editor
-    // editor = ace.edit('editor');
     editor = window.CodeMirror($('#editor')[0], {
       lineNumbers: true,
       matchBrackets: true,
       mode: 'text/x-php',
       indentUnit: 2,
+      tabSize: 2,
       autofocus: true
     });
 
