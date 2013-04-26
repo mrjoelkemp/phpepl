@@ -186,7 +186,8 @@
       mode: 'text/x-php',
       indentUnit: 2,
       tabSize: 2,
-      autofocus: true
+      autofocus: true,
+      autoCloseBrackets: true
     });
 
     loadSavedCode();
