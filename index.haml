@@ -7,7 +7,7 @@
     %meta{:name=>"keywords", :content=>"PHP, repl, programming, read evaluate print loop"}
     %title PHPepl: The PHP REPL
     %link{:rel => "stylesheet", :href => "lib/codemirror/lib/codemirror.css"}
-    %link{:rel => "stylesheet", :href => "css/styles.css"}
+    %link{:rel => "stylesheet", :href => "css/styles.css?ver=1.0"}
     :javascript 
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-36055599-1']);
@@ -53,14 +53,12 @@
           .timestamp
             %span
       .submit
-        %span.code Ctrl + Enter or ⌘ + Enter 
+        %span.code ⌘ + Enter or Ctrl + Enter 
         %button RUN
       .credits
         %a{:href=>"https://twitter.com/mrjoelkemp", :class=>"twitter-follow-button" } Follow @mrjoelkemp
         :javascript
           !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
-        / %span Send feedback or report problems to: 
-        / %a{:href=>"https://twitter.com/mrjoelkemp", :target=>"_blank"}@mrjoelkemp
     .mixpanel
       %a{:href=>"http://mixpanel.com/f/partner", :style=>"display:none"}
         %img{:src=>"http://mixpanel.com/site_media/images/partner/badge_blue.png", :alt=>"Real Time Web Analytics"}
@@ -79,6 +77,6 @@
   
   %script{:src => "lib/moment/moment.min.js"}
   / %script{:src => "scripts/phpepl.js"}
-  %script{:src => "scripts/phpepl.min.js"}
+  %script{:src => "scripts/phpepl.min.js?ver=1.0"}
 
   
