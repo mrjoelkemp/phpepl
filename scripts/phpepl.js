@@ -1,4 +1,4 @@
-(function (window, document, $, undefined) {
+(function (window, document, $, moment) {
   'use strict';
   if (! $) throw 'jquery not found';
 
@@ -10,25 +10,6 @@
 
   // HELPERS
   var
-      // Format the time into a 12-hour, pretty format
-      getTimeString = function () {
-        var ct      = new Date(),
-            hours   = ct.getHours(),
-            minutes = ct.getMinutes(),
-            seconds = ct.getSeconds(),
-            timeString;
-
-        // Scale the hours back
-        hours = (hours > 12) ? hours - 12 : hours;
-
-        //if 00 then it is 12 am
-        hours = hours === 0 ? 12 : hours;
-
-        timeString = [hours, minutes, seconds].join(':');
-
-        return timeString;
-      },
-
       // Set the html of the output div
       setOutput = function (text) {
         var isError = !! arguments[1],
@@ -44,7 +25,7 @@
         // Turn off the spinner
         $('.spinner').fadeOut('fast');
         // Set the timestamp
-        $('.timestamp').find('span').html(getTimeString());
+        $('.timestamp').find('span').html(moment(new Date().getTime()).format('h:m:s a'));
       },
 
       // Highlights the line in the gutter with the error
@@ -217,4 +198,4 @@
       saveCode();
     });
   });
-})(window, document, window.jQuery);
+})(window, document, window.jQuery, window.moment);
