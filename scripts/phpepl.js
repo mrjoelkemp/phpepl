@@ -18,9 +18,7 @@
         // Remove error classes if any
         $output.html(text).removeClass('error');
 
-        if (isError) {
-          $output.addClass('error');
-        }
+        if (isError) $output.addClass('error');
 
         // Turn off the spinner
         $('.spinner').fadeOut('fast');
@@ -31,7 +29,7 @@
       // Highlights the line in the gutter with the error
       showLineError = function (line) {
         // Find the dom element in the gutter
-        $('.CodeMirror-linenumber').each(function (idx) {
+        $('.CodeMirror-linenumber').each(function () {
           // If the cell's line number matches the error line
           if (Number($(this).html()) === line) {
             // Make the background red
@@ -61,7 +59,7 @@
         }
 
         $.each(tokensToReplace, function (idx, val) {
-          text = text.replace(val, "");
+          text = text.replace(val, '');
         });
 
         splitTokens = text.split('in');
@@ -71,7 +69,7 @@
 
         text = (err + ' on ' + line).trim();
 
-        lineNum = line.split(" ");
+        lineNum = line.split(' ');
         lineNum = Number(lineNum[1]);
 
         return [text, lineNum];
@@ -82,18 +80,18 @@
         var code = editor.getValue();
 
         if (! code.length) {
-          setOutput("Please supply some code...");
+          setOutput('Please supply some code...');
           return;
         }
 
         $('.spinner').fadeIn('fast');
 
         // Track it
-        mixpanel.track("Code Run", {'code': code});
+        mixpanel.track('Code Run', {'code': code});
 
         // Send it for eval
         $.ajax({
-          type: "POST",
+          type: 'POST',
           // url: devURL,
           url: liveURL,
           data: {code: code},
@@ -111,7 +109,7 @@
                 showLineError(error.line);
 
                 // Show the error message
-                errorMsg = "Line " + error.line + ": ";
+                errorMsg = 'Line ' + error.line + ': ';
               }
 
               errorMsg += error.message;
