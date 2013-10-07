@@ -29,7 +29,7 @@ body {
     width: 100%;
     float: left;
     text-align: center;
-    margin: 10px 0 10px 0;
+    margin: 0 0 5px 0;
     .title {
       width: 100%;
       float: left;
@@ -59,6 +59,9 @@ body {
         font-size: 17px;
         border: 1px solid black;
         margin-bottom: 10px;
+        .CodeMirror {
+          min-height: 500px;
+        }
       }
 
       .output {
