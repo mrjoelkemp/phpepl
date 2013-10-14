@@ -151,8 +151,10 @@
       loadSavedCode = function () {
         // Preload where you last left off
         if (window.localStorage) {
-          var result = localStorage.getItem('code'),
-              code   = ! result ? 'echo "PHPepl";' : result;
+          var greeting = '// Hey! Thanks for using PHPepl. -Joel\n\n' +
+                          'echo "We\'re running php version: " . phpversion();',
+              result = localStorage.getItem('code'),
+              code   = ! result ? greeting : result;
           editor.setValue(code);
         }
       };
