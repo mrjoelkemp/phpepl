@@ -23,7 +23,7 @@
         // Turn off the spinner
         $('.spinner').fadeOut('fast');
         // Set the timestamp
-        $('.timestamp').find('span').html(moment(new Date().getTime()).format('h:m:s a'));
+        $('.timestamp').find('span').html(moment(new Date().getTime()).format('h:mm a'));
       },
 
       // Highlights the line in the gutter with the error
@@ -157,43 +157,41 @@
         }
       };
 
-  $(function () {
-    // Set up the editor
-    editor = window.CodeMirror($('#editor')[0], {
-      lineNumbers: true,
-      matchBrackets: true,
-      mode: 'text/x-php',
-      indentUnit: 2,
-      tabSize: 2,
-      autofocus: true,
-      autoCloseBrackets: true
-    });
+  // Set up the editor
+  editor = window.CodeMirror($('#editor')[0], {
+    lineNumbers: true,
+    matchBrackets: true,
+    mode: 'text/x-php',
+    indentUnit: 2,
+    tabSize: 2,
+    autofocus: true,
+    autoCloseBrackets: true
+  });
 
-    loadSavedCode();
+  loadSavedCode();
 
-    $('.submit button').click(function () {
+  $('.submit button').click(function () {
+    processCode();
+  });
+
+  $(document).keydown(function (e) {
+    // CMD + Enter or CTRL + Enter to run code
+    if (e.which === 13 && (e.ctrlKey || e.metaKey)) {
       processCode();
-    });
+      e.preventDefault();
+    }
 
-    $(document).keydown(function (e) {
-      // CMD + Enter or CTRL + Enter to run code
-      if (e.which === 13 && (e.ctrlKey || e.metaKey)) {
-        processCode();
-        e.preventDefault();
-      }
-
-      // CMD + S or CTRL + S to save code
-      if (e.which === 83 && (e.ctrlKey || e.metaKey)) {
-        saveCode();
-        e.preventDefault();
-        mixpanel.track('Save Shortcut');
-      }
-    });
-
-    // Remember the code in the editor
-    // before navigating away
-    $(window).unload(function () {
+    // CMD + S or CTRL + S to save code
+    if (e.which === 83 && (e.ctrlKey || e.metaKey)) {
       saveCode();
-    });
+      e.preventDefault();
+      mixpanel.track('Save Shortcut');
+    }
+  });
+
+  // Remember the code in the editor
+  // before navigating away
+  $(window).unload(function () {
+    saveCode();
   });
 })(window, document, window.jQuery, window.moment);
