@@ -1,171 +1,196 @@
 <!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8"/>
-    <title>CodeMirror</title>
-    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Droid+Sans|Droid+Sans:bold"/>
-    <link rel="stylesheet" type="text/css" href="doc/docs.css"/>
-    <link rel="alternate" href="https://groups.google.com/group/codemirror-announce/feed/atom_v1_0_topics.xml" type="application/atom+xml"/>
-  </head>
-  <body>
 
-<h1><span class="logo-braces">{ }</span> <a href="http://codemirror.net/">CodeMirror</a></h1>
+<title>CodeMirror</title>
+<meta charset="utf-8"/>
 
-<div class="grey">
-<img src="doc/baboon.png" class="logo" alt="logo"/>
-<pre>
-/* In-browser code editing
-   made bearable */
-</pre>
+<link rel=stylesheet href="lib/codemirror.css">
+<link rel=stylesheet href="doc/docs.css">
+<script src="lib/codemirror.js"></script>
+<script src="mode/xml/xml.js"></script>
+<script src="mode/javascript/javascript.js"></script>
+<script src="mode/css/css.js"></script>
+<script src="mode/htmlmixed/htmlmixed.js"></script>
+<script src="addon/edit/matchbrackets.js"></script>
+
+<script src="doc/activebookmark.js"></script>
+
+<style>
+  .CodeMirror { height: auto; border: 1px solid #ddd; }
+  .CodeMirror-scroll { max-height: 200px; }
+  .CodeMirror pre { padding-left: 7px; line-height: 1.25; }
+</style>
+
+<div id=nav>
+  <a href="http://codemirror.net"><img id=logo src="doc/logo.png"></a>
+
+  <ul>
+    <li><a class=active data-default="true" href="#description">Home</a>
+    <li><a href="doc/manual.html">Manual</a>
+    <li><a href="https://github.com/marijnh/codemirror">Code</a>
+  </ul>
+  <ul>
+    <li><a href="#features">Features</a>
+    <li><a href="#community">Community</a>
+    <li><a href="#browsersupport">Browser support</a>
+  </ul>
 </div>
 
-<div class="clear"><div class="left blk">
+<article>
 
-  <p style="margin-top: 0">CodeMirror is a JavaScript component that
-  provides a code editor in the browser. When a mode is available for
-  the language you are coding in, it will color your code, and
-  optionally help with indentation.</p>
+<section id=description class=first>
+  <p><strong>CodeMirror</strong> is a versatile text editor
+  implemented in JavaScript for the browser. It is specialized for
+  editing code, and comes with a number of language modes and addons
+  that implement more advanced editing functionaly.</p>
 
-  <p>A <a href="doc/manual.html">rich programming API</a> and a CSS
-  theming system are available for customizing CodeMirror to fit your
-  application, and extending it with new functionality.</p>
+  <p>A rich <a href="doc/manual.html#api">programming API</a> and a
+  CSS <a href="doc/manual.html#styling">theming</a> system are
+  available for customizing CodeMirror to fit your application, and
+  extending it with new functionality.</p>
+</section>
 
-  <div class="clear"><div class="left1 blk">
+<section id=demo>
+  <h2>This is CodeMirror</h2>
+  <form style="position: relative; margin-top: .5em;"><textarea id=demotext>
+<!-- Create a simple CodeMirror instance -->
+<link rel="stylesheet" href="lib/codemirror.css">
+<script src="lib/codemirror.js"></script>
+<script>
+  var editor = CodeMirror.fromTextArea(myTextarea, {
+    mode: "text/html"
+  });
+</script></textarea>
+  <select id="demolist" onchange="document.location = this.options[this.selectedIndex].value;">
+    <option value="#">Other demos...</option>
+    <option value="demo/complete.html">Autocompletion</option>
+    <option value="demo/folding.html">Code folding</option>
+    <option value="demo/theme.html">Themes</option>
+    <option value="mode/htmlmixed/index.html">Mixed language modes</option>
+    <option value="demo/bidi.html">Bi-directional text</option>
+    <option value="demo/variableheight.html">Variable font sizes</option>
+    <option value="demo/search.html">Search interface</option>
+    <option value="demo/vim.html">Vim bindings</option>
+    <option value="demo/emacs.html">Emacs bindings</option>
+    <option value="demo/tern.html">Tern integration</option>
+    <option value="demo/merge.html">Merge/diff interface</option>
+    <option value="demo/fullscreen.html">Full-screen editor</option>
+  </select></form>
+  <script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("demotext"), {
+      lineNumbers: true,
+      mode: "text/html",
+      matchBrackets: true
+    });
+  </script>
+  <div style="position: relative; margin: 1em 0;">
+    <a class="bigbutton left" href="http://codemirror.net/codemirror.zip">DOWNLOAD LATEST RELEASE</a>
+    <div><strong>version 3.18</strong> (<a href="doc/releases.html">Release notes</a>)</div>
+    <div>or use the <a href="doc/compress.html">minification helper</a></div>
+    <div style="position: absolute; top: 0; right: 0; text-align: right">
+      <span class="bigbutton right" onclick="document.getElementById('paypal').submit();">DONATE WITH PAYPAL</span>
+      <div style="position: relative">
+        or <span onclick="document.getElementById('bankinfo').style.display = 'block';" class=quasilink>Bank</span>,
+        <a href="https://www.gittip.com/marijnh">Gittip</a>,
+        <a href="https://flattr.com/profile/marijnh">Flattr</a><br>
+        <div id=bankinfo>
+          <span id=bankinfo_close onclick="document.getElementById('bankinfo').style.display = '';">×</span>
+          Bank: <i>Rabobank</i><br/>
+          Country: <i>Netherlands</i><br/>
+          SWIFT: <i>RABONL2U</i><br/>
+          Account: <i>147850770</i><br/>
+          Name: <i>Marijn Haverbeke</i><br/>
+          IBAN: <i>NL26 RABO 0147 8507 70</i>
+        </div>
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal">
+          <input type="hidden" name="cmd" value="_s-xclick"/>
+          <input type="hidden" name="hosted_button_id" value="3FVHS5FGUY7CC"/>
+        </form>
+      </div>
+      <div>
+        Purchase <a href="http://codemirror.com">commercial support</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <h2 style="margin-top: 0">Supported modes:</h2>
+<section id=features>
+  <h2>Features</h2>
+  <ul>
+    <li>Support for <a href="mode/index.html">over 60 languages</a> out of the box
+    <li>A powerful, <a href="mode/htmlmixed/index.html">composable</a> language mode <a href="doc/manual.html#modeapi">system</a>
+    <li><a href="doc/manual.html#addon_show-hint">Autocompletion</a> (<a href="demo/xmlcomplete.html">XML</a>)
+    <li><a href="doc/manual.html#addon_foldcode">Code folding</a>
+    <li><a href="doc/manual.html#option_extraKeys">Configurable</a> keybindings
+    <li><a href="demo/vim.html">Vim</a> and <a href="demo/emacs.html">Emacs</a> bindings
+    <li><a href="doc/manual.html#addon_search">Search and replace</a> interface
+    <li><a href="doc/manual.html#addon_matchbrackets">Bracket</a> and <a href="doc/manual.html#addon_matchtags">tag</a> matching
+    <li>Support for <a href="demo/buffers.html">split views</a>
+    <li><a href="doc/manual.html#addon_lint">Linter integration</a>
+    <li><a href="demo/variableheight.html">Mixing font sizes and styles</a>
+    <li><a href="demo/theme.html">Various themes</a>
+    <li>Able to <a href="demo/resize.html">resize to fit content</a>
+    <li><a href="doc/manual.html#mark_replacedWith">Inline</a> and <a href="doc/manual.html#addLineWidget">block</a> widgets
+    <li>Programmable <a href="demo/marker.html">gutters</a>
+    <li>Making ranges of text <a href="doc/manual.html#markText">styled, read-only, or atomic</a>
+    <li><a href="demo/bidi.html">Bi-directional text</a> support
+    <li>Many other <a href="doc/manual.html#api">methods</a> and <a href="doc/manual.html#addons">addons</a>...</a>
+  </ul>
+</section>
 
-    <ul>
-      <li><a href="mode/clike/index.html">C, C++, C#</a></li>
-      <li><a href="mode/clojure/index.html">Clojure</a></li>
-      <li><a href="mode/coffeescript/index.html">CoffeeScript</a></li>
-      <li><a href="mode/commonlisp/index.html">Common Lisp</a></li>
-      <li><a href="mode/css/index.html">CSS</a></li>
-      <li><a href="mode/d/index.html">D</a></li>
-      <li><a href="mode/diff/index.html">diff</a></li>
-      <li><a href="mode/ecl/index.html">ECL</a></li>
-      <li><a href="mode/erlang/index.html">Erlang</a></li>
-      <li><a href="mode/go/index.html">Go</a></li>
-      <li><a href="mode/groovy/index.html">Groovy</a></li>
-      <li><a href="mode/haskell/index.html">Haskell</a></li>
-      <li><a href="mode/haxe/index.html">Haxe</a></li>
-      <li><a href="mode/htmlmixed/index.html">HTML mixed-mode</a></li>
-      <li><a href="mode/http/index.html">HTTP</a></li>
-      <li><a href="mode/clike/index.html">Java</a></li>
-      <li><a href="mode/javascript/index.html">JavaScript</a></li>
-      <li><a href="mode/less/index.html">LESS</a></li>
-      <li><a href="mode/lua/index.html">Lua</a></li>
-      <li><a href="mode/markdown/index.html">Markdown</a> (<a href="mode/gfm/index.html">GitHub-flavour</a>)</li>
-      <li><a href="mode/ntriples/index.html">NTriples</a></li>
-      <li><a href="mode/ocaml/index.html">OCaml</a></li>
-      <li><a href="mode/pascal/index.html">Pascal</a></li>
-      <li><a href="mode/perl/index.html">Perl</a></li>
-      <li><a href="mode/php/index.html">PHP</a></li>
-      <li><a href="mode/properties/index.html">Properties files</a></li>
-      <li><a href="mode/python/index.html">Python</a></li>
-      <li><a href="mode/r/index.html">R</a></li>
-      <li><a href="mode/rst/index.html">reStructuredText</a></li>
-      <li><a href="mode/ruby/index.html">Ruby</a></li>
-      <li><a href="mode/rust/index.html">Rust</a></li>
-      <li><a href="mode/sass/index.html">Sass</a></li>
-      <li><a href="mode/clike/scala.html">Scala</a></li>
-      <li><a href="mode/scheme/index.html">Scheme</a></li>
-      <li><a href="mode/shell/index.html">Shell</a></li>
-      <li><a href="mode/smalltalk/index.html">Smalltalk</a></li>
-      <li><a href="mode/smarty/index.html">Smarty</a></li>
-      <li><a href="mode/sql/index.html">SQL</a> (several dialects)</li>
-      <li><a href="mode/sparql/index.html">SPARQL</a></li>
-      <li><a href="mode/stex/index.html">sTeX, LaTeX</a></li>
-      <li><a href="mode/tcl/index.html">Tcl</a></li>
-      <li><a href="mode/vb/index.html">VB.NET</a></li>
-      <li><a href="mode/vbscript/index.html">VBScript</a></li>
-      <li><a href="mode/velocity/index.html">Velocity</a></li>
-      <li><a href="mode/xml/index.html">XML/HTML</a></li>
-      <li><a href="mode/xquery/index.html">XQuery</a></li>
-      <li><a href="mode/yaml/index.html">YAML</a></li>
-      <li><a href="mode/z80/index.html">Z80</a></li>
-      <li><a href="doc/modes.html">Full list...</a></li>
-    </ul>
+<section id=community>
+  <h2>Community</h2>
 
-  </div><div class="left2 blk">
+  <p>CodeMirror is an open-source project shared under
+  an <a href="LICENSE">MIT license</a>. It is the editor used in
+  <a href="http://www.chris-granger.com/2012/04/12/light-table---a-new-ide-concept/">Light
+  Table</a>, <a href="http://brackets.io/">Adobe
+  Brackets</a>, <a href="https://script.google.com/">Google Apps
+  Script</a>, <a href="http://blog.bitbucket.org/2013/05/14/edit-your-code-in-the-cloud-with-bitbucket/">Bitbucket</a>,
+  and <a href="doc/realworld.html">many other projects</a>.</p>
 
-    <h2 style="margin-top: 0">Usage demos:</h2>
+  <p>Development and bug tracking happens
+  on <a href="https://github.com/marijnh/CodeMirror/">github</a>
+  (<a href="http://marijnhaverbeke.nl/git/codemirror">alternate git
+  repository</a>).
+  Please <a href="http://codemirror.net/doc/reporting.html">read these
+  pointers</a> before submitting a bug. Use pull requests to submit
+  patches. All contributions must be released under the same MIT
+  license that CodeMirror uses.</p>
 
-    <ul>
-      <li><a href="demo/complete.html">Autocompletion</a> (<a href="demo/xmlcomplete.html">XML</a>)</li>
-      <li><a href="demo/search.html">Search/replace</a></li>
-      <li><a href="demo/folding.html">Code folding</a></li>
-      <li><a href="demo/bidi.html">Bi-directional text</a></li>
-      <li><a href="demo/widget.html">Line widgets</a> (via JSHint)</li>
-      <li><a href="demo/buffers.html">Split view</a></li>
-      <li><a href="demo/mustache.html">Mode overlays</a></li>
-      <li><a href="demo/multiplex.html">Mode multiplexer</a></li>
-      <li><a href="demo/preview.html">HTML editor with preview</a></li>
-      <li><a href="demo/resize.html">Auto-resizing editor</a></li>
-      <li><a href="demo/marker.html">Setting breakpoints</a></li>
-      <li><a href="demo/activeline.html">Highlighting the current line</a></li>
-      <li><a href="demo/matchhighlighter.html">Highlighting selection matches</a></li>
-      <li><a href="demo/theme.html">Theming</a></li>
-      <li><a href="demo/variableheight.html">Mixed font sizes</a></li>
-      <li><a href="demo/runmode.html">Stand-alone highlighting</a></li>
-      <li><a href="demo/fullscreen.html">Full-screen editing</a></li>
-      <li><a href="demo/changemode.html">Mode auto-changing</a></li>
-      <li><a href="demo/visibletabs.html">Visible tabs</a></li>
-      <li><a href="demo/emacs.html">Emacs keybindings</a></li>
-      <li><a href="demo/vim.html">Vim keybindings</a></li>
-      <li><a href="demo/closetag.html">Automatic xml tag closing</a></li>
-      <li><a href="demo/loadmode.html">Lazy mode loading</a></li>
-      <li><a href="demo/btree.html">Document tree visualization</a></li>
-    </ul>
+  <p>Discussion around the project is done on
+  a <a href="http://groups.google.com/group/codemirror">mailing list</a>.
+  There is also
+  the <a href="http://groups.google.com/group/codemirror-announce">codemirror-announce</a>
+  list, which is only used for major announcements (such as new
+  versions). If needed, you can
+  contact <a href="mailto:marijnh@gmail.com">the maintainer</a>
+  directly.</p>
 
-    <h2>Real-world uses:</h2>
+  <p>A list of CodeMirror-related software that is not part of the
+  main distribution is maintained
+  on <a href="https://github.com/marijnh/CodeMirror/wiki/CodeMirror-addons">our
+  wiki</a>. Feel free to add your project.</p>
+</section>
 
-    <ul>
-      <li><a href="http://jsbin.com">jsbin.com</a> (JS playground)</li>
-      <li><a href="http://www.chris-granger.com/2012/04/12/light-table---a-new-ide-concept/">Light Table</a> (experimental IDE)</li>
-      <li><a href="http://brackets.io">Adobe Brackets</a> (code editor)</li>
-      <li><a href="http://www.mergely.com/">Mergely</a> (interactive diffing)</li>
-      <li><a href="https://script.google.com/">Google Apps Script</a></li>
-      <li><a href="https://github.com/github/android">GitHub's Android app</a></li>
-      <li><a href="http://eloquentjavascript.net/chapter1.html">Eloquent JavaScript</a> (book)</li>
-      <li><a href="http://emmet.io">Emmet</a> (fast XML editing)</li>
-      <li><a href="http://paperjs.org/">Paper.js</a> (graphics scripting)</li>
-      <li><a href="http://codev.it/">Codev</a> (collaborative IDE)</li>
-      <li><a href="http://enjalot.com/tributary/2636296/sinwaves.js">Tributary</a> (augmented editing)</li>
-      <li><a href="http://prose.io/">Prose.io</a> (github content editor)</li>
-      <li><a href="http://www.wescheme.org/">WeScheme</a> (learning tool)</li>
-      <li><a href="http://webglplayground.net/">WebGL playground</a></li>
-      <li><a href="http://ql.io/">ql.io</a> (http API query helper)</li>
-      <li><a href="https://thefiletree.com">The File Tree</a> (collab editor)</li>
-      <li><a href="http://www.jshint.com/">JSHint</a> (JS linter)</li>
-      <li><a href="http://sqlfiddle.com">SQLFiddle</a> (SQL playground)</li>
-      <li><a href="http://try.haxe.org">Try Haxe</a> (Haxe Playground) </li>
-      <li><a href="http://cssdeck.com/">CSSDeck</a> (CSS showcase)</li>
-      <li><a href="http://www.sketchpatch.net/labs/livecodelabIntro.html">sketchPatch Livecodelab</a></li>
-      <li><a href="https://notex.ch">NoTex</a> (rST authoring)</li>
-      <li><a href="doc/realworld.html">More...</a></li>
-    </ul>
+<section id=browsersupport>
+  <h2>Browser support</h2>
+  <p>The <em>desktop</em> versions of the following browsers,
+  in <em>standards mode</em> (HTML5 <code>&lt;!doctype html></code>
+  recommended) are supported:</p>
+  <table style="margin-bottom: 1em">
+    <tr><th>Firefox</th><td>version 3 and up</td></tr>
+    <tr><th>Chrome</th><td>any version</td></tr>
+    <tr><th>Safari</th><td>version 5.2 and up</td></tr>
+    <tr><th style="padding-right: 1em;">Internet Explorer</th><td>version 8 and up</td></tr>
+    <tr><th>Opera</th><td>version 9 and up</td></tr>
+  </table>
+  <p>Modern mobile browsers tend to partly work. Bug reports and
+  patches for mobile support are welcome, but the maintainer does not
+  have the time or budget to actually work on it himself.</p>
+</section>
 
-  </div></div>
-
-  <h2 id="code">Getting the code</h2>
-
-  <p>All of CodeMirror is released under a <a
-  href="LICENSE">MIT-style</a> license. To get it, you can download
-  the <a href="http://codemirror.net/codemirror.zip">latest
-  release</a> or the current <a
-  href="http://codemirror.net/codemirror-latest.zip">development
-  snapshot</a> as zip files. To create a custom minified script file,
-  you can use the <a href="doc/compress.html">compression API</a>.</p>
-
-  <p>We use <a href="http://git-scm.com/">git</a> for version control.
-  The main repository can be fetched in this way:</p>
-
-  <pre class="code">git clone http://marijnhaverbeke.nl/git/codemirror</pre>
-
-  <p>CodeMirror can also be found on GitHub at <a
-  href="http://github.com/marijnh/CodeMirror">marijnh/CodeMirror</a>.
-  If you plan to hack on the code and contribute patches, the best way
-  to do it is to create a GitHub fork, and send pull requests.</p>
+</article>
+ull requests.</p>
 
   <h2 id="documention">Documentation</h2>
 
