@@ -6,8 +6,8 @@
     %meta{:name=>"description", :content=>"A PHP read evaluate print loop (REPL) for executing PHP code in the browser."}
     %meta{:name=>"keywords", :content=>"PHP, repl, programming, read evaluate print loop"}
     %title PHPepl: The PHP REPL
-    %link{:rel => "stylesheet", :href => "lib/codemirror/lib/codemirror.css"}
-    %link{:rel => "stylesheet", :href => "css/styles.css?ver=1.0"}
+    %link{:rel => "stylesheet", :href => "lib/codemirror/lib/codemirror.css?ver=3.18"}
+    %link{:rel => "stylesheet", :href => "css/styles.css?ver=1.1"}
     :javascript 
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-36055599-1']);
@@ -64,7 +64,7 @@
         %img{:src=>"http://mixpanel.com/site_media/images/partner/badge_blue.png", :alt=>"Real Time Web Analytics"}
 
   %script{:src => "lib/jquery-1.8.2.min.js"}
-  %script{:src => "lib/codemirror/lib/codemirror.js"}
+  %script{:src => "lib/codemirror/lib/codemirror.js?ver=3.18"}
   %script{:src => "lib/codemirror/addon/edit/closebrackets.js"}
   
   %script{:src => "lib/codemirror/addon/edit/matchbrackets.js"}
@@ -77,6 +77,6 @@
   
   %script{:src => "lib/moment/moment.min.js"}
   / %script{:src => "scripts/phpepl.js"}
-  %script{:src => "scripts/phpepl.min.js?ver=1.0"}
+  %script{:src => "scripts/phpepl.min.js?ver=1.1"}
 
   
