@@ -6,7 +6,7 @@
       live = 'http://phpepl.cloudcontrolled.com/eval/index.php',
 
       // Switch this to devURL if you want to code locally
-      evalURL = dev,
+      evalURL = live,
 
       mixpanel= window.mixpanel || {},
       editor;
