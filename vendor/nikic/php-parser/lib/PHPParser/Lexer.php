@@ -41,7 +41,7 @@ class PHPParser_Lexer
 
     protected function resetErrors() {
         // clear error_get_last() by forcing an undefined variable error
-        @$undefinedVariable;
+        // @$undefinedVariable;
     }
 
     protected function handleErrors() {
