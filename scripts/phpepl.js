@@ -1,11 +1,14 @@
 (function (window, document, $, moment) {
   'use strict';
-  if (! $) throw 'jquery not found';
 
   // COMMON
-  var mixpanel= window.mixpanel || {},
-      devURL  = 'http://localhost/eval/index.php',
+  var devURL  = 'http://localhost/eval/index.php',
       liveURL = 'http://phpepl.cloudcontrolled.com/eval/index.php',
+
+      // Switch this to devURL if you want to code locally
+      evalURL = liveURL,
+
+      mixpanel= window.mixpanel || {},
       editor;
 
   // HELPERS
@@ -42,8 +45,7 @@
       // Helper to show the fatal errors nicely
       // Returns a list of the error text and line number that
       // generated the error.
-      // FIXME: Implementation is fairly naive due to a lack of sample
-      //        fatal errors to guide the parsing logic
+      // Note: Implementation is fairly naive but works
       getPrettyFatalErrorMessage = function (responseText) {
         if (! responseText.length) return;
 
@@ -75,6 +77,15 @@
         return [text, lineNum];
       },
 
+      sendingCode = function (code) {
+        return $.ajax({
+          type: 'POST',
+          url: evalURL,
+          data: { code: code },
+          dataType: 'json'
+        });
+      },
+
       // Handles the sending of the code to the eval server
       processCode = function () {
         var code = editor.getValue();
@@ -89,21 +100,15 @@
         // Track it
         mixpanel.track('Code Run', {'code': code});
 
-        // Send it for eval
-        $.ajax({
-          type: 'POST',
-          url: devURL,
-          // url: liveURL,
-          data: {code: code},
-          dataType: 'json',
-          success: function (res) {
+        sendingCode(code)
+          .done(function (res) {
             if (! res) return;
 
             var result    = res.result,
                 error     = res.error,
                 errorMsg  = '';
 
-            if (error) {
+            if (error && ! result) {
               if (error.line && error.message) {
                 // Show the line in red
                 showLineError(error.line);
@@ -119,9 +124,8 @@
             }
 
             setOutput(result);
-          },
-
-          error: function (error) {
+          })
+          .fail(function (error) {
             if (! error) return;
 
             var textLine = getPrettyFatalErrorMessage(error.responseText);
@@ -129,8 +133,7 @@
             setOutput(textLine[0], true);
             showLineError(textLine[1]);
             mixpanel.track('Error', {'error' : error.responseText});
-          }
-        });
+          });
       };
 
   // Local storage helpers
@@ -151,8 +154,7 @@
       loadSavedCode = function () {
         // Preload where you last left off
         if (window.localStorage) {
-          var greeting = '// Hey! Thanks for using PHPepl. -Joel\n\n' +
-                          'echo "We\'re running php version: " . phpversion();',
+          var greeting = 'echo "We\'re running php version: " . phpversion();',
               result = localStorage.getItem('code'),
               code   = ! result ? greeting : result;
           editor.setValue(code);
@@ -172,9 +174,7 @@
 
   loadSavedCode();
 
-  $('.submit button').click(function () {
-    processCode();
-  });
+  $('.submit button').click(processCode);
 
   $(document).keydown(function (e) {
     // CMD + Enter or CTRL + Enter to run code
@@ -193,7 +193,6 @@
 
   // Remember the code in the editor
   // before navigating away
-  $(window).unload(function () {
-    saveCode();
-  });
+  $(window).unload(saveCode);
+
 })(window, document, window.jQuery, window.moment);
