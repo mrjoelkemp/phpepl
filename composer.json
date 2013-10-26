@@ -1,0 +1,6 @@
+{
+    "minimum-stability": "dev",
+    "require": {
+        "fieryprophet/php-sandbox": "dev-master"
+    }
+}

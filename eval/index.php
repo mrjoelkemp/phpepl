@@ -1,4 +1,5 @@
 <?php
+	// require_once('../vendor/autoload.php');
 	// Turn off errors since eval will throw them on invalid syntax
 	$inString = @ini_set('log_errors', false);
 	$token = @ini_set('display_errors', true);
