@@ -44,6 +44,12 @@
 	
 	$sandbox->blacklist_func($badMethods);
 	$sandbox->allow_functions = true;
+	$sandbox->allow_closures = true;
+	$sandbox->allow_constants = true;
+	$sandbox->allow_aliases = true;
+	$sandbox->allow_interfaces = true;
+	$sandbox->allow_casting = true;
+	$sandbox->allow_classes = true;
 	
 	ob_start();
 
