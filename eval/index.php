@@ -41,7 +41,7 @@
 						"get_meta_tags"
 				);
 	
-	$whiteList = array("print_r");
+	$whiteList = array('print_r', 'preg_match', 'preg_replace', 'preg_match_all');
 
 	$sandbox = new \PHPSandbox\PHPSandbox();
 
