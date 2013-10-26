@@ -1,0 +1,19 @@
+{
+    "name": "jeremeamia/FunctionParser",
+    "type": "library",
+    "description": "Function parser for PHP functions, methods, and closures",
+    "keywords": ["function", "closure", "parser", "tokenizer"],
+    "homepage": "https://github.com/jeremeamia/FunctionParser",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jeremy Lindblom"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2"
+    },
+    "autoload": {
+        "psr-0": { "FunctionParser": "src/" }
+    }
+}
