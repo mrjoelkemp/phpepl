@@ -2,11 +2,11 @@
   'use strict';
 
   // COMMON
-  var devURL  = 'http://localhost/eval/index.php',
-      liveURL = 'http://phpepl.cloudcontrolled.com/eval/index.php',
+  var dev  = 'http://localhost/eval/index.php',
+      live = 'http://phpepl.cloudcontrolled.com/eval/index.php',
 
       // Switch this to devURL if you want to code locally
-      evalURL = liveURL,
+      evalURL = dev,
 
       mixpanel= window.mixpanel || {},
       editor;
@@ -108,7 +108,7 @@
                 error     = res.error,
                 errorMsg  = '';
 
-            if (error && ! result) {
+            if (error) {
               if (error.line && error.message) {
                 // Show the line in red
                 showLineError(error.line);
