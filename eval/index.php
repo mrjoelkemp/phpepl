@@ -8,12 +8,15 @@
 	// CORS support
 	header("Access-Control-Allow-Origin: *");
 	header("Content-type: application/json");
-	
-	$sandbox = new \PHPSandbox\PHPSandbox();
-	
-	// Naively remove some unsafe and error prone snippets
+		
+	// No need for the open and close php tags
 	$toRemove 	= array("<?php", "?>", "<?");
-	$badMethods	= array("phpinfo", "file_get_contents", "exec", "passthru", 
+
+	$code = $_POST['code'];
+	$code = str_replace($toRemove, "", $code);
+
+	// Blacklist
+	$blackList	= array("phpinfo", "file_get_contents", "exec", "passthru", 
 						"system", "shell_exec", "`", "popen", "proc_open", 
 						"pcntl_exec", "eval", "assert", "create_function", 
 						"include", "include_once", "require", "require_once", 
@@ -38,11 +41,12 @@
 						"get_meta_tags"
 				);
 	
-	$code = $_POST['code'];
-	
-	$code = str_replace($toRemove, "", $code);
-	
-	$sandbox->blacklist_func($badMethods);
+	$whiteList = array("print_r");
+
+	$sandbox = new \PHPSandbox\PHPSandbox();
+
+	$sandbox->blacklist_func($blackList);
+	$sandbox->whitelist_func($whiteList);
 	$sandbox->allow_functions = true;
 	$sandbox->allow_closures = true;
 	$sandbox->allow_constants = true;
@@ -50,33 +54,43 @@
 	$sandbox->allow_interfaces = true;
 	$sandbox->allow_casting = true;
 	$sandbox->allow_classes = true;
+	$sandbox->error_level = false;
 	
+	// Brilliant method for even catching fatal_errors
+	register_shutdown_function("on_script_finish");
+	
+	// Output buffering to catch the results and errors
 	ob_start();
 
 	$sandbox->execute($code);
 	
-	// outputResponse($result);
-	// echo getJsonOutput(array('result' => $result));
-
-	// Simple output buffering to capture
-	// error messages and send them to the user
-	
-	$result = ob_get_clean();
-	
-	echo getJsonOutput(array(
-		'result' => $result, 
-	));
-		
 	@ini_set('display_errors', $token);
 	@ini_set('log_errors', $inString);
 	
+	// Helper for constructing a response
 	function getJsonOutput($options) {
-		$result = $options['result'];
+		$result = isset($options['result']) ? $options['result']: '';
 		$error 	= isset($options['error']) ? $options['error'] : '';
 		return json_encode(array("result" => $result, "error" => $error));
 	}
 
-	function outputResponse($result) {
-		echo json_encode(array('result' => $result));
+	// Handler that executes on script completion
+	function on_script_finish() {
+		// http://stackoverflow.com/a/2146171/700897
+		$errfile = "unknown file";
+		$errstr  = "shutdown";
+		$errno   = E_CORE_ERROR;
+		$errline = 0;
+
+		$result = ob_get_clean();
+		$error = error_get_last();
+
+		if ($error !== NULL) {
+			$errno   = $error["type"];
+			$errfile = $error["file"];
+			$errline = $error["line"];
+			$errstr  = $error["message"];
+		}
+
+		echo getJsonOutput(array('result' => $result, 'error' => $error));
 	}
-?>
