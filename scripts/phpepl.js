@@ -92,8 +92,8 @@
         // Send it for eval
         $.ajax({
           type: 'POST',
-          // url: devURL,
-          url: liveURL,
+          url: devURL,
+          // url: liveURL,
           data: {code: code},
           dataType: 'json',
           success: function (res) {
@@ -124,10 +124,10 @@
           error: function (error) {
             if (! error) return;
 
-            var text_line = getPrettyFatalErrorMessage(error.responseText);
+            var textLine = getPrettyFatalErrorMessage(error.responseText);
 
-            setOutput(text_line[0], true);
-            showLineError(text_line[1]);
+            setOutput(textLine[0], true);
+            showLineError(textLine[1]);
             mixpanel.track('Error', {'error' : error.responseText});
           }
         });

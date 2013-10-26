@@ -1,5 +1,6 @@
 <?php
-	// require_once('../vendor/autoload.php');
+	require_once('../vendor/autoload.php');
+
 	// Turn off errors since eval will throw them on invalid syntax
 	$inString = @ini_set('log_errors', false);
 	$token = @ini_set('display_errors', true);
@@ -8,14 +9,14 @@
 	header("Access-Control-Allow-Origin: *");
 	header("Content-type: application/json");
 	
-	$code = $_POST['code'];
+	$sandbox = new \PHPSandbox\PHPSandbox();
 	
 	// Naively remove some unsafe and error prone snippets
 	$toRemove 	= array("<?php", "?>", "<?");
 	$badMethods	= array("phpinfo", "file_get_contents", "exec", "passthru", 
 						"system", "shell_exec", "`", "popen", "proc_open", 
 						"pcntl_exec", "eval", "assert", "create_function", 
-						"include", "include_once", "require", "require_once", "$_GET", 
+						"include", "include_once", "require", "require_once", 
 						"ReflectionFunction", "posix_mkfifo", "posix_getlogin", "posix_ttyname", "getenv", 
 						"get_current_user", "proc_get_status", "get_cfg_var", "disk_free_space", "disk_total_space", 
 						"diskfreespace", "getcwd", "getlastmo", "getmygid", "getmyinode", "getmypid", "getmyuid",
@@ -37,31 +38,27 @@
 						"get_meta_tags"
 				);
 	
-	foreach ($badMethods as $baddie) {
-		// If the code contains a bad word		
-		if (strpos($code, $baddie) !== false) {
-			echo getJsonOutput(array(
-				'error' => array(
-					'message' 	=> "The use of $baddie is not allowed."
-				)
-			));
-			exit;
-		}
-	}
+	$code = $_POST['code'];
 	
 	$code = str_replace($toRemove, "", $code);
 	
+	$sandbox->blacklist_func($badMethods);
+	$sandbox->allow_functions = true;
+	
+	ob_start();
+
+	$sandbox->execute($code);
+	
+	// outputResponse($result);
+	// echo getJsonOutput(array('result' => $result));
+
 	// Simple output buffering to capture
 	// error messages and send them to the user
-	ob_start();
 	
-	eval($code);
 	$result = ob_get_clean();
-	$error = error_get_last();
 	
 	echo getJsonOutput(array(
 		'result' => $result, 
-		'error' => $error
 	));
 		
 	@ini_set('display_errors', $token);
@@ -69,7 +66,11 @@
 	
 	function getJsonOutput($options) {
 		$result = $options['result'];
-		$error 	= $options['error'];
+		$error 	= isset($options['error']) ? $options['error'] : '';
 		return json_encode(array("result" => $result, "error" => $error));
+	}
+
+	function outputResponse($result) {
+		echo json_encode(array('result' => $result));
 	}
 ?>
