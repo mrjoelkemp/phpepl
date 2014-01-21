@@ -8,7 +8,7 @@
     %title PHPepl: The PHP REPL
     %link{:rel => "stylesheet", :href => "lib/codemirror/lib/codemirror.css?ver=3.18"}
     %link{:rel => "stylesheet", :href => "css/styles.css?ver=1.2"}
-    :javascript 
+    :javascript
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-36055599-1']);
       _gaq.push(['_trackPageview']);
@@ -18,13 +18,13 @@
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
-    
+
       (function(e,b){if(!b.__SV){var a,f,i,g;window.mixpanel=b;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src=("https:"===e.location.protocol?"https:":"http:")+'//cdn.mxpnl.com/libs/mixpanel-2.2.min.js';f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f);b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.increment people.append people.track_charge".split(" ");for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2}})(document,window.mixpanel||[]);
       mixpanel.init("89e9d9cd5a49c0529bec222da9b37385");
       mixpanel.track("Landing Page");
   %body
     /Built by Mr. Joel Kemp, @mrjoelkemp, www.mrjoelkemp.com
-    /Yes, there's php -a, but it stinks. I really wanted a repl to play with particular parts of PHP. 
+    /Yes, there's php -a, but it stinks. I really wanted a repl to play with particular parts of PHP.
     .container
       .header
         .title
@@ -53,8 +53,10 @@
           .timestamp
             %span
       .submit
-        %span.code ⌘ + Enter or Ctrl + Enter 
+        %span.code ⌘ + Enter or Ctrl + Enter
         %button RUN
+      .fork-info
+        %span Fork the project and serve locally for an unsandboxed experience
       .credits
         %a{:href=>"https://twitter.com/mrjoelkemp", :class=>"twitter-follow-button" } Follow @mrjoelkemp
         :javascript
@@ -66,7 +68,7 @@
   %script{:src => "lib/jquery-1.8.2.min.js"}
   %script{:src => "lib/codemirror/lib/codemirror.js?ver=3.18"}
   %script{:src => "lib/codemirror/addon/edit/closebrackets.js"}
-  
+
   %script{:src => "lib/codemirror/addon/edit/matchbrackets.js"}
   %script{:src => "lib/codemirror/mode/htmlmixed/htmlmixed.js"}
   %script{:src => "lib/codemirror/mode/xml/xml.js"}
@@ -74,9 +76,8 @@
   %script{:src => "lib/codemirror/mode/css/css.js"}
   %script{:src => "lib/codemirror/mode/clike/clike.js"}
   %script{:src => "lib/codemirror/mode/php/php.js"}
-  
+
   %script{:src => "lib/moment/moment.min.js"}
   / %script{:src => "scripts/phpepl.js"}
   %script{:src => "scripts/phpepl.min.js?ver=1.3"}
 
-  
