@@ -55,7 +55,7 @@ body {
     .codebox-cont {
       width: 80%;
       margin: 0 auto;
-      #editor { 
+      #editor {
         font-size: 17px;
         border: 1px solid black;
         margin-bottom: 10px;
@@ -92,7 +92,7 @@ body {
             -webkit-animation: fade 1s linear infinite;
             -webkit-border-radius: 50px;
             -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.2);
-            &.bar1 {-webkit-transform:rotate(0deg) translate(0, -142%); -webkit-animation-delay: 0s;}    
+            &.bar1 {-webkit-transform:rotate(0deg) translate(0, -142%); -webkit-animation-delay: 0s;}
             &.bar2 {-webkit-transform:rotate(30deg) translate(0, -142%); -webkit-animation-delay: -0.9167s;}
             &.bar3 {-webkit-transform:rotate(60deg) translate(0, -142%); -webkit-animation-delay: -0.833s;}
             &.bar4 {-webkit-transform:rotate(90deg) translate(0, -142%); -webkit-animation-delay: -0.75s;}
@@ -108,7 +108,7 @@ body {
         }
         .output-container{
           margin: 5px 10px;
-          span {       
+          span {
             font-family: "Lucida Console", Monaco, monospace;
             color: black;
             font-size: 16px;
@@ -141,6 +141,7 @@ body {
     position: relative;
     float: left;
     text-align: center;
+    margin-bottom: 3px;
     span {
       display: block;
       font-family: Courier;
@@ -157,7 +158,14 @@ body {
   }
 }
 
-
+.fork-info {
+  width: 100%;
+  text-align: center;
+  span {
+    font-style: italic;
+    font-size: 12px;
+  }
+}
 
 .credits {
   width: 100%;

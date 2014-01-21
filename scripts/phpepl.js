@@ -1,14 +1,22 @@
 (function (window, document, $, moment) {
   'use strict';
 
-  // COMMON
-  var dev  = 'http://localhost/eval/index.php',
-      live = 'http://phpepl.cloudcontrolled.com/eval/index.php',
+  var
+      // Detect the port that localhost is running on
+      port        = window.location.host.split(':')[1] || '80',
+      // No sandbox on your local server
+      devUnsafe   = 'http://localhost:' + port + '/eval/unsafe.php',
+      // Sanboxed on your local server (really only for testing live locally)
+      dev         = 'http://localhost:' + port + '/eval/index.php',
+      // Sandboxed on the remote (online) server
+      live        = 'http://phpepl.cloudcontrolled.com/eval/index.php',
 
-      // Switch this to devURL if you want to code locally
-      evalURL = live,
+      // Safeguard to always use the live eval on the remote server
+      // and the unsafe dev version otherwise.
+      isLiveEnv   = window.location.host === 'phpepl.cloudcontrolled.com',
+      evalURL     = isLiveEnv ? live : devUnsafe,
 
-      mixpanel= window.mixpanel || {},
+      mixpanel    = window.mixpanel || {},
       editor;
 
   // HELPERS
