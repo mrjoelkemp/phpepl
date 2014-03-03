@@ -4,10 +4,13 @@
   var
       // Detect the port that localhost is running on
       port        = window.location.host.split(':')[1] || '80',
+      origin      = (window.location.origin.indexOf(':') !== -1 ?
+                    window.location.origin :
+                    window.location.origin + ':' + port),
       // No sandbox on your local server
-      devUnsafe   =  window.location.origin + ':' + port + '/eval/unsafe.php',
-      // Sanboxed on your local server (really only for testing live locally)
-      dev         = window.location.origin + ':' + port + '/eval/index.php',
+      devUnsafe   = origin + '/eval/unsafe.php',
+      // Sanboxed on your local server (really only for testing live-env locally)
+      dev         = origin + '/eval/index.php',
       // Sandboxed on the remote (online) server
       live        = 'http://phpepl.cloudcontrolled.com/eval/index.php',
 
