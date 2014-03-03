@@ -41,7 +41,7 @@
 						"imagecreatefromwbmp", "imagecreatefromxbm", "imagecreatefromxpm", "ftp_put", "ftp_nb_put", 
 						"exif_read_data", "read_exif_data", "exif_thumbnail", "exif_imagetype", "hash_file", "hash_hmac_file", 
 						"hash_update_file", "md5_file", "sha1_file", "highlight_file", "show_source", "php_strip_whitespace", 
-						"get_meta_tags", "set_time_limit"
+						"get_meta_tags", "set_time_limit", "call_user_func", "call_user_func_array"
 				);
 	
 	$whiteList = array('print_r', 'preg_match', 'preg_replace', 'preg_match_all');
