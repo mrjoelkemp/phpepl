@@ -8,16 +8,14 @@
                     window.location.origin :
                     window.location.origin + ':' + port),
       // No sandbox on your local server
-      devUnsafe   = origin + '/eval/unsafe.php',
+      unsafe   = origin + '/eval/unsafe.php',
       // Sanboxed on your local server (really only for testing live-env locally)
-      dev         = origin + '/eval/index.php',
-      // Sandboxed on the remote (online) server
-      live        = 'http://phpepl.cloudcontrolled.com/eval/index.php',
+      sandboxed = origin + '/eval/index.php',
 
       // Safeguard to always use the live eval on the remote server
       // and the unsafe dev version otherwise.
-      isLiveEnv   = window.location.host === 'phpepl.cloudcontrolled.com',
-      evalURL     = isLiveEnv ? live : devUnsafe,
+      isLiveEnv   = window.location.host.indexOf('cloudcontrolled.com') !== -1,
+      evalURL     = isLiveEnv ? sandboxed : unsafe,
       // evalURL     = dev,
 
       mixpanel    = window.mixpanel || {},
