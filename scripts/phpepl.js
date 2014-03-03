@@ -18,6 +18,7 @@
       // and the unsafe dev version otherwise.
       isLiveEnv   = window.location.host === 'phpepl.cloudcontrolled.com',
       evalURL     = isLiveEnv ? live : devUnsafe,
+      // evalURL     = dev,
 
       mixpanel    = window.mixpanel || {},
       editor;
