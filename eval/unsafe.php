@@ -32,7 +32,7 @@
 
         function getJsonOutput($options) {
                 $result = $options['result'];
-                $error         = $options['error'];
+                $error  = $options['error'];
                 return json_encode(array("result" => $result, "error" => $error));
         }
 ?>
