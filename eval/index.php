@@ -5,6 +5,9 @@
 	$inString = @ini_set('log_errors', false);
 	$token = @ini_set('display_errors', true);
 	
+	//set time limit to avoid long-running scripts killing our server process
+	set_time_limit(1);
+	
 	// CORS support
 	header("Access-Control-Allow-Origin: *");
 	header("Content-type: application/json");
@@ -38,7 +41,7 @@
 						"imagecreatefromwbmp", "imagecreatefromxbm", "imagecreatefromxpm", "ftp_put", "ftp_nb_put", 
 						"exif_read_data", "read_exif_data", "exif_thumbnail", "exif_imagetype", "hash_file", "hash_hmac_file", 
 						"hash_update_file", "md5_file", "sha1_file", "highlight_file", "show_source", "php_strip_whitespace", 
-						"get_meta_tags"
+						"get_meta_tags", "set_time_limit"
 				);
 	
 	$whiteList = array('print_r', 'preg_match', 'preg_replace', 'preg_match_all');
@@ -54,6 +57,14 @@
 	$sandbox->allow_casting = true;
 	$sandbox->allow_classes = true;
 	$sandbox->error_level = false;
+	
+	//rewrite preg_replace function to override attempts to use PREG_REPLACE_EVAL
+	$sandbox->define_func('preg_replace', function($pattern, $replacement, $subject, $limit = -1, &$count){
+	    if(strtolower(substr($pattern, -1)) == 'e'){
+	        throw Exception("Can not use PREG_REPLACE_EVAL!");
+	    }
+	    return preg_replace($pattern, $replacement, $subject, $limit, $count);
+	});
 	
 	// Brilliant method for even catching fatal_errors
 	register_shutdown_function("on_script_finish");
