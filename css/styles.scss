@@ -67,7 +67,7 @@ body {
           position: absolute;
           display: none;
           top: 8%;
-          left: 40%;
+          left: 45%;
           width: 100px;
           height: 100px;
           margin: 0 auto;
@@ -138,7 +138,7 @@ body {
     }
     button {
       width: 150px;
-      height: 40px;
+      height: 30px;
       cursor: pointer;
       border-radius: 7px;
       @include border-radius(10px);
