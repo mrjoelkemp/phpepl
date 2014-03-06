@@ -18,7 +18,6 @@ var
     // and the unsafe dev version otherwise.
     isLiveEnv      = window.location.host.indexOf('cloudcontrolled.com') !== -1,
     evalURL        = isLiveEnv ? sandboxed : unsafe,
-    evalURL = sandboxed,
 
     mixpanel       = window.mixpanel || {},
     editor         = require('./editor'),
