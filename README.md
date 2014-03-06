@@ -7,27 +7,29 @@ Created by: [@mrjoelkemp](http://www.twitter.com/mrjoelkemp)
 
 ### Purpose
 
-I simply wanted an online repl that allowed me to
-play with *multiline* scripts that explored various PHP apis.
+I simply wanted an online repl that allowed me to play with *multiline* php scripts.
 There's already a console-based repl `php -a`, but it and many other
 console-based repls are not great for multiline snippets.
 
 I've used this quick hack a ton since building it. I hope you get some use out of it as well.
 
-### Running it locally
+### Sandboxing
 
 The online version of PHPepl is sandboxed. The exposed `eval` is sandboxed at the server configuration layer
 plus some blacklisting of methods at the application level via [PHP-Sandbox](https://github.com/fieryprophet/php-sandbox).
 
-This has, of course, crippled the tool and makes it not as useful – as whitelisting methods is a pain.
-I recommend serving this app locally.
+This has, of course, crippled the tool a bit – as you can't run code that has blacklisted methods.
+**For an unsandboxed experience, I recommend serving this app locally.**
 
-To serve this application locally, you'll need a web server and PHP:
+### Running it locally
+
+To serve this application locally, you'll need any php-capable web server:
 
 * Mac: [MAMP](http://www.mamp.info/en/index.html)
 * Windows: [WAMP](http://www.wampserver.com/en/)
+* Or your own web server and php installation
 
-You can then point your apache server to serve files from the `/phpepl` root folder
+You can then point your web server to serve files from the `phpepl/` root folder
 
 * Namely, you should be able to visit the app (`/phpepl/index.html`) from `http://localhost` (include a custom port if necessary)
 
