@@ -31,7 +31,8 @@ To serve this application locally, you'll need any php-capable web server:
 
 You can then point your web server to serve files from the `phpepl/` root folder
 
-* Namely, you should be able to visit the app (`/phpepl/index.html`) from `http://localhost` (include a custom port if necessary)
+* Namely, you should be able to visit the index page (`phpepl/index.html`) from `http://localhost` (include a custom port if necessary)
+ * Ex: `http://localhost:8000/index.html` or simply `http://localhost:8000`, assuming your server is configured to listen to port 8000.
 
 The app will automatically disable the sandbox and give you free reign over the REPL to
 execute any commands.
