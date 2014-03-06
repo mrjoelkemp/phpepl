@@ -1,0 +1,28 @@
+{
+  "name": "phpepl",
+  "description": "The PHP repl",
+  "version": "1.1.2",
+  "dependencies": {
+    "jquery": "1.x",
+    "moment": "*"
+  },
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.2.x"
+  },
+  "devDependencies": {
+    "browserify": "~3.31.2",
+    "browserify-shim": "~3.3.0",
+    "watchify": "~0.6.1"
+  },
+  "main": "./src/phpepl.js",
+  "browser": {
+  },
+  "browserify-shim": {
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  }
+}

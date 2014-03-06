@@ -17,7 +17,7 @@ body {
 }
 
 .container {
-  width: 75%;
+  width: 70%;
   height: auto;
   margin: 0 auto;
 
@@ -27,33 +27,23 @@ body {
 
   .header {
     width: 100%;
-    float: left;
     text-align: center;
     margin: 0 0 5px 0;
     .title {
       width: 100%;
-      float: left;
       span {
         color: black;
-        font-size: 46px;
-      }
-    }
-    .description {
-      width: 100%;
-      float: left;
-      span {
-        color: black;
-        font-size: 17px;
-        font-style: italic;
+        font-size: 30px;
       }
     }
   }
 
   .codebox {
-    float: left;
+    // float: left;
     width: 100%;
     .codebox-cont {
-      width: 80%;
+      width: 100%;
+      min-height: 450px;
       margin: 0 auto;
       #editor {
         font-size: 17px;
@@ -65,7 +55,7 @@ body {
       }
 
       .output {
-        float: left;
+        // float: left;
         width: 100%;
         height: 120px;
         position: relative;
@@ -139,7 +129,6 @@ body {
   .submit {
     width: 100%;
     position: relative;
-    float: left;
     text-align: center;
     margin-bottom: 3px;
     span {
