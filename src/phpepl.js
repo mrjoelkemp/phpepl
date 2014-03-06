@@ -8,9 +8,9 @@
                     window.location.origin :
                     window.location.origin + ':' + port),
       // No sandbox on your local server
-      unsafe   = origin + '/eval/unsafe.php',
+      unsafe   = origin + '/src/eval/unsafe.php',
       // Sanboxed on your local server (really only for testing live-env locally)
-      sandboxed = origin + '/eval/index.php',
+      sandboxed = origin + '/src/eval/index.php',
 
       // Safeguard to always use the live eval on the remote server
       // and the unsafe dev version otherwise.
