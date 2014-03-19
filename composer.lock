@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "480760db78b9d6cd9026817825e018c9",
+    "hash": "5b9b5514301f761e1e6445c22a1eb96d",
     "packages": [
         {
             "name": "fieryprophet/php-sandbox",
@@ -11,27 +11,27 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fieryprophet/php-sandbox.git",
-                "reference": "f99b21983de27043690d717a7fa8d4f29f5f3ec3"
+                "reference": "668fb3972ec233e64e31127e34d74f52aafe0c2a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fieryprophet/php-sandbox/zipball/f99b21983de27043690d717a7fa8d4f29f5f3ec3",
-                "reference": "f99b21983de27043690d717a7fa8d4f29f5f3ec3",
+                "url": "https://api.github.com/repos/fieryprophet/php-sandbox/zipball/668fb3972ec233e64e31127e34d74f52aafe0c2a",
+                "reference": "668fb3972ec233e64e31127e34d74f52aafe0c2a",
                 "shasum": ""
             },
             "require": {
                 "jeremeamia/functionparser": "dev-master",
-                "nikic/php-parser": "dev-master",
+                "nikic/php-parser": "0.9.*@dev",
                 "php": ">=5.3.2"
             },
             "require-dev": {
-                "phpdocumentor/phpdocumentor": "dev-master",
+                "phpdocumentor/phpdocumentor": "v2.3.0",
                 "phpunit/phpunit": "3.7.*"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "PHPSandbox": "src/"
+                "psr-4": {
+                    "PHPSandbox\\": "src/"
                 }
             },
             "notification-url": "http://packagist.org/downloads/",
@@ -43,7 +43,7 @@
                     "name": "Elijah Horton"
                 }
             ],
-            "description": "A PHP library that can be used to run PHP code in a sandbox environment",
+            "description": "A PHP library that can be used to run PHP code in a sandboxed environment",
             "homepage": "http://www.fieryprophet.com/phpsandbox",
             "keywords": [
                 "blacklist",
@@ -52,7 +52,7 @@
                 "sandbox",
                 "whitelist"
             ],
-            "time": "2013-10-16 21:14:52"
+            "time": "2014-03-19 17:34:50"
         },
         {
             "name": "jeremeamia/FunctionParser",
@@ -60,12 +60,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jeremeamia/FunctionParser.git",
-                "reference": "1068f0a5e62ca361652d6c9bc8a6d1817efe62bf"
+                "reference": "9e1ea101f2680dcce65c338bba76dac380d921c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jeremeamia/FunctionParser/zipball/1068f0a5e62ca361652d6c9bc8a6d1817efe62bf",
-                "reference": "1068f0a5e62ca361652d6c9bc8a6d1817efe62bf",
+                "url": "https://api.github.com/repos/jeremeamia/FunctionParser/zipball/9e1ea101f2680dcce65c338bba76dac380d921c6",
+                "reference": "9e1ea101f2680dcce65c338bba76dac380d921c6",
                 "shasum": ""
             },
             "require": {
@@ -94,7 +94,7 @@
                 "parser",
                 "tokenizer"
             ],
-            "time": "2012-03-19 17:15:54"
+            "time": "2014-01-14 23:32:26"
         },
         {
             "name": "nikic/php-parser",

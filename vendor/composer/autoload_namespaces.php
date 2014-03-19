@@ -6,7 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'PHPSandbox' => array($vendorDir . '/fieryprophet/php-sandbox/src'),
     'PHPParser' => array($vendorDir . '/nikic/php-parser/lib'),
     'FunctionParser' => array($vendorDir . '/jeremeamia/FunctionParser/src'),
 );

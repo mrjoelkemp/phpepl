@@ -18,24 +18,24 @@ The FunctionParser relies on the Reflection API and also on the PHP tokenizer (`
 compiled with the `--enable-tokenizer` flag in order for the tokenizer to be available.
 
 Here is a small example of how it works:
+```php
+use FunctionParser\FunctionParser;
 
-    use FunctionParser\FunctionParser;
+$foo = 2;
+$closure = function($bar) use($foo) {
+    return $foo + $bar;
+};
 
-    $foo = 2;
-    $closure = function($bar) use($foo) {
-        return $foo + $bar;
-    };
-
-    $parser = new FunctionParser(new \ReflectionFunction($closure));
-    $code   = $parser->getCode();
-
+$parser = new FunctionParser(new \ReflectionFunction($closure));
+$code   = $parser->getCode();
+```
 You can also use the `fromCallable` factory method as a convenient way to generate the reflected function automatically
 from any PHP callable:
-
-    $parser = FunctionParser::fromCallable(function($foo) {echo $foo . 'bar';});
-    $parser = FunctionParser::fromCallable('Foo::bar');
-    $parser = FunctionParser::fromCallable(array('Foo', 'bar'));
-
+```php
+$parser = FunctionParser::fromCallable(function($foo) {echo $foo . 'bar';});
+$parser = FunctionParser::fromCallable('Foo::bar');
+$parser = FunctionParser::fromCallable(array('Foo', 'bar'));
+```
 ## Installation
 
 The FunctionParser relies on the Reflection API and also on the PHP tokenizer (`token_get_all()`), so PHP must be
@@ -49,13 +49,13 @@ Requirements:
 
 To install FunctionParser as a dependency of your project using Composer, please add the following to your
 `composer.json` config file.
-
-    {
-        "require": {
-            "jeremeamia/FunctionParser": "*"
-        }
+```javascript
+{
+    "require": {
+        "jeremeamia/FunctionParser": "*"
     }
-
+}
+```
 Then run `php composer.phar install --install-suggests` from your project's root directory to install the FunctionParser.
 
 ## Building
