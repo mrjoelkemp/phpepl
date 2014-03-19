@@ -8,11 +8,7 @@ It also utilizes [FunctionParser](https://github.com/jeremeamia/FunctionParser) 
 
 **Online API Documentation:** [http://fieryprophet.com/phpsandbox-docs/](http://fieryprophet.com/phpsandbox-docs/)
 
-[![Build Status](https://travis-ci.org/fieryprophet/php-sandbox.png?branch=master)](https://travis-ci.org/fieryprophet/php-sandbox)
-
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/fieryprophet/php-sandbox/badges/quality-score.png?s=4f2d82525b9e2c6bae18e26cf643ca3fd09333fc)](https://scrutinizer-ci.com/g/fieryprophet/php-sandbox/)
-
-[![Code Coverage](https://scrutinizer-ci.com/g/fieryprophet/php-sandbox/badges/coverage.png?s=d6cef7d18a66d2ac39b76410b76c89fa15d84b8c)](https://scrutinizer-ci.com/g/fieryprophet/php-sandbox/)
+[![Build Status](https://travis-ci.org/fieryprophet/php-sandbox.png?branch=master)](https://travis-ci.org/fieryprophet/php-sandbox) [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/fieryprophet/php-sandbox/badges/quality-score.png?s=4f2d82525b9e2c6bae18e26cf643ca3fd09333fc)](https://scrutinizer-ci.com/g/fieryprophet/php-sandbox/) [![Code Coverage](https://scrutinizer-ci.com/g/fieryprophet/php-sandbox/badges/coverage.png?s=d6cef7d18a66d2ac39b76410b76c89fa15d84b8c)](https://scrutinizer-ci.com/g/fieryprophet/php-sandbox/) [![Latest Stable Version](https://poser.pugx.org/fieryprophet/php-sandbox/v/stable.png)](https://packagist.org/packages/fieryprophet/php-sandbox) [![Total Downloads](https://poser.pugx.org/fieryprophet/php-sandbox/downloads.png)](https://packagist.org/packages/fieryprophet/php-sandbox) [![Latest Unstable Version](https://poser.pugx.org/fieryprophet/php-sandbox/v/unstable.png)](https://packagist.org/packages/fieryprophet/php-sandbox) [![License](https://poser.pugx.org/fieryprophet/php-sandbox/license.png)](https://packagist.org/packages/fieryprophet/php-sandbox)
 
 ##Features:
 
@@ -27,7 +23,9 @@ It also utilizes [FunctionParser](https://github.com/jeremeamia/FunctionParser) 
 - Can pass arguments directly to the sandboxed code through the execute method to reveal chosen outside variables to the sandbox.
 - Can access the parsed, prepared and generated code ASTs for further analysis or for serialization.
 - Can define custom validation functions for fine-grained control of every element of the sandbox.
-- Can specify an error handler to intercept all thrown exceptions and handle them with custom logic.
+- Can specify a custom error handler to intercept PHP errors and handle them with custom logic.
+- Can specify a custom exception handler to intercept thrown exceptions and handle them with custom logic.
+- Can specify a validation error handler to intercept thrown validation errors and handle them with custom logic.
 - **Can intercept callbacks and validate them against function whitelists and blacklists, even if they are called as strings**
 
 ##Example usage:
@@ -60,11 +58,11 @@ It also utilizes [FunctionParser](https://github.com/jeremeamia/FunctionParser) 
     });
     //echoes "I am valid!"
 
-##Custom error handler example:
+##Custom validation error handler example:
 
     $sandbox = new PHPSandbox\PHPSandbox;
-    //this will intercept parser errors and quietly exit, otherwise it will throw the error
-    $sandbox->set_error_handler(function(PHPSandbox\Error $error, PHPSandbox\PHPSandbox $sandbox){
+    //this will intercept parser validation errors and quietly exit, otherwise it will throw the validation error
+    $sandbox->set_validation_error_handler(function(PHPSandbox\Error $error, PHPSandbox\PHPSandbox $sandbox){
         if($error->getCode() == PHPSandbox\Error::PARSER_ERROR){ //PARSER_ERROR == 1
             exit;
         }

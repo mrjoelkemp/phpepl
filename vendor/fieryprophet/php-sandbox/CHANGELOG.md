@@ -1,5 +1,24 @@
 #CHANGELOG
 
+##03/19/2014
+- API CHANGE: set_error_handler() and its related methods have been changed to set_validation_error_handler(), etc. because that more closely explains their purpose of handling validation errors in the sandbox
+- set_error_handler() its related methods now represent a new error handling mechanism that replicates PHP's set_error_handler() built-in functionality for the sandbox
+- set_exception_handler() and its related methods represent a new exception handling mechanism that replicates PHP's set_exception_handler() built-in functionality for the sandbox
+- A new convert_errors option flag has been added to the sandbox, which will automatically convert PHP errors in the sandbox to exceptions and send them to the sandbox's exception handler if it is set
+- Revised SandboxedString insertion to more intelligently provide sandboxing of callbacks
+- Changed method visibility to public for error() and exception() to resolve PHP 5.3's failure to use them in the proper context
+- Addressed issue where functions expecting float or int values passed as strings would throw errors
+
+##03/10/2014
+- Addressed potential vulnerabilities related to SandboxedStrings where sandboxed code could manipulate the strings in a way that could defeat their protection
+- Solved errors from casting sandboxed strings to int
+- Overwrote some internal PHP functions to further mask SandboxedStrings from the sandboxed code and prevent type-checking errors
+- Added more tests related to SandboxedStrings
+- Made some minor tweaks to PHPSandbox Toolkit
+
+##03/05/2014
+- Corrected an issue where the sandbox variable could be accessed from within the sandbox in PHP 5.4+
+
 ##03/03/2014
 - Implemented function checking mechanism for callbacks, which should now obey function whitelists and blacklists
 - Replaced passed sandbox instance variable with static method call that allows the sandbox to be accessed for validation within sandboxed functions and closures

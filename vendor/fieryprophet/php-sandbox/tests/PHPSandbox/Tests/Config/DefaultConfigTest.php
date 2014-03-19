@@ -3,6 +3,8 @@
 
     use \PHPSandbox\PHPSandbox;
 
+    error_reporting(E_ALL);
+
     class DefaultConfigTest extends \PHPUnit_Framework_TestCase {
         /**
          * @var PHPSandbox
@@ -293,13 +295,86 @@
         }
 
         /**
-         * Test whether sandbox custom error handler intercepts exceptions
+         * Test whether sandbox custom error handler intercepts errors
          */
         public function testCustomErrorHandler(){
+            $this->setExpectedException('Exception');
+            $this->sandbox->set_error_handler(function($errno, $errstr){
+                throw new \Exception($errstr);
+            });
+            $this->sandbox->execute(function(){ $a[1]; });
+        }
+
+        /**
+         * Test whether sandbox custom exception handler intercepts exceptions
+         */
+        public function testCustomExceptionHandler(){
+            $this->setExpectedException('Exception');
+            $this->sandbox->whitelist_type('Exception');
+            $this->sandbox->set_exception_handler(function($exception, $sandbox){
+                throw $exception;
+            });
+            $this->sandbox->execute(function(){ throw new \Exception; });
+        }
+
+        /**
+         * Test whether sandbox converts errors to exceptions
+         */
+        public function testConvertErrors(){
+            $this->setExpectedException('ErrorException');
+            $this->sandbox->convert_errors = true;
+            $this->sandbox->set_exception_handler(function($error, $sandbox){
+                throw $error;
+            });
+            $this->sandbox->execute(function(){ $a[1]; });
+        }
+
+        /**
+         * Test whether sandbox custom validation error handler intercepts validation Errors
+         */
+        public function testCustomValidationErrorHandler(){
             $this->setExpectedException('PHPSandbox\Error');
-            $this->sandbox->set_error_handler(function($error, $sandbox){
+            $this->sandbox->set_validation_error_handler(function($error, $sandbox){
                 throw $error;
             });
             $this->sandbox->execute(function(){ test2(); });
+        }
+
+        /**
+         * Test whether sandbox disallows violating callbacks
+         */
+        public function testCallbackViolations(){
+            $this->setExpectedException('PHPSandbox\Error');
+            $this->sandbox->execute(function(){ array_filter(array("1"), "var_dump"); });
+        }
+
+        /**
+         * Test whether sandbox disallows violating callbacks even with manipulated sandboxed strings
+         */
+        public function testCallbackViolationsWithStringManipulation(){
+            $this->setExpectedException('PHPSandbox\Error');
+            $this->sandbox->execute(function(){ $x = substr("var_dump2", 0, -1); array_filter(array("1"), $x); });
+        }
+
+        /**
+         * Test whether sandboxed strings do not cause conflicts with intval
+         */
+        public function testSandboxedStringsSatisfyIntval(){
+            $this->sandbox->whitelist_func('intval');
+            $this->assertEquals(1, $this->sandbox->execute(function(){ return intval("1"); }));
+        }
+
+        /**
+         * Test whether sandboxed strings do not cause conflicts with is_string, is_object, or is_scalar
+         */
+        public function testSandboxedStringsMimicStrings(){
+            $this->sandbox->whitelist_func(array(
+                'is_string',
+                'is_object',
+                'is_scalar'
+            ));
+            $this->assertEquals(true, $this->sandbox->execute(function(){ return is_string("a"); }));
+            $this->assertEquals(false, $this->sandbox->execute(function(){ return is_object("a"); }));
+            $this->assertEquals(true, $this->sandbox->execute(function(){ return is_scalar("a"); }));
         }
     }
