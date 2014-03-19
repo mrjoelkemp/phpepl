@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fieryprophet/php-sandbox.git",
-                "reference": "668fb3972ec233e64e31127e34d74f52aafe0c2a"
+                "reference": "43d040b13ccacb334debb73917d53c2d255227ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fieryprophet/php-sandbox/zipball/668fb3972ec233e64e31127e34d74f52aafe0c2a",
-                "reference": "668fb3972ec233e64e31127e34d74f52aafe0c2a",
+                "url": "https://api.github.com/repos/fieryprophet/php-sandbox/zipball/43d040b13ccacb334debb73917d53c2d255227ae",
+                "reference": "43d040b13ccacb334debb73917d53c2d255227ae",
                 "shasum": ""
             },
             "require": {
@@ -52,7 +52,7 @@
                 "sandbox",
                 "whitelist"
             ],
-            "time": "2014-03-19 17:34:50"
+            "time": "2014-03-19 21:20:37"
         },
         {
             "name": "jeremeamia/FunctionParser",
