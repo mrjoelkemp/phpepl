@@ -29,6 +29,8 @@ To serve this application locally, you'll need any php-capable web server:
 * Windows: [WAMP](http://www.wampserver.com/en/)
 * Or your own web server and php installation
 
+Grab the source code for phpepl: fork this repo, download the source as a zip, or install via npm `npm install phpepl`.
+
 You can then point your web server to serve files from the `phpepl/` root folder
 
 * Namely, you should be able to visit the index page (`phpepl/index.html`) from `http://localhost` (include a custom port if necessary)
