@@ -1,7 +1,7 @@
 {
   "name": "phpepl",
   "description": "The PHP repl",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "dependencies": {
     "jquery": "1.x",
     "moment": "*"
