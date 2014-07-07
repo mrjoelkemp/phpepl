@@ -25,6 +25,8 @@ var
 
 storageHelpers.loadSavedCode();
 
+if (! onPHP5Version() && isLiveEnv()) $('.link-to-heroku').fadeIn('fast');
+
 // Bindings
 $('.submit button').click(processCode);
 
@@ -44,11 +46,16 @@ function sendingCode (code) {
   });
 }
 
+function hostHas(part) {
+  return window.location.host.indexOf(part) !== -1;
+}
+
 function isLiveEnv() {
-  function hostHas(part) {
-    return window.location.host.indexOf(part) !== -1;
-  }
-  return hostHas('cloudcontrolled.com') || hostHas('herokuapp.com');
+  return hostHas('cloudcontrolled') || hostHas('herokuapp');
+}
+
+function onPHP5Version() {
+  return hostHas('herokuapp');
 }
 
 // Handles the sending of the code to the eval server
