@@ -12865,8 +12865,7 @@ var
 
     // Safeguard to always use the live eval on the remote server
     // and the unsafe dev version otherwise.
-    isLiveEnv      = window.location.host.indexOf('cloudcontrolled.com') !== -1,
-    evalURL        = isLiveEnv ? sandboxed : unsafe,
+    evalURL        = isLiveEnv() ? sandboxed : unsafe,
 
     mixpanel       = window.mixpanel || {},
     editor         = require('./editor'),
@@ -12892,6 +12891,13 @@ function sendingCode (code) {
     data:     { code: code },
     dataType: 'json'
   });
+}
+
+function isLiveEnv() {
+  function hostHas(part) {
+    return window.location.host.indexOf(part) !== -1;
+  }
+  return hostHas('cloudcontrolled.com') || hostHas('herokuapp.com');
 }
 
 // Handles the sending of the code to the eval server
