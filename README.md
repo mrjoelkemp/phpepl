@@ -1,5 +1,4 @@
-PHPepl
-======
+# PHPepl [![npm](http://img.shields.io/npm/v/phpepl.svg)](https://npmjs.org/package/phpepl) [![npm](http://img.shields.io/npm/dm/phpepl.svg)](https://npmjs.org/package/phpepl)
 
 [The PHP Repl](http://phpepl.cloudcontrolled.com/)
 
