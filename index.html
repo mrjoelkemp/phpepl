@@ -5,9 +5,14 @@
     <meta content='Mr. Joel Kemp' name='author'>
     <meta content='A PHP read evaluate print loop (REPL) for executing PHP code online in the browser.' name='description'>
     <meta content='PHP, repl, programming, read evaluate print loop, phpepl, online repl' name='keywords'>
+
     <title>PHPepl: The PHP REPL</title>
-    <link href='js/vendor/codemirror/lib/codemirror.css?ver=3.18' rel='stylesheet'>
-    <link href='css/styles.css?ver=1.6' rel='stylesheet'>
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <link href='js/vendor/codemirror/lib/codemirror.css?ver=4.5' rel='stylesheet'>
+    <link href='css/styles.css?ver=1.7' rel='stylesheet'>
     <script>
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-36055599-1']);
@@ -25,6 +30,15 @@
     </script>
   </head>
   <body>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=803805852966575&version=v2.0";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
     <!-- Built by Mr. Joel Kemp, @mrjoelkemp, www.mrjoelkemp.com -->
     <!-- Yes, there's php -a, but it stinks. I really wanted a repl to play with particular parts of PHP. -->
     <div class='container'>
@@ -65,18 +79,18 @@
         </div>
       </div>
       <div class='submit'>
-        <span class='code'>⌘ + Enter or Ctrl + Enter</span>
-        <button>RUN</button>
+        <span class='code'>
+          <span class='shortcut'>⌘ + Enter</span> or <span class='shortcut'>Ctrl + Enter</span> to run code</span>
       </div>
       <div class='fork-info'>
-        <span>Fork the project and serve locally for an unsandboxed experience</span>
+        <span><a href="https://github.com/mrjoelkemp/phpepl#running-it-locally" target="_blank" rel="nofollow">Fork the project</a> and serve locally for an unsandboxed experience</span>
       </div>
       <div class='credits'>
-        <a class='twitter-follow-button' href='https://twitter.com/mrjoelkemp'>Follow @mrjoelkemp</a>
-        <script>
-          !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
-        </script>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-text="Try out some PHP in PHPepl: The PHP Repl" data-via="mrjoelkemp" data-hashtags="php">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        <div class="fb-like" data-href="http://phpepl.herokuapp.com/" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
       </div>
+
     </div>
     <div class='mixpanel'>
       <a href='http://mixpanel.com/f/partner' style='display:none'>
@@ -84,15 +98,15 @@
       </a>
     </div>
   </body>
-  <script src='js/vendor/codemirror/lib/codemirror.js?ver=3.18'></script>
-  <script src='js/vendor/codemirror/addon/edit/closebrackets.js'></script>
-  <script src='js/vendor/codemirror/addon/edit/matchbrackets.js'></script>
-  <script src='js/vendor/codemirror/mode/htmlmixed/htmlmixed.js'></script>
-  <script src='js/vendor/codemirror/mode/xml/xml.js'></script>
-  <script src='js/vendor/codemirror/mode/javascript/javascript.js'></script>
-  <script src='js/vendor/codemirror/mode/css/css.js'></script>
-  <script src='js/vendor/codemirror/mode/clike/clike.js'></script>
-  <script src='js/vendor/codemirror/mode/php/php.js'></script>
+  <script src='js/vendor/codemirror/lib/codemirror.js?ver=4.5'></script>
+  <script src='js/vendor/codemirror/addon/edit/closebrackets.js?ver=4.5'></script>
+  <script src='js/vendor/codemirror/addon/edit/matchbrackets.js?ver=4.5'></script>
+  <script src='js/vendor/codemirror/mode/htmlmixed/htmlmixed.js?ver=4.5'></script>
+  <script src='js/vendor/codemirror/mode/xml/xml.js?ver=4.5'></script>
+  <script src='js/vendor/codemirror/mode/javascript/javascript.js?ver=4.5'></script>
+  <script src='js/vendor/codemirror/mode/css/css.js?ver=4.5'></script>
+  <script src='js/vendor/codemirror/mode/clike/clike.js?ver=4.5'></script>
+  <script src='js/vendor/codemirror/mode/php/php.js?ver=4.5'></script>
 
-  <script src='dist/phpepl.js?ver=1.6'></script>
+  <script src='dist/phpepl.js?ver=1.7'></script>
 </html>

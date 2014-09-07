@@ -27,14 +27,10 @@ storageHelpers.loadSavedCode();
 
 if (! onPHP5Version() && isLiveEnv()) $('.link-to-heroku').fadeIn('fast');
 
-// Bindings
-$('.submit button').click(processCode);
-
 $(document).keydown(checkForShortcuts);
 
 // Remember the code in the editor before navigating away
 $(window).unload(storageHelpers.saveCode.bind(storageHelpers));
-
 
 // Helpers
 function sendingCode (code) {
