@@ -1,10 +1,8 @@
 # PHPepl [![npm](http://img.shields.io/npm/v/phpepl.svg)](https://npmjs.org/package/phpepl) [![npm](http://img.shields.io/npm/dm/phpepl.svg)](https://npmjs.org/package/phpepl)
 
-[The PHP Repl](http://phpepl.cloudcontrolled.com/)
+> The PHP Repl
 
-Created by: [@mrjoelkemp](http://www.twitter.com/mrjoelkemp)
-
-### Purpose
+### Motivation
 
 I simply wanted an online repl that allowed me to play with *multiline* php scripts.
 There's already a console-based repl `php -a`, but it and many other
