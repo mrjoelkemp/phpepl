@@ -13,14 +13,13 @@
   "devDependencies": {
     "browserify": "~3.31.2",
     "browserify-shim": "~3.3.0",
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-sass": "^0.8.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-newer": "^0.7.0",
+    "load-grunt-tasks": "^0.6.0",
     "watchify": "~0.6.1"
   },
-  "main": "./src/phpepl.js",
-  "browser": {},
-  "browserify-shim": {},
-  "browserify": {
-    "transform": [
-      "browserify-shim"
-    ]
-  }
+  "main": "./src/phpepl.js"
 }
