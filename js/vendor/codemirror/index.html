@@ -41,7 +41,7 @@
   <p><strong>CodeMirror</strong> is a versatile text editor
   implemented in JavaScript for the browser. It is specialized for
   editing code, and comes with a number of language modes and addons
-  that implement more advanced editing functionaly.</p>
+  that implement more advanced editing functionality.</p>
 
   <p>A rich <a href="doc/manual.html#api">programming API</a> and a
   CSS <a href="doc/manual.html#styling">theming</a> system are
@@ -71,6 +71,7 @@
     <option value="demo/search.html">Search interface</option>
     <option value="demo/vim.html">Vim bindings</option>
     <option value="demo/emacs.html">Emacs bindings</option>
+    <option value="demo/sublime.html">Sublime Text bindings</option>
     <option value="demo/tern.html">Tern integration</option>
     <option value="demo/merge.html">Merge/diff interface</option>
     <option value="demo/fullscreen.html">Full-screen editor</option>
@@ -84,22 +85,27 @@
   </script>
   <div style="position: relative; margin: 1em 0;">
     <a class="bigbutton left" href="http://codemirror.net/codemirror.zip">DOWNLOAD LATEST RELEASE</a>
-    <div><strong>version 3.18</strong> (<a href="doc/releases.html">Release notes</a>)</div>
+    <div><strong>version 4.5</strong> (<a href="doc/releases.html">Release notes</a>)</div>
     <div>or use the <a href="doc/compress.html">minification helper</a></div>
     <div style="position: absolute; top: 0; right: 0; text-align: right">
       <span class="bigbutton right" onclick="document.getElementById('paypal').submit();">DONATE WITH PAYPAL</span>
       <div style="position: relative">
         or <span onclick="document.getElementById('bankinfo').style.display = 'block';" class=quasilink>Bank</span>,
+        <span onclick="document.getElementById('bcinfo').style.display = 'block';" class=quasilink>Bitcoin</span>,
         <a href="https://www.gittip.com/marijnh">Gittip</a>,
         <a href="https://flattr.com/profile/marijnh">Flattr</a><br>
-        <div id=bankinfo>
-          <span id=bankinfo_close onclick="document.getElementById('bankinfo').style.display = '';">×</span>
+        <div id=bankinfo class=bankinfo>
+          <span class=bankinfo_close onclick="document.getElementById('bankinfo').style.display = '';">×</span>
           Bank: <i>Rabobank</i><br/>
           Country: <i>Netherlands</i><br/>
           SWIFT: <i>RABONL2U</i><br/>
           Account: <i>147850770</i><br/>
           Name: <i>Marijn Haverbeke</i><br/>
           IBAN: <i>NL26 RABO 0147 8507 70</i>
+        </div>
+        <div id=bcinfo class=bankinfo>
+          <span class=bankinfo_close onclick="document.getElementById('bcinfo').style.display = '';">×</span>
+          Bitcoin address: 1HVnnU8E9yLPeFyNgNtUPB5deXBvUmZ6Nx
         </div>
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal">
           <input type="hidden" name="cmd" value="_s-xclick"/>
@@ -121,7 +127,7 @@
     <li><a href="doc/manual.html#addon_show-hint">Autocompletion</a> (<a href="demo/xmlcomplete.html">XML</a>)
     <li><a href="doc/manual.html#addon_foldcode">Code folding</a>
     <li><a href="doc/manual.html#option_extraKeys">Configurable</a> keybindings
-    <li><a href="demo/vim.html">Vim</a> and <a href="demo/emacs.html">Emacs</a> bindings
+    <li><a href="demo/vim.html">Vim</a>, <a href="demo/emacs.html">Emacs</a>, and <a href="demo/sublime.html">Sublime Text</a> bindings
     <li><a href="doc/manual.html#addon_search">Search and replace</a> interface
     <li><a href="doc/manual.html#addon_matchbrackets">Bracket</a> and <a href="doc/manual.html#addon_matchtags">tag</a> matching
     <li>Support for <a href="demo/buffers.html">split views</a>
@@ -133,7 +139,7 @@
     <li>Programmable <a href="demo/marker.html">gutters</a>
     <li>Making ranges of text <a href="doc/manual.html#markText">styled, read-only, or atomic</a>
     <li><a href="demo/bidi.html">Bi-directional text</a> support
-    <li>Many other <a href="doc/manual.html#api">methods</a> and <a href="doc/manual.html#addons">addons</a>...</a>
+    <li>Many other <a href="doc/manual.html#api">methods</a> and <a href="doc/manual.html#addons">addons</a>...
   </ul>
 </section>
 
@@ -141,11 +147,12 @@
   <h2>Community</h2>
 
   <p>CodeMirror is an open-source project shared under
-  an <a href="LICENSE">MIT license</a>. It is the editor used in
-  <a href="http://www.chris-granger.com/2012/04/12/light-table---a-new-ide-concept/">Light
+  an <a href="LICENSE">MIT license</a>. It is the editor used in the
+  dev tools for
+  both <a href="https://hacks.mozilla.org/2013/11/firefox-developer-tools-episode-27-edit-as-html-codemirror-more/">Firefox</a>
+  and <a href="https://developers.google.com/chrome-developer-tools/">Chrome</a>, <a href="http://www.lighttable.com/">Light
   Table</a>, <a href="http://brackets.io/">Adobe
-  Brackets</a>, <a href="https://script.google.com/">Google Apps
-  Script</a>, <a href="http://blog.bitbucket.org/2013/05/14/edit-your-code-in-the-cloud-with-bitbucket/">Bitbucket</a>,
+  Brackets</a>, <a href="http://blog.bitbucket.org/2013/05/14/edit-your-code-in-the-cloud-with-bitbucket/">Bitbucket</a>,
   and <a href="doc/realworld.html">many other projects</a>.</p>
 
   <p>Development and bug tracking happens
@@ -178,7 +185,7 @@
   in <em>standards mode</em> (HTML5 <code>&lt;!doctype html></code>
   recommended) are supported:</p>
   <table style="margin-bottom: 1em">
-    <tr><th>Firefox</th><td>version 3 and up</td></tr>
+    <tr><th>Firefox</th><td>version 4 and up</td></tr>
     <tr><th>Chrome</th><td>any version</td></tr>
     <tr><th>Safari</th><td>version 5.2 and up</td></tr>
     <tr><th style="padding-right: 1em;">Internet Explorer</th><td>version 8 and up</td></tr>
@@ -190,308 +197,3 @@
 </section>
 
 </article>
-ull requests.</p>
-
-  <h2 id="documention">Documentation</h2>
-
-  <p>The <a href="doc/manual.html">manual</a> is your first stop for
-  learning how to use this library. It starts with a quick explanation
-  of how to use the editor, and then describes the API in detail.</p>
-
-  <p>For those who want to learn more about the code, there is
-  a <a href="http://marijnhaverbeke.nl/blog/#cm-internals">series of
-  posts</a> on CodeMirror on my blog, and the
-  old <a href="doc/internals.html">overview of the editor
-  internals</a>.
-  The <a href="http://github.com/marijnh/CodeMirror">source code</a>
-  itself is, for the most part, also very readable.</p>
-
-  <h2 id="support">Support and bug reports</h2>
-
-  <p>Community discussion, questions, and informal bug reporting is
-  done on
-  the <a href="http://groups.google.com/group/codemirror">CodeMirror
-  Google group</a>. There is a separate
-  group, <a href="http://groups.google.com/group/codemirror-announce">CodeMirror-announce</a>,
-  which is lower-volume, and is only used for major announcements—new
-  versions and such. These will be cross-posted to both groups, so you
-  don't need to subscribe to both.</p>
-
-  <p>Though bug reports through e-mail are responded to, the preferred
-  way to report bugs is to use
-  the <a href="http://github.com/marijnh/CodeMirror/issues">GitHub
-  issue tracker</a>. Before reporting a
-  bug, <a href="doc/reporting.html">read these pointers</a>. Also,
-  the issue tracker is for <em>bugs</em>, not requests for help.</p>
-
-  <p>When none of these seem fitting, you can
-  simply <a href="mailto:marijnh@gmail.com">e-mail the maintainer</a>
-  directly.</p>
-
-  <h2 id="supported">Supported browsers</h2>
-
-  <p>The following <em>desktop</em> browsers are able to run CodeMirror:</p>
-
-  <ul>
-    <li>Firefox 3 or higher</li>
-    <li>Chrome, any version</li>
-    <li>Safari 5.2 or higher</li>
-    <li>Opera 9 or higher (with some key-handling problems on OS X)</li>
-    <li>Internet Explorer 8 or higher in standards mode<br>
-      <em>(<strong>Not</strong> quirks mode. But quasi-standards mode with a
-      transitional doctype is also flaky. <code>&lt;!doctype
-      html></code> is recommended.)</em></li>
-    <li>Internet Explorer 7 (standards mode) is usable, but buggy. It
-    has a <a href="http://therealcrisp.xs4all.nl/meuk/IE-zindexbug.html">z-index
-    bug</a> that prevents CodeMirror from working properly.</li>
-  </ul>
-
-  <p>I am not actively testing against every new browser release, and
-  vendors have a habit of introducing bugs all the time, so I am
-  relying on the community to tell me when something breaks.
-  See <a href="#support">here</a> for information on how to contact
-  me.</p>
-
-  <p>Mobile browsers mostly kind of work, but, because of limitations
-  and their fundamentally different UI assumptions, show a lot of
-  quirks that are hard to work around.</p>
-
-  <h2 id="commercial">Commercial support</h2>
-
-  <p>CodeMirror is developed and maintained by me, Marijn Haverbeke,
-  in my own time. If your company is getting value out of CodeMirror,
-  please consider purchasing a support contract.</p>
-
-  <ul>
-    <li>You'll be funding further work on CodeMirror.</li>
-    <li>You ensure that you get a quick response when you have a
-    problem, even when I am otherwise busy.</li>
-  </ul>
-
-  <p>CodeMirror support contracts exist in two
-  forms—<strong>basic</strong> at €100 per month,
-  and <strong>premium</strong> at €500 per
-  month. <a href="mailto:marijnh@gmail.com">Contact me</a> for further
-  information.</p>
-
-</div>
-
-<div class="right blk">
-
-  <a href="http://codemirror.net/codemirror.zip" class="download">Download the latest release</a>
-
-  <h2>Support CodeMirror</h2>
-
-  <ul>
-    <li>Donate
-    (<span onclick="document.getElementById('paypal').submit();"
-    class="quasilink">Paypal</span>,
-    <span onclick="document.getElementById('bankinfo').style.display = 'block';"
-           class="quasilink">bank</span>, or
-    <a href="https://www.gittip.com/marijnh">Gittip</a>)</li>
-    <li>Purchase <a href="#commercial">commercial support</a></li>
-  </ul>
-
-  <p id="bankinfo" style="display: none;">
-    Bank: <i>Rabobank</i><br/>
-    Country: <i>Netherlands</i><br/>
-    SWIFT: <i>RABONL2U</i><br/>
-    Account: <i>147850770</i><br/>
-    Name: <i>Marijn Haverbeke</i><br/>
-    IBAN: <i>NL26 RABO 0147 8507 70</i>
-  </p>
-
-  <h2>Reading material</h2>
-
-  <ul>
-    <li><a href="doc/manual.html">User manual</a></li>
-    <li><a href="http://github.com/marijnh/CodeMirror">Browse the code</a></li>
-  </ul>
-
-  <h2 id=releases>Releases</h2>
-
-  <p class="rel">20-03-2013: <a href="http://codemirror.net/codemirror-3.11.zip">Version 3.11</a>:</p>
-
-  <ul class="rel-note">
-    <li><strong>Removed code:</strong> <code>collapserange</code>,
-    <code>formatting</code>, and <code>simple-hint</code>
-    addons. <code>plsql</code> and <code>mysql</code> modes
-    (use <a href="mode/sql/index.html"><code>sql</code></a> mode).</li>
-    <li><strong>Moved code:</strong> the range-finding functions for folding now have <a href="addon/fold/">their own files</a>.</li>
-    <li><strong>Changed interface:</strong>
-    the <a href="doc/manual.html#addon_continuecomment"><code>continuecomment</code></a>
-    addon now exposes an option, rather than a command.</li>
-    <li>New
-    modes: <a href="mode/css/scss.html">SCSS</a>, <a href="mode/tcl/index.html">Tcl</a>, <a href="mode/livescript/index.html">LiveScript</a>,
-    and <a href="mode/mirc/index.html">mIRC</a>.</li>
-    <li>New addons: <a href="demo/placeholder.html"><code>placeholder</code></a>, <a href="demo/html5complete.html">HTML completion</a>.</li>
-    <li>New
-    methods: <a href="doc/manual.html#hasFocus"><code>hasFocus</code></a>, <a href="doc/manual.html#defaultCharWidth"><code>defaultCharWidth</code></a>.</li>
-    <li>New events: <a href="doc/manual.html#event_beforeCursorEnter"><code>beforeCursorEnter</code></a>, <a href="doc/manual.html#event_renderLine"><code>renderLine</code></a>.</li>
-    <li>Many improvements to the <a href="doc/manual.html#addon_show-hint"><code>show-hint</code></a> completion
-    dialog addon.</li>
-    <li>Tweak behavior of by-word cursor motion.</li>
-    <li>Further improvements to the <a href="demo/vim.html">vim mode</a>.</li>
-    <li>Full <a href="https://github.com/marijnh/CodeMirror/compare/v3.1...v3.11">list of patches</a>.</li>
-  </ul>
-
-  <p class="rel">21-02-2013: <a href="http://codemirror.net/codemirror-3.1.zip">Version 3.1</a>:</p>
-
-  <ul class="rel-note">
-    <li><strong>Incompatible:</strong> key handlers may
-    now <em>return</em>, rather
-    than <em>throw</em> <code>CodeMirror.Pass</code> to signal they
-    didn't handle the key.</li>
-    <li>Make documents a <a href="doc/manual.html#api_doc">first-class
-    construct</a>, support split views and subviews.</li>
-    <li>Add a <a href="doc/manual.html#addon_show-hint">new module</a>
-    for showing completion hints.
-    Deprecate <code>simple-hint.js</code>.</li>
-    <li>Extend <a href="mode/htmlmixed/index.html">htmlmixed mode</a>
-    to allow custom handling of script types.</li>
-    <li>Support an <code>insertLeft</code> option
-    to <a href="doc/manual.html#setBookmark"><code>setBookmark</code></a>.</li>
-    <li>Add an <a href="doc/manual.html#eachLine"><code>eachLine</code></a>
-    method to iterate over a document.</li>
-    <li>New addon modules: <a href="demo/markselection.html">selection
-    marking</a>, <a href="demo/lint.html">linting</a>,
-    and <a href="demo/closebrackets.html">automatic bracket
-    closing</a>.</li>
-    <li>Add <a href="doc/manual.html#event_beforeChange"><code>"beforeChange"</code></a>
-    and <a href="doc/manual.html#event_beforeSelectionChange"><code>"beforeSelectionChange"</code></a>
-    events.</li>
-    <li>Add <a href="doc/manual.html#event_hide"><code>"hide"</code></a>
-    and <a href="doc/manual.html#event_unhide"><code>"unhide"</code></a>
-    events to marked ranges.</li>
-    <li>Fix <a href="doc/manual.html#coordsChar"><code>coordsChar</code></a>'s
-    interpretation of its argument to match the documentation.</li>
-    <li>New modes: <a href="mode/turtle/index.html">Turtle</a>
-    and <a href="mode/q/index.html">Q</a>.</li>
-    <li>Further improvements to the <a href="demo/vim.html">vim mode</a>.</li>
-    <li>Full <a href="https://github.com/marijnh/CodeMirror/compare/v3.01...v3.1">list of patches</a>.</li>
-  </ul>
-  
-
-  <p class="rel">25-01-2013: <a href="http://codemirror.net/codemirror-3.02.zip">Version 3.02</a>:</p>
-
-  <p class="rel-note">Single-bugfix release. Fixes a problem that
-  prevents CodeMirror instances from being garbage-collected after
-  they become unused.</p>
-
-  <p class="rel">21-01-2013: <a href="http://codemirror.net/codemirror-3.01.zip">Version 3.01</a>:</p>
-
-  <ul class="rel-note">
-    <li>Move all add-ons into an organized directory structure
-    under <a href="addon/"><code>/addon</code></a>. <strong>You might have to adjust your
-    paths.</strong></li>
-    <li>New
-    modes: <a href="mode/d/index.html">D</a>, <a href="mode/sass/index.html">Sass</a>, <a href="mode/apl/index.html">APL</a>, <a href="mode/sql/index.html">SQL</a>
-    (configurable), and <a href="mode/asterisk/index.html">Asterisk</a>.</li>
-    <li>Several bugfixes in right-to-left text support.</li>
-    <li>Add <a href="doc/manual.html#option_rtlMoveVisually"><code>rtlMoveVisually</code></a> option.</li>
-    <li>Improvements to vim keymap.</li>
-    <li>Add built-in (lightweight) <a href="doc/manual.html#addOverlay">overlay mode</a> support.</li>
-    <li>Support <code>showIfHidden</code> option for <a href="doc/manual.html#addLineWidget">line widgets</a>.</li>
-    <li>Add simple <a href="doc/manual.html#addon_python-hint">Python hinter</a>.</li>
-    <li>Bring back the <a href="doc/manual.html#option_fixedGutter"><code>fixedGutter</code></a> option.</li>
-    <li>Full <a href="https://github.com/marijnh/CodeMirror/compare/v3.0...v3.01">list of patches</a>.</li>
-  </ul>
-
-  <p class="rel">21-01-2013: <a href="http://codemirror.net/codemirror-2.38.zip">Version 2.38</a>:</p>
-
-  <p class="rel-note">Integrate some bugfixes, enhancements to the vim keymap, and new
-  modes
-  (<a href="mode/d/index.html">D</a>, <a href="mode/sass/index.html">Sass</a>, <a href="mode/apl/index.html">APL</a>)
-  from the v3 branch.</p>
-
-  <p class="rel">20-12-2012: <a href="http://codemirror.net/codemirror-2.37.zip">Version 2.37</a>:</p>
-
-  <ul class="rel-note">
-    <li>New mode: <a href="mode/sql/index.html">SQL</a> (will replace <a href="mode/plsql/index.html">plsql</a> and <a href="mode/mysql/index.html">mysql</a> modes).</li>
-    <li>Further work on the new VIM mode.</li>
-    <li>Fix Cmd/Ctrl keys on recent Operas on OS X.</li>
-    <li>Full <a href="https://github.com/marijnh/CodeMirror/compare/v2.36...v2.37">list of patches</a>.</li>
-  </ul>
-
-  <p class="rel">10-12-2012: <a href="http://codemirror.net/codemirror-3.0.zip">Version 3.0</a>:</p>
-
-  <p class="rel-note"><strong>New major version</strong>. Only
-  partially backwards-compatible. See
-  the <a href="doc/upgrade_v3.html">upgrading guide</a> for more
-  information. Changes since release candidate 2:</p>
-
-  <ul class="rel-note">
-    <li>Rewritten VIM mode.</li>
-    <li>Fix a few minor scrolling and sizing issues.</li>
-    <li>Work around Safari segfault when dragging.</li>
-    <li>Full <a href="https://github.com/marijnh/CodeMirror/compare/v3.0rc2...v3.0">list of patches</a>.</li>
-  </ul>
-  
-
-  <p class="rel">20-11-2012: <a href="http://codemirror.net/codemirror-3.0rc2.zip">Version 3.0, release candidate 2</a>:</p>
-
-  <ul class="rel-note">
-    <li>New mode: <a href="mode/http/index.html">HTTP</a>.</li>
-    <li>Improved handling of selection anchor position.</li>
-    <li>Improve IE performance on longer lines.</li>
-    <li>Reduce gutter glitches during horiz. scrolling.</li>
-    <li>Add <a href="doc/manual.html#addKeyMap"><code>addKeyMap</code></a> and <a href="doc/manual.html#removeKeyMap"><code>removeKeyMap</code></a> methods.</li>
-    <li>Rewrite <code>formatting</code> and <code>closetag</code> add-ons.</li>
-    <li>Full <a href="https://github.com/marijnh/CodeMirror/compare/v3.0rc1...v3.0rc2">list of patches</a>.</li>
-  </ul>
-
-  <p class="rel">20-11-2012: <a href="http://codemirror.net/codemirror-2.36.zip">Version 2.36</a>:</p>
-
-  <ul class="rel-note">
-    <li>New mode: <a href="mode/z80/index.html">Z80 assembly</a>.</li>
-    <li>New theme: <a href="demo/theme.html?twilight">Twilight</a>.</li>
-    <li>Add command-line compression helper.</li>
-    <li>Make <a href="doc/manual.html#scrollIntoView"><code>scrollIntoView</code></a> public.</li>
-    <li>Add <a href="doc/manual.html#defaultTextHeight"><code>defaultTextHeight</code></a> method.</li>
-    <li>Various extensions to the vim keymap.</li>
-    <li>Make <a href="mode/php/index.html">PHP mode</a> build on <a href="mode/htmlmixed/index.html">mixed HTML mode</a>.</li>
-    <li>Add <a href="doc/manual.html#addon_continuecomment">comment-continuing</a> add-on.</li>
-    <li>Full <a href="https://github.com/marijnh/CodeMirror/compare/v2.35...v2.36">list of patches</a>.</li>
-  </ul>
-
-  <p class="rel">20-11-2012: <a href="http://codemirror.net/codemirror-3.0rc1.zip">Version 3.0, release candidate 1</a>:</p>
-
-  <ul class="rel-note">
-    <li>New theme: <a href="demo/theme.html?solarized%20light">Solarized</a>.</li>
-    <li>Introduce <a href="doc/manual.html#addLineClass"><code>addLineClass</code></a>
-    and <a href="doc/manual.html#removeLineClass"><code>removeLineClass</code></a>,
-    drop <code>setLineClass</code>.</li>
-    <li>Add a <em>lot</em> of
-    new <a href="doc/manual.html#markText">options for marked text</a>
-    (read-only, atomic, collapsed, widget replacement).</li>
-    <li>Remove the old code folding interface in favour of these new ranges.</li>
-    <li>Add <a href="doc/manual.html#isClean"><code>isClean</code></a>/<a href="doc/manual.html#markClean"><code>markClean</code></a> methods.</li>
-    <li>Remove <code>compoundChange</code> method, use better undo-event-combining heuristic.</li>
-    <li>Improve scrolling performance smoothness.</li>
-    <li>Full <a href="https://github.com/marijnh/CodeMirror/compare/v3.0beta2...v3.0rc1">list of patches</a>.</li>
-  </ul>
-
-  <p class="rel">22-10-2012: <a href="http://codemirror.net/codemirror-2.35.zip">Version 2.35</a>:</p>
-
-  <ul class="rel-note">
-    <li>New (sub) mode: <a href="mode/javascript/typescript.html">TypeScript</a>.</li>
-    <li>Don't overwrite (insert key) when pasting.</li>
-    <li>Fix several bugs in <a href="doc/manual.html#markText"><code>markText</code></a>/undo interaction.</li>
-    <li>Better indentation of JavaScript code without semicolons.</li>
-    <li>Add <a href="doc/manual.html#defineInitHook"><code>defineInitHook</code></a> function.</li>
-    <li>Full <a href="https://github.com/marijnh/CodeMirror/compare/v2.34...v2.35">list of patches</a>.</li>
-  </ul>
-
-  <p><a href="doc/oldrelease.html">Older releases...</a></p>
-
-</div></div>
-
-<div style="height: 2em">&nbsp;</div>
-
-  <form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal">
-    <input type="hidden" name="cmd" value="_s-xclick"/>
-    <input type="hidden" name="hosted_button_id" value="3FVHS5FGUY7CC"/>
-  </form>
-
-  </body>
-</html>
