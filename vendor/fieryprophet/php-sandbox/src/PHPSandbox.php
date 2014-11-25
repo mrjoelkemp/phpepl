@@ -14,42 +14,43 @@
      * @namespace PHPSandbox
      *
      * @author  Elijah Horton <fieryprophet@yahoo.com>
-     * @version 1.3.4
+     * @version 1.3.9
      */
-    class PHPSandbox {
+    class PHPSandbox implements \IteratorAggregate {
         /**
          * @const    string      The prefix given to the obfuscated sandbox key passed to the generated code
          */
         const SANDBOX_PREFIX = '__PHPSandbox_';
         /**
-         * @var    int           A bit flag for the import() method, signifies to import all data from a template
+         * @const    int           A bit flag for the import() method, signifies to import all data from a template
          */
         const IMPORT_ALL = 0;
         /**
-         * @var    int           A bit flag for the import() method, signifies to import only options from a template
+         * @const    int           A bit flag for the import() method, signifies to import only options from a template
          */
         const IMPORT_OPTIONS = 1;
         /**
-         * @var    int           A bit flag for the import() method, signifies to import only definitions from a template
+         * @const    int           A bit flag for the import() method, signifies to import only definitions from a template
          */
         const IMPORT_DEFINITIONS = 2;
         /**
-         * @var    int           A bit flag for the import() method, signifies to import only whitelists from a template
+         * @const    int           A bit flag for the import() method, signifies to import only whitelists from a template
          */
         const IMPORT_WHITELIST = 4;
         /**
-         * @var    int           A bit flag for the import() method, signifies to import only blacklists from a template
+         * @const    int           A bit flag for the import() method, signifies to import only blacklists from a template
          */
         const IMPORT_BLACKLIST = 8;
         /**
-         * @var    int           A bit flag for the import() method, signifies to import only trusted code from a template
+         * @const    int           A bit flag for the import() method, signifies to import only trusted code from a template
          */
         const IMPORT_TRUSTED_CODE = 16;
         /**
-         * @var    int           A bit flag for the import() method, signifies to import only sandboxed code from a template
+         * @const    int           A bit flag for the import() method, signifies to import only sandboxed code from a template
          */
         const IMPORT_CODE = 32;
         /**
+         * @static
          * @var    array         A static array of superglobal names used for redefining superglobal values
          */
         public static $superglobals = array(
@@ -64,6 +65,7 @@
             'GLOBALS'
         );
         /**
+         * @static
          * @var    array        A static array of magic constant names used for redefining magic constant values
          */
         public static $magic_constants = array(
@@ -77,6 +79,7 @@
             '__NAMESPACE__'
         );
         /**
+         * @static
          * @var    array          A static array of defined_* and declared_* functions names used for redefining defined_* and declared_* values
          */
         public static $defined_funcs = array(
@@ -88,6 +91,7 @@
             'get_declared_traits'
         );
         /**
+         * @static
          * @var    array          A static array of func_get_args, func_get_arg, and func_num_args used for redefining those functions
          */
         public static $arg_funcs = array(
@@ -96,6 +100,7 @@
             'func_num_args'
         );
         /**
+         * @static
          * @var    array          A static array of var_dump, print_r and var_export, intval, floatval, is_string, is_object,
          *                          is_scalar and is_callable for redefining those functions
          */
@@ -202,8 +207,83 @@
         protected static $sandboxes = array();
         /* CONFIGURATION OPTION FLAGS */
         /**
-         * @var    bool       The error_reporting level to set the PHPSandbox scope to when executing the generated closure, if set to null it will use parent scope error level.
-         * @default null
+         * @var    bool       Flag to indicate whether the sandbox should validate functions
+         * @default true
+         */
+        public $validate_functions          = true;
+        /**
+         * @var    bool       Flag to indicate whether the sandbox should validate variables
+         * @default true
+         */
+        public $validate_variables          = true;
+        /**
+         * @var    bool       Flag to indicate whether the sandbox should validate globals
+         * @default true
+         */
+        public $validate_globals            = true;
+        /**
+         * @var    bool       Flag to indicate whether the sandbox should validate superglobals
+         * @default true
+         */
+        public $validate_superglobals       = true;
+        /**
+         * @var    bool       Flag to indicate whether the sandbox should validate constants
+         * @default true
+         */
+        public $validate_constants          = true;
+        /**
+         * @var    bool       Flag to indicate whether the sandbox should validate magic constants
+         * @default true
+         */
+        public $validate_magic_constants    = true;
+        /**
+         * @var    bool       Flag to indicate whether the sandbox should validate namespaces
+         * @default true
+         */
+        public $validate_namespaces         = true;
+        /**
+         * @var    bool       Flag to indicate whether the sandbox should validate aliases (aka use)
+         * @default true
+         */
+        public $validate_aliases            = true;
+        /**
+         * @var    bool       Flag to indicate whether the sandbox should validate classes
+         * @default true
+         */
+        public $validate_classes            = true;
+        /**
+         * @var    bool       Flag to indicate whether the sandbox should validate interfaces
+         * @default true
+         */
+        public $validate_interfaces         = true;
+        /**
+         * @var    bool       Flag to indicate whether the sandbox should validate traits
+         * @default true
+         */
+        public $validate_traits             = true;
+        /**
+         * @var    bool       Flag to indicate whether the sandbox should validate keywords
+         * @default true
+         */
+        public $validate_keywords           = true;
+        /**
+         * @var    bool       Flag to indicate whether the sandbox should validate operators
+         * @default true
+         */
+        public $validate_operators          = true;
+        /**
+         * @var    bool       Flag to indicate whether the sandbox should validate primitives
+         * @default true
+         */
+        public $validate_primitives         = true;
+        /**
+         * @var    bool       Flag to indicate whether the sandbox should validate types
+         * @default true
+         */
+        public $validate_types              = true;
+        /**
+         * @var    int        The error_reporting level to set the PHPSandbox scope to when executing the generated closure, if set to null it will use parent scope error level.
+         * @default true
          */
         public $error_level                 = null;
         /**
@@ -272,12 +352,12 @@
          */
         public $overwrite_func_get_args     = true;
         /**
-         * @var    bool       Should PHPSandbox overwrite $_GET, $_POST, $_COOKIE, $_FILES, $_ENV, $_REQUEST, $_SERVER, $_SESSION and $GLOBALS superglobals? If so, unless alternate superglobal values have been defined they will return as empty arrays.
+         * @var    bool       Should PHPSandbox overwrite functions to help hide SandboxedStrings?
          * @default true
          */
         public $overwrite_sandboxed_string_funcs         = true;
         /**
-         * @var    bool       Should PHPSandbox overwrite functions to help hide SandboxedStrings?
+         * @var    bool       Should PHPSandbox overwrite $_GET, $_POST, $_COOKIE, $_FILES, $_ENV, $_REQUEST, $_SERVER, $_SESSION and $GLOBALS superglobals? If so, unless alternate superglobal values have been defined they will return as empty arrays.
          * @default true
          */
         public $overwrite_superglobals      = true;
@@ -530,7 +610,7 @@
          * @return  mixed                      The output of the executed sandboxed code
          */
         public function __invoke($code){
-            return call_user_func_array(array($this, 'execute'), func_get_args());
+            return call_user_func(array($this, 'execute'), $code);
         }
         /** PHPSandbox __sleep magic method
          *
@@ -574,7 +654,7 @@
                         switch($type){
                             case 'func':
                                 foreach($data as $key => $value){
-                                    $function = null;
+                                    $function = function(){};
                                     @eval('$function = ' . $value["fullcode"] .';');
                                     if(!is_callable($function)){
                                         $this->validation_error("Could not import function $key! Please check your code for errors!", Error::IMPORT_ERROR, null, $function);
@@ -700,107 +780,56 @@
                 case 'error_level':
                     $this->error_level = is_numeric($value) ? intval($value) : null;
                     break;
+                case 'validate_functions':
+                case 'validate_variables':
+                case 'validate_globals':
+                case 'validate_superglobals':
+                case 'validate_constants':
+                case 'validate_magic_constants':
+                case 'validate_namespaces':
+                case 'validate_aliases':
+                case 'validate_classes':
+                case 'validate_interfaces':
+                case 'validate_traits':
+                case 'validate_keywords':
+                case 'validate_operators':
+                case 'validate_primitives':
+                case 'validate_types':
                 case 'restore_error_level':
-                    $this->restore_error_level = $value ? true : false;
-                    break;
                 case 'convert_errors':
-                    $this->convert_errors = $value ? true : false;
-                    break;
                 case 'capture_output':
-                    $this->capture_output = $value ? true : false;
-                    break;
                 case 'auto_whitelist_trusted_code':
-                    $this->auto_whitelist_trusted_code = $value ? true : false;
-                    break;
                 case 'auto_whitelist_functions':
-                    $this->auto_whitelist_functions = $value ? true : false;
-                    break;
                 case 'auto_whitelist_constants':
-                    $this->auto_whitelist_constants = $value ? true : false;
-                    break;
                 case 'auto_whitelist_globals':
-                    $this->auto_whitelist_globals = $value ? true : false;
-                    break;
                 case 'auto_whitelist_classes':
-                    $this->auto_whitelist_classes = $value ? true : false;
-                    break;
                 case 'auto_whitelist_interfaces':
-                    $this->auto_whitelist_interfaces = $value ? true : false;
-                    break;
                 case 'auto_whitelist_traits':
-                    $this->auto_whitelist_traits = $value ? true : false;
-                    break;
                 case 'auto_define_vars':
-                    $this->auto_define_vars = $value ? true : false;
-                    break;
                 case 'overwrite_defined_funcs':
-                    $this->overwrite_defined_funcs = $value ? true : false;
-                    break;
                 case 'overwrite_sandboxed_string_funcs':
-                    $this->overwrite_sandboxed_string_funcs = $value ? true : false;
-                    break;
                 case 'overwrite_func_get_args':
-                    $this->overwrite_func_get_args = $value ? true : false;
-                    break;
                 case 'overwrite_superglobals':
-                    $this->overwrite_superglobals = $value ? true : false;
-                    break;
                 case 'allow_functions':
-                    $this->allow_functions = $value ? true : false;
-                    break;
                 case 'allow_closures':
-                    $this->allow_closures = $value ? true : false;
-                    break;
                 case 'allow_variables':
-                    $this->allow_variables = $value ? true : false;
-                    break;
                 case 'allow_static_variables':
-                    $this->allow_static_variables = $value ? true : false;
-                    break;
                 case 'allow_objects':
-                    $this->allow_objects = $value ? true : false;
-                    break;
                 case 'allow_constants':
-                    $this->allow_constants = $value ? true : false;
-                    break;
                 case 'allow_globals':
-                    $this->allow_globals = $value ? true : false;
-                    break;
                 case 'allow_namespaces':
-                    $this->allow_namespaces = $value ? true : false;
-                    break;
                 case 'allow_aliases':
-                    $this->allow_aliases = $value ? true : false;
-                    break;
                 case 'allow_classes':
-                    $this->allow_classes = $value ? true : false;
-                    break;
                 case 'allow_interfaces':
-                    $this->allow_interfaces = $value ? true : false;
-                    break;
                 case 'allow_traits':
-                    $this->allow_traits = $value ? true : false;
-                    break;
                 case 'allow_generators':
-                    $this->allow_generators = $value ? true : false;
-                    break;
                 case 'allow_escaping':
-                    $this->allow_escaping = $value ? true : false;
-                    break;
                 case 'allow_casting':
-                    $this->allow_casting = $value ? true : false;
-                    break;
                 case 'allow_error_suppressing':
-                    $this->allow_error_suppressing = $value ? true : false;
-                    break;
                 case 'allow_references':
-                    $this->allow_references = $value ? true : false;
-                    break;
                 case 'allow_backticks':
-                    $this->allow_backticks = $value ? true : false;
-                    break;
                 case 'allow_halting':
-                    $this->allow_halting = $value ? true : false;
+                    $this->{$option} = !!$value;
                     break;
             }
             return $this;
@@ -854,111 +883,57 @@
         public function get_option($option){
             $option = strtolower($option);  //normalize option names
             switch($option){
+                case 'validate_functions':
+                case 'validate_variables':
+                case 'validate_globals':
+                case 'validate_superglobals':
+                case 'validate_constants':
+                case 'validate_magic_constants':
+                case 'validate_namespaces':
+                case 'validate_aliases':
+                case 'validate_classes':
+                case 'validate_interfaces':
+                case 'validate_traits':
+                case 'validate_keywords':
+                case 'validate_operators':
+                case 'validate_primitives':
+                case 'validate_types':
                 case 'error_level':
-                    return $this->error_level;
-                    break;
                 case 'restore_error_level':
-                    return $this->restore_error_level;
-                    break;
                 case 'convert_errors':
-                    return $this->convert_errors;
-                    break;
                 case 'capture_output':
-                    return $this->capture_output;
-                    break;
                 case 'auto_whitelist_trusted_code':
-                    return $this->auto_whitelist_trusted_code;
-                    break;
                 case 'auto_whitelist_functions':
-                    return $this->auto_whitelist_functions;
-                    break;
                 case 'auto_whitelist_constants':
-                    return $this->auto_whitelist_constants;
-                    break;
                 case 'auto_whitelist_globals':
-                    return $this->auto_whitelist_globals;
-                    break;
                 case 'auto_whitelist_classes':
-                    return $this->auto_whitelist_classes;
-                    break;
                 case 'auto_whitelist_interfaces':
-                    return $this->auto_whitelist_interfaces;
-                    break;
                 case 'auto_whitelist_traits':
-                    return $this->auto_whitelist_traits;
-                    break;
                 case 'auto_define_vars':
-                    return $this->auto_define_vars;
-                    break;
                 case 'overwrite_defined_funcs':
-                    return $this->overwrite_defined_funcs;
-                    break;
                 case 'overwrite_sandboxed_string_funcs':
-                    return $this->overwrite_sandboxed_string_funcs;
-                    break;
                 case 'overwrite_func_get_args':
-                    return $this->overwrite_func_get_args;
-                    break;
                 case 'overwrite_superglobals':
-                    return $this->overwrite_superglobals;
-                    break;
                 case 'allow_functions':
-                    return $this->allow_functions;
-                    break;
                 case 'allow_closures':
-                    return $this->allow_closures;
-                    break;
                 case 'allow_variables':
-                    return $this->allow_variables;
-                    break;
                 case 'allow_static_variables':
-                    return $this->allow_static_variables;
-                    break;
                 case 'allow_objects':
-                    return $this->allow_objects;
-                    break;
                 case 'allow_constants':
-                    return $this->allow_constants;
-                    break;
                 case 'allow_globals':
-                    return $this->allow_globals;
-                    break;
                 case 'allow_namespaces':
-                    return $this->allow_namespaces;
-                    break;
                 case 'allow_aliases':
-                    return $this->allow_aliases;
-                    break;
                 case 'allow_classes':
-                    return $this->allow_classes;
-                    break;
                 case 'allow_interfaces':
-                    return $this->allow_interfaces;
-                    break;
                 case 'allow_traits':
-                    return $this->allow_traits;
-                    break;
                 case 'allow_generators':
-                    return $this->allow_generators;
-                    break;
                 case 'allow_escaping':
-                    return $this->allow_escaping;
-                    break;
                 case 'allow_casting':
-                    return $this->allow_casting;
-                    break;
                 case 'allow_error_suppressing':
-                    return $this->allow_error_suppressing;
-                    break;
                 case 'allow_references':
-                    return $this->allow_references;
-                    break;
                 case 'allow_backticks':
-                    return $this->allow_backticks;
-                    break;
                 case 'allow_halting':
-                    return $this->allow_halting;
-                    break;
+                    return $this->{$option};
             }
             return null;
         }
@@ -2002,20 +1977,6 @@
             }
             return $count > 0 ? $count : 0;
         }
-        /** Wrap output value in SandboxString
-         *
-         * @param   mixed                   $value      Value to wrap
-         *
-         * @return  mixed|SandboxedString   Returns the wrapped value
-         */
-        public function _wrap($value){
-            if(is_object($value) && is_callable($value, '__toString')){
-                return $this->_wrap(strval($value));
-            } else if(is_string($value) && is_callable($value)){
-                return new SandboxedString($value, $this);
-            }
-            return $value;
-        }
         /** Get PHPSandbox redefined var_dump
          *
          * @return  array           Returns the redefined var_dump
@@ -2642,7 +2603,7 @@
             if(count($superglobals)){
                 foreach($superglobals as $superglobal => $name){
                     $name = $this->normalize_superglobal($name);
-                    $this->undefine_superglobal(is_int($superglobal) ? $name : $superglobal, is_int($superglobal) ? null : $name);
+                    $this->undefine_superglobal(is_int($superglobal) ? $name : $superglobal, is_int($superglobal) || !is_string($name) ? null : $name);
                 }
             } else {
                 $this->definitions['superglobals'] = array();
@@ -2896,8 +2857,8 @@
          * @return  PHPSandbox           Returns the PHPSandbox instance for chainability
          */
         public function define_namespaces(array $namespaces = array()){
-            foreach($namespaces as $name => $alias){
-                $this->define_namespace($name, $alias);
+            foreach($namespaces as $name){
+                $this->define_namespace($name);
             }
             return $this;
         }
@@ -3009,8 +2970,9 @@
             if(!$name){
                 $this->validation_error("Cannot define unnamed namespace alias!", Error::DEFINE_ALIAS_ERROR, null, '');
             }
+            $original_name = $name;
             $name = $this->normalize_alias($name);
-            $this->definitions['aliases'][$name] = $alias;
+            $this->definitions['aliases'][$name] = array('original' => $original_name, 'alias' => $alias);
             return $this;
         }
         /** Define PHPSandbox aliases by array
@@ -6042,6 +6004,9 @@
          * @return  bool     Returns true if function is valid, this is also used for testing closures
          */
         public function check_func($name){
+            if(!$this->validate_functions){
+                return true;
+            }
             $original_name = $name;
             if($name instanceof \Closure){
                 if(!$this->allow_closures){
@@ -6080,6 +6045,9 @@
          * @return  bool     Returns true if variable is valid
          */
         public function check_var($name){
+            if(!$this->validate_variables){
+                return true;
+            }
             $original_name = $name;
             if($name instanceof SandboxedString){
                 $name = strval($name);
@@ -6112,6 +6080,9 @@
          * @return  bool     Returns true if global is valid
          */
         public function check_global($name){
+            if(!$this->validate_globals){
+                return true;
+            }
             $original_name = $name;
             if($name instanceof SandboxedString){
                 $name = strval($name);
@@ -6142,6 +6113,9 @@
          * @return  bool     Returns true if superglobal is valid
          */
         public function check_superglobal($name){
+            if(!$this->validate_superglobals){
+                return true;
+            }
             $original_name = $name;
             if($name instanceof SandboxedString){
                 $name = strval($name);
@@ -6175,6 +6149,9 @@
          * @return  bool     Returns true if constant is valid
          */
         public function check_const($name){
+            if(!$this->validate_constants){
+                return true;
+            }
             $original_name = $name;
             if($name instanceof SandboxedString){
                 $name = strval($name);
@@ -6213,6 +6190,9 @@
          * @return  bool     Returns true if magic constant is valid
          */
         public function check_magic_const($name){
+            if(!$this->validate_magic_constants){
+                return true;
+            }
             $original_name = $name;
             if($name instanceof SandboxedString){
                 $name = strval($name);
@@ -6246,6 +6226,9 @@
          * @return  bool     Returns true if namespace is valid
          */
         public function check_namespace($name){
+            if(!$this->validate_namespaces){
+                return true;
+            }
             $original_name = $name;
             if($name instanceof SandboxedString){
                 $name = strval($name);
@@ -6279,6 +6262,9 @@
          * @return  bool     Returns true if alias is valid
          */
         public function check_alias($name){
+            if(!$this->validate_aliases){
+                return true;
+            }
             $original_name = $name;
             if($name instanceof SandboxedString){
                 $name = strval($name);
@@ -6323,6 +6309,9 @@
          * @return  bool     Returns true if class is valid
          */
         public function check_class($name, $extends = false){
+            if(!$this->validate_classes){
+                return true;
+            }
             $original_name = $name;
             if($name instanceof SandboxedString){
                 $name = strval($name);
@@ -6360,6 +6349,9 @@
          * @return  bool     Returns true if interface is valid
          */
         public function check_interface($name){
+            if(!$this->validate_interfaces){
+                return true;
+            }
             $original_name = $name;
             if($name instanceof SandboxedString){
                 $name = strval($name);
@@ -6393,6 +6385,9 @@
          * @return  bool     Returns true if trait is valid
          */
         public function check_trait($name){
+            if(!$this->validate_traits){
+                return true;
+            }
             $original_name = $name;
             if($name instanceof SandboxedString){
                 $name = strval($name);
@@ -6426,6 +6421,9 @@
          * @return  bool     Returns true if keyword is valid
          */
         public function check_keyword($name){
+            if(!$this->validate_keywords){
+                return true;
+            }
             $original_name = $name;
             if($name instanceof SandboxedString){
                 $name = strval($name);
@@ -6455,6 +6453,9 @@
          * @return  bool     Returns true if operator is valid
          */
         public function check_operator($name){
+            if(!$this->validate_operators){
+                return true;
+            }
             $original_name = $name;
             if($name instanceof SandboxedString){
                 $name = strval($name);
@@ -6484,6 +6485,9 @@
          * @return  bool     Returns true if primitive is valid
          */
         public function check_primitive($name){
+            if(!$this->validate_primitives){
+                return true;
+            }
             $original_name = $name;
             if($name instanceof SandboxedString){
                 $name = strval($name);
@@ -6513,6 +6517,9 @@
          * @return  bool     Returns true if type is valid
          */
         public function check_type($name){
+            if(!$this->validate_types){
+                return true;
+            }
             $original_name = $name;
             if($name instanceof SandboxedString){
                 $name = strval($name);
@@ -6563,7 +6570,7 @@
                         $output[] = '$' . $name . " = null";
                     }
                 } else {
-                    $output[] = '$' . $name . " = unserialize('" . addcslashes(serialize($value), "'") . "')";
+                    $output[] = '$' . $name . " = unserialize('" . addcslashes(serialize($value), "'\\") . "')";
                 }
             }
             return count($output) ? "\r\n" . implode(";\r\n", $output) . ";\r\n" : '';
@@ -6608,11 +6615,11 @@
          */
         protected function prepare_aliases(){
             $output = array();
-            foreach($this->definitions['aliases'] as $name => $alias){
-                if(is_string($name) && $name){
-                    $output[] = 'use ' . $name . ((is_string($alias) && $alias) ? ' as ' . $alias : '') . ';';
+            foreach($this->definitions['aliases'] as $alias){
+                if(is_array($alias) && isset($alias['original']) && is_string($alias['original']) && $alias['original']){
+                    $output[] = 'use ' . $alias['original'] . ((isset($alias['alias']) && is_string($alias['alias']) && $alias['alias']) ? ' as ' . $alias['alias'] : '') . ';';
                 } else {
-                    $this->validation_error("Sandboxed code attempted to use invalid namespace alias: $name", Error::DEFINE_ALIAS_ERROR, null, $name);
+                    $this->validation_error("Sandboxed code attempted to use invalid namespace alias: " . $alias['original'], Error::DEFINE_ALIAS_ERROR, null, $alias['original']);
                 }
             }
             return count($output) ? implode("\r\n", $output) ."\r\n" : '';
@@ -6684,7 +6691,7 @@
             if(!$code){
                 return $this;
             }
-            $code = $this->disassemble($code, false);
+            $code = $this->disassemble($code);
             if($this->auto_whitelist_trusted_code){
                 $this->auto_whitelist($code);
             }
@@ -6700,7 +6707,7 @@
             if(!$code){
                 return $this;
             }
-            $code = $this->disassemble($code, false);
+            $code = $this->disassemble($code);
             if($this->auto_whitelist_trusted_code){
                 $this->auto_whitelist($code, true);
             }
@@ -6715,6 +6722,7 @@
             $this->prepended_code = '';
             $this->generated_code = null;
             $this->appended_code = '';
+            return $this;
         }
         /** Clear all trusted code
          *
@@ -6861,7 +6869,7 @@
             $this->generated_code = $this->prepare_namespaces() .
                 $this->prepare_aliases() .
                 $this->prepare_consts() .
-                "\r\n" . '$closure = function(){' .
+                "\r\n" . '$closure = function(){' . "\r\n" .
                 $this->prepare_vars() .
                 $this->prepended_code .
                 ($skip_validation ? $code : $this->prepared_code) .
@@ -6894,7 +6902,7 @@
             $saved_error_level = null;
             if($this->error_level !== null){
                 $saved_error_level = error_reporting();
-                error_reporting($this->error_level);
+                error_reporting(intval($this->error_level));
             }
             if(is_callable($this->error_handler) || $this->convert_errors){
                 set_error_handler(array($this, 'error'), $this->error_handler_types);
@@ -6910,7 +6918,9 @@
                 } else {
                     $result = eval($this->generated_code);
                 }
-            } catch(\Exception $exception){}
+            } catch(\Exception $exception){
+                //swallow any exceptions
+            }
             if(is_callable($this->error_handler) || $this->convert_errors){
                 restore_error_handler();
             }
@@ -6986,7 +6996,7 @@
             if($this->convert_errors){
                 return $this->exception(new \ErrorException($errstr, 0, $errno, $errfile, $errline));
             }
-            return call_user_func_array($this->error_handler, array($errno, $errstr, $errfile, $errline, $errcontext, $this));
+            return is_callable($this->error_handler) ? call_user_func_array($this->error_handler, array($errno, $errstr, $errfile, $errline, $errcontext, $this)) : null;
         }
         /** Set callable to handle thrown exceptions
          *
@@ -7131,5 +7141,11 @@
          */
         public static function getSandbox($name){
             return isset(static::$sandboxes[$name]) ? static::$sandboxes[$name] : null;
+        }
+        /** Get an iterator of all the public PHPSandbox properties
+         * @return array
+         */
+        public function getIterator(){
+            return new \ArrayIterator(get_object_vars($this));
         }
     }

@@ -97,12 +97,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/fieryprophet/php-sandbox.git",
-            "reference": "43d040b13ccacb334debb73917d53c2d255227ae"
+            "reference": "db9ca30c51d3d6a5644fc0288d6408562c5011a4"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/fieryprophet/php-sandbox/zipball/43d040b13ccacb334debb73917d53c2d255227ae",
-            "reference": "43d040b13ccacb334debb73917d53c2d255227ae",
+            "url": "https://api.github.com/repos/fieryprophet/php-sandbox/zipball/db9ca30c51d3d6a5644fc0288d6408562c5011a4",
+            "reference": "db9ca30c51d3d6a5644fc0288d6408562c5011a4",
             "shasum": ""
         },
         "require": {
@@ -114,10 +114,13 @@
             "phpdocumentor/phpdocumentor": "v2.3.0",
             "phpunit/phpunit": "3.7.*"
         },
-        "time": "2014-03-19 21:20:37",
+        "time": "2014-10-27 14:56:02",
         "type": "library",
         "installation-source": "source",
         "autoload": {
+            "files": [
+                "src/functions.php"
+            ],
             "psr-4": {
                 "PHPSandbox\\": "src/"
             }

@@ -16,7 +16,7 @@
 
     if(isset($_POST['save']) || isset($_POST['download'])){
         if(isset($_POST['download'])){
-            $data = json_decode($_POST['download'], 1);
+            $data = json_decode($_POST['download'], true);
             if(!is_array($data)){
                 header('Content-type: text/html');
                 die('<html><body><script>alert("Template could not be saved!");</script></body></html>');
@@ -119,7 +119,9 @@
             'blacklist' => $blacklist,
             'definitions' => $definitions
         ));
-        $sandbox->set_error_handler(function(\PHPSandbox\Error $e){ die('<h2 style="color: red;">' . $e->getMessage() . '</h2>'); });
+        $sandbox->set_error_handler(function($errno, $errmsg, $errfile, $errline){ die('<h2 style="color: red;">Error: ' . $errmsg . ' on line ' . $errline . '</h2>'); });
+        $sandbox->set_exception_handler(function(\Exception $e){ die('<h2 style="color: red;">Exception: ' . $e->getMessage() . ' on line ' . $e->getLine() . '</h2>'); });
+        $sandbox->set_validation_error_handler(function(\PHPSandbox\Error $e){ die('<h2 style="color: red;">Validation Error: ' . $e->getMessage() . '</h2>'); });
         try {
             ob_start();
             if($setup_code){
@@ -132,7 +134,8 @@
             }
             echo '<hr class="hr"/>Preparation time: ' . round($sandbox->get_prepared_time()*1000, 2) .
                 ' ms, execution time: ' . round($sandbox->get_execution_time()*1000, 2) .
-                ' ms, total time: ' . round($sandbox->get_prepared_time()*1000, 2) . ' ms';
+                ' ms, total time: ' . round($sandbox->get_prepared_time()*1000, 2) . ' ms' .
+                '<hr class="hr"/>Generated Code: <code>' . $sandbox->get_generated_code() . '</code>';
             $buffer = ob_get_contents();
             ob_end_clean();
             die('<pre>' . $buffer . '</pre>');
@@ -154,7 +157,7 @@
         exit;
     }
 
-    $data = json_decode(file_get_contents("templates/001 - Hello World.json"), 1);
+    $data = json_decode(file_get_contents("templates/001 - Hello World.json"), true);
 ?>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">

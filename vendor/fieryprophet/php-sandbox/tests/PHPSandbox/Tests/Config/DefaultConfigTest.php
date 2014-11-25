@@ -18,6 +18,13 @@
             $this->sandbox = new PHPSandbox;
         }
 
+        public function testSettingAndUnsettingOptions(){
+            $this->sandbox->set_option('error_level', 1);
+            $this->assertEquals(1, $this->sandbox->get_option('error_level'));
+            $this->sandbox->set_option('error_level', null);
+            $this->assertEquals(null, $this->sandbox->get_option('error_level'));
+        }
+
         /**
          * Test whether sandbox returns expected value
          */
@@ -207,7 +214,7 @@
          */
         public function testDisallowsCasting(){
             $this->setExpectedException('PHPSandbox\Error');
-            $this->sandbox->execute(function(){ $a = '1'; $b = (bool)$a; });
+            $this->sandbox->execute(function(){ return (bool)'1'; });
         }
 
         /**
@@ -274,7 +281,7 @@
          */
         public function testCustomFunctionValidationSuccess(){
             $this->expectOutputString('success');
-            $this->sandbox->set_func_validator(function($name, $sandbox){
+            $this->sandbox->set_func_validator(function($name){
                 return $name == 'phpsandbox\tests\config\test';
             });
             function test(){
@@ -288,7 +295,7 @@
          */
         public function testCustomFunctionValidationFailure(){
             $this->setExpectedException('PHPSandbox\Error');
-            $this->sandbox->set_func_validator(function($name, $sandbox){
+            $this->sandbox->set_func_validator(function($name){
                 return $name == 'test';
             });
             $this->sandbox->execute(function(){ test2(); });
@@ -311,7 +318,7 @@
         public function testCustomExceptionHandler(){
             $this->setExpectedException('Exception');
             $this->sandbox->whitelist_type('Exception');
-            $this->sandbox->set_exception_handler(function($exception, $sandbox){
+            $this->sandbox->set_exception_handler(function($exception){
                 throw $exception;
             });
             $this->sandbox->execute(function(){ throw new \Exception; });
@@ -323,7 +330,7 @@
         public function testConvertErrors(){
             $this->setExpectedException('ErrorException');
             $this->sandbox->convert_errors = true;
-            $this->sandbox->set_exception_handler(function($error, $sandbox){
+            $this->sandbox->set_exception_handler(function($error){
                 throw $error;
             });
             $this->sandbox->execute(function(){ $a[1]; });
@@ -334,7 +341,7 @@
          */
         public function testCustomValidationErrorHandler(){
             $this->setExpectedException('PHPSandbox\Error');
-            $this->sandbox->set_validation_error_handler(function($error, $sandbox){
+            $this->sandbox->set_validation_error_handler(function($error){
                 throw $error;
             });
             $this->sandbox->execute(function(){ test2(); });
@@ -373,8 +380,26 @@
                 'is_object',
                 'is_scalar'
             ));
-            $this->assertEquals(true, $this->sandbox->execute(function(){ return is_string("a"); }));
-            $this->assertEquals(false, $this->sandbox->execute(function(){ return is_object("a"); }));
-            $this->assertEquals(true, $this->sandbox->execute(function(){ return is_scalar("a"); }));
+            $this->assertEquals(true, $this->sandbox->execute(function(){ return is_string("system"); }));
+            $this->assertEquals(false, $this->sandbox->execute(function(){ return is_object("system"); }));
+            $this->assertEquals(true, $this->sandbox->execute(function(){ return is_scalar("system"); }));
+        }
+
+        public function testStaticTypeOverwriting(){
+            $class = 'B' . md5(time());
+            $this->sandbox->define_class('A', $class);
+            $this->sandbox->allow_classes = true;
+            $this->sandbox->allow_functions = true;
+            $this->assertEquals("Yes", $this->sandbox->execute('<?php
+                class ' . $class . ' {
+                    public $value = "Yes";
+                }
+
+                function test' . $class . '(A $var){
+                    return $var->value;
+                }
+
+                return test' . $class . '(new ' . $class . ');
+            ?>'));
         }
     }

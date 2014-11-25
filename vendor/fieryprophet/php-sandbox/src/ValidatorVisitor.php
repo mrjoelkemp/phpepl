@@ -13,7 +13,7 @@
      * @namespace PHPSandbox
      *
      * @author  Elijah Horton <fieryprophet@yahoo.com>
-     * @version 1.3.4
+     * @version 1.3.9
      */
     class ValidatorVisitor extends \PHPParser_NodeVisitorAbstract {
         /** The PHPSandbox instance to check against
@@ -39,7 +39,7 @@
          */
         public function leaveNode(\PHPParser_Node $node){
             if($node instanceof \PHPParser_Node_Arg){
-                return new \PHPParser_Node_Expr_MethodCall(new \PHPParser_Node_Expr_StaticCall(new \PHPParser_Node_Name_FullyQualified("PHPSandbox\\PHPSandbox"), 'getSandbox', array(new \PHPParser_Node_Scalar_String($this->sandbox->name))), '_wrap', array($node), $node->getAttributes());
+                return new \PHPParser_Node_Expr_FuncCall(new \PHPParser_Node_Name_FullyQualified(($node->value instanceof \PHPParser_Node_Expr_Variable) ? 'PHPSandbox\\wrapByRef' : 'PHPSandbox\\wrap'), array($node, new \PHPParser_Node_Expr_StaticCall(new \PHPParser_Node_Name_FullyQualified("PHPSandbox\\PHPSandbox"), 'getSandbox', array(new \PHPParser_Node_Scalar_String($this->sandbox->name)))), $node->getAttributes());
             } else if($node instanceof \PHPParser_Node_Stmt_InlineHTML){
                 if(!$this->sandbox->allow_escaping){
                     $this->sandbox->validation_error("Sandboxed code attempted to escape to HTML!", Error::ESCAPE_ERROR, $node);
@@ -277,6 +277,12 @@
                  */
                 if(!$this->sandbox->check_class($class->toString())){
                     $this->sandbox->validation_error("Class constant failed custom validation!", Error::VALID_CLASS_ERROR, $node, $class->toString());
+                }
+                return $node;
+            } else if($node instanceof \PHPParser_Node_Param && $node->type instanceof \PHPParser_Node_Name){
+                $class = $node->type->toString();
+                if($this->sandbox->is_defined_class($class)){
+                    $node->type = new \PHPParser_Node_Name($this->sandbox->get_defined_class($class));
                 }
                 return $node;
             } else if($node instanceof \PHPParser_Node_Expr_New){
