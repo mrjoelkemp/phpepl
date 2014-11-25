@@ -1,5 +1,17 @@
 #CHANGELOG
 
+##07/24/2014
+- Fixed bug with prepare_vars()
+
+##06/19/2014
+- Added flags to enable/disable validation checks for every type (for example, this will help in situations where someone wants to enable all functions but not blacklist a fake function name to remove the function whitelist.) Disabling a validation check also ignores any custom validation check for that type!
+- Fixed issue with toolkit giving incorrect error and exception messages
+- Added ability for sandbox to overwrite static type hints that are redefined to other class names (NOTE: All statically referenced class/interface/trait names are treated as classes by the parser and the sandbox, therefore they must be redefined via define_class())
+- Updated documentation
+
+##05/06/2014
+- Corrected defined alias case-sensitivity issue (see: issue #10)
+
 ##03/19/2014
 - API CHANGE: set_error_handler() and its related methods have been changed to set_validation_error_handler(), etc. because that more closely explains their purpose of handling validation errors in the sandbox
 - set_error_handler() its related methods now represent a new error handling mechanism that replicates PHP's set_error_handler() built-in functionality for the sandbox
@@ -8,6 +20,7 @@
 - Revised SandboxedString insertion to more intelligently provide sandboxing of callbacks
 - Changed method visibility to public for error() and exception() to resolve PHP 5.3's failure to use them in the proper context
 - Addressed issue where functions expecting float or int values passed as strings would throw errors
+- You can now specify an unlimited number of parameters for all whitelist_*, blacklist_*, etc. methods etc for _superglobal. This works the same as passing an array of parameters.
 
 ##03/10/2014
 - Addressed potential vulnerabilities related to SandboxedStrings where sandboxed code could manipulate the strings in a way that could defeat their protection

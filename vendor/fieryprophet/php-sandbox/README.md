@@ -8,7 +8,7 @@ It also utilizes [FunctionParser](https://github.com/jeremeamia/FunctionParser) 
 
 **Online API Documentation:** [http://fieryprophet.com/phpsandbox-docs/](http://fieryprophet.com/phpsandbox-docs/)
 
-[![Build Status](https://travis-ci.org/fieryprophet/php-sandbox.png?branch=master)](https://travis-ci.org/fieryprophet/php-sandbox) [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/fieryprophet/php-sandbox/badges/quality-score.png?s=4f2d82525b9e2c6bae18e26cf643ca3fd09333fc)](https://scrutinizer-ci.com/g/fieryprophet/php-sandbox/) [![Code Coverage](https://scrutinizer-ci.com/g/fieryprophet/php-sandbox/badges/coverage.png?s=d6cef7d18a66d2ac39b76410b76c89fa15d84b8c)](https://scrutinizer-ci.com/g/fieryprophet/php-sandbox/) [![Latest Stable Version](https://poser.pugx.org/fieryprophet/php-sandbox/v/stable.png)](https://packagist.org/packages/fieryprophet/php-sandbox) [![Total Downloads](https://poser.pugx.org/fieryprophet/php-sandbox/downloads.png)](https://packagist.org/packages/fieryprophet/php-sandbox) [![Latest Unstable Version](https://poser.pugx.org/fieryprophet/php-sandbox/v/unstable.png)](https://packagist.org/packages/fieryprophet/php-sandbox) [![License](https://poser.pugx.org/fieryprophet/php-sandbox/license.png)](https://packagist.org/packages/fieryprophet/php-sandbox)
+[![Build Status](https://travis-ci.org/fieryprophet/php-sandbox.png?branch=master)](https://travis-ci.org/fieryprophet/php-sandbox) [![Latest Stable Version](https://poser.pugx.org/fieryprophet/php-sandbox/v/stable.png)](https://packagist.org/packages/fieryprophet/php-sandbox) [![Total Downloads](https://poser.pugx.org/fieryprophet/php-sandbox/downloads.png)](https://packagist.org/packages/fieryprophet/php-sandbox) [![Latest Unstable Version](https://poser.pugx.org/fieryprophet/php-sandbox/v/unstable.png)](https://packagist.org/packages/fieryprophet/php-sandbox) [![License](https://poser.pugx.org/fieryprophet/php-sandbox/license.png)](https://packagist.org/packages/fieryprophet/php-sandbox)
 
 ##Features:
 
@@ -71,6 +71,14 @@ It also utilizes [FunctionParser](https://github.com/jeremeamia/FunctionParser) 
     $sandbox->execute('<?php i am malformed PHP code; ?>');
     //does nothing
 
+##Disable validation example:
+
+    $sandbox = new PHPSandbox\PHPSandbox;
+    //this will disable function validation
+    $sandbox->set_option('validate_functions', false); // or $sandbox->validate_functions = false;
+    $sandbox->execute('<?php echo system("ping google.com"); ?>');
+    //Pinging google.com. . .
+
 ##Requirements
 
 - PHP 5.3.2+
@@ -85,7 +93,7 @@ To install using [composer](http://getcomposer.org/), simply add the following t
     {
         "minimum-stability": "dev",
         "require": {
-            "fieryprophet/php-sandbox": "dev-master"
+            "fieryprophet/php-sandbox": "1.3.*"
         }
     }
 

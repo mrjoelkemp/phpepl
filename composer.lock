@@ -1,7 +1,8 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
     ],
     "hash": "5b9b5514301f761e1e6445c22a1eb96d",
     "packages": [
@@ -11,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fieryprophet/php-sandbox.git",
-                "reference": "43d040b13ccacb334debb73917d53c2d255227ae"
+                "reference": "db9ca30c51d3d6a5644fc0288d6408562c5011a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fieryprophet/php-sandbox/zipball/43d040b13ccacb334debb73917d53c2d255227ae",
-                "reference": "43d040b13ccacb334debb73917d53c2d255227ae",
+                "url": "https://api.github.com/repos/fieryprophet/php-sandbox/zipball/db9ca30c51d3d6a5644fc0288d6408562c5011a4",
+                "reference": "db9ca30c51d3d6a5644fc0288d6408562c5011a4",
                 "shasum": ""
             },
             "require": {
@@ -30,6 +31,9 @@
             },
             "type": "library",
             "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
                 "psr-4": {
                     "PHPSandbox\\": "src/"
                 }
@@ -52,7 +56,7 @@
                 "sandbox",
                 "whitelist"
             ],
-            "time": "2014-03-19 21:20:37"
+            "time": "2014-10-27 14:56:02"
         },
         {
             "name": "jeremeamia/FunctionParser",
@@ -142,20 +146,13 @@
             "time": "2013-09-28 11:21:30"
         }
     ],
-    "packages-dev": [
-
-    ],
-    "aliases": [
-
-    ],
+    "packages-dev": [],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "fieryprophet/php-sandbox": 20
     },
-    "platform": [
-
-    ],
-    "platform-dev": [
-
-    ]
+    "prefer-stable": false,
+    "platform": [],
+    "platform-dev": []
 }
