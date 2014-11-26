@@ -43,6 +43,28 @@ me a shout on Twitter: [@mrjoelkemp](https://twitter.com/mrjoelkemp)
 
 Close to 100 people use this REPL every day; don't ruin it for them. Please play nice.
 
+### Contribute
+
+This app uses Browserify for bundling, Make for a build script, and Watchify for building on file save.
+If you'd like to tinker around with the code, you can do the following:
+
+* Clone the repo
+* `npm install` in the root directory
+* `make`
+* Point your browser to your localhost (assuming you have the app being [served locally](#running-it-locally))
+
+Make will build the js app into `dist/` and start the Watchify process so that any file changes rebuilds the app into `dist`.
+
+`src/phpepl.js` is the main script for the website. This gets built into dist/phpepl.js which is referenced by `phpepl/index.html`.
+The php evaluation code isin `src/eval`.
+
+The file `src/eval/unsafe.php` is the unsandboxed version, whereas `src/eval/index.php` is the PHPSandboxed version.
+
+If you'd like to simulate the sandboxed environment in development,
+change the `evalUrl` in `phpepl.js` to the `sandboxed` url. This will be made easier in the future.
+
+* With Watchify running, that change should rebuild the app and you can just refresh the page.
+
 ### License
 
 MIT
