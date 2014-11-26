@@ -5,56 +5,83 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
-  "sass": {
-    "dist": {
-      "files": [
-        {
-          "expand": true,
-          "src": [
-            "**/*.{scss, sass}",
-            "!node_modules/**/*.{scss, sass}"
-          ],
-          "ext": ".css"
+      "sass": {
+        "dist": {
+          "files": [
+            {
+              "expand": true,
+              "src": [
+                "**/*.{scss, sass}",
+                "!node_modules/**/*.{scss, sass}"
+              ],
+              "ext": ".css"
+            }
+          ]
         }
-      ]
-    }
-  },
-  "watch": {
-    "sass": {
-      "files": [
-        "**/*.scss",
-        "!node_modules/**/*.scss",
-        "!.git/**/*.scss",
-        "!.sass-cache/**/*.scss",
-        "!bower_components/**/*.scss",
-        "!vendor/**/*.scss"
-      ],
-      "tasks": [
-        "newer:sass"
-      ]
-    },
-    "all": {
-      "files": [
-        "**/*",
-        "!node_modules/**/*",
-        "!.git/**/*",
-        "!.sass-cache/**/*",
-        "!bower_components/**/*",
-        "!vendor/**/*"
-      ],
-      "tasks": [
-        "noop"
-      ],
-      "options": {
-        "cwd": "./",
-        "spawn": false,
-        "event": [
-          "added"
-        ]
+      },
+      "browserify": {
+        "dist": {
+          "files": {
+            "dist/phpepl.js": ["src/phpepl.js"]
+          }
+        }
+      },
+      "uglify": {
+        "options": {
+          "sourceMap": true,
+          "sourceMapIncludeSources": true
+        },
+        "dist": {
+          "files": {
+            "dist/phpepl.js": ['dist/phpepl.js']
+          }
+        }
+      },
+      "watch": {
+        "sass": {
+          "files": [
+            "**/*.scss",
+            "!node_modules/**/*.scss",
+            "!.git/**/*.scss",
+            "!.sass-cache/**/*.scss",
+            "!bower_components/**/*.scss",
+            "!vendor/**/*.scss"
+          ],
+          "tasks": [
+            "newer:sass"
+          ]
+        },
+        "js": {
+          "files": [
+            "src/**/*.js"
+          ],
+          "tasks": [
+            "browserify",
+            "uglify"
+          ]
+        },
+        "all": {
+          "files": [
+            "**/*",
+            "!node_modules/**/*",
+            "!.git/**/*",
+            "!.sass-cache/**/*",
+            "!bower_components/**/*",
+            "!vendor/**/*"
+          ],
+          "tasks": [
+            "noop"
+          ],
+          "options": {
+            "cwd": "./",
+            "spawn": false,
+            "event": [
+              "added"
+            ]
+          }
+        }
       }
-    }
-  }
-});
+    });
 
     grunt.registerTask('default', ['watch']);
 
