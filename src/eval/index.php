@@ -59,15 +59,15 @@
 	$sandbox->error_level = false;
 
 	//rewrite preg_replace function to override attempts to use PREG_REPLACE_EVAL
-	$sandbox->define_func('preg_replace', function($pattern, $replacement, $subject, $limit = -1, &$count){
+	$sandbox->define_func('preg_replace', function($pattern, $replacement, $subject, $limit = -1, &$count = null){
 	    if(is_array($pattern)){
 	    	foreach($pattern as $_pattern){
 		    if(strtolower(substr($_pattern, -1)) == 'e'){
-		        throw Exception("Can not use PREG_REPLACE_EVAL!");
+		        throw new Exception("Can not use PREG_REPLACE_EVAL!");
 		    }	
 	    	}
 	    } else if(strtolower(substr($pattern, -1)) == 'e'){
-	        throw Exception("Can not use PREG_REPLACE_EVAL!");
+	        throw new Exception("Can not use PREG_REPLACE_EVAL!");
 	    }
 	    return preg_replace($pattern, $replacement, $subject, $limit, $count);
 	});
