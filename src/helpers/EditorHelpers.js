@@ -2,8 +2,8 @@ var moment = require('moment'),
     $ = require('jquery');
 
 // Set the html of the output div
-module.exports.setOutput = function (text) {
-  var isError = !! arguments[1],
+module.exports.setOutput = function(text) {
+  var isError = !!arguments[1],
       $output = $('.output span');
 
   // Remove error classes if any
@@ -18,9 +18,9 @@ module.exports.setOutput = function (text) {
 };
 
 // Highlights the line in the gutter with the error
-module.exports.showLineError = function (line) {
+module.exports.showLineError = function(line) {
   // Find the dom element in the gutter
-  $('.CodeMirror-linenumber').each(function () {
+  $('.CodeMirror-linenumber').each(function() {
     // If the cell's line number matches the error line
     if (Number($(this).html()) === line) {
       // Make the background red
@@ -34,8 +34,8 @@ module.exports.showLineError = function (line) {
 // Returns a list of the error text and line number that
 // generated the error.
 // Note: Implementation is fairly naive but works
-module.exports.getPrettyFatalErrorMessage = function (responseText) {
-  if (! responseText.length) return;
+module.exports.getPrettyFatalErrorMessage = function(responseText) {
+  if (!responseText.length) return;
 
   var text = responseText,
       tokensToReplace = ['\n', /<br \/>/g, /<b>/g, /<\/b>/g, /(Fatal error: +)/g],
@@ -43,11 +43,11 @@ module.exports.getPrettyFatalErrorMessage = function (responseText) {
 
   // If the error message doesn't contain 'fatal error',
   // then just print it
-  if (! responseText.toLowerCase().indexOf('fatal error')) {
+  if (!responseText.toLowerCase().indexOf('fatal error')) {
     return [responseText, 1];
   }
 
-  $.each(tokensToReplace, function (idx, val) {
+  $.each(tokensToReplace, function(idx, val) {
     text = text.replace(val, '');
   });
 

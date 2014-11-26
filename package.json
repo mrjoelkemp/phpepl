@@ -18,8 +18,12 @@
     "grunt-contrib-sass": "^0.8.1",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-newer": "^0.7.0",
+    "jscs": "~1.7.3",
     "load-grunt-tasks": "^0.6.0",
     "watchify": "~0.6.1"
   },
-  "main": "./src/phpepl.js"
+  "main": "./src/phpepl.js",
+  "scripts": {
+    "test": "jscs -p airbnb src/"
+  }
 }
