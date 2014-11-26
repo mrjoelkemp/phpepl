@@ -25,7 +25,7 @@ var
 
 storageHelpers.loadSavedCode();
 
-if (! onPHP5Version() && isLiveEnv()) $('.link-to-heroku').fadeIn('fast');
+if (!onPHP5Version() && isLiveEnv()) $('.link-to-heroku').fadeIn('fast');
 
 $(document).keydown(checkForShortcuts);
 
@@ -33,7 +33,7 @@ $(document).keydown(checkForShortcuts);
 $(window).unload(storageHelpers.saveCode.bind(storageHelpers));
 
 // Helpers
-function sendingCode (code) {
+function sendingCode(code) {
   return $.ajax({
     type:     'POST',
     url:      evalURL,
@@ -55,10 +55,10 @@ function onPHP5Version() {
 }
 
 // Handles the sending of the code to the eval server
-function processCode () {
+function processCode() {
   var code = editor.getValue();
 
-  if (! code.length) {
+  if (!code.length) {
     editorHelpers.setOutput('Please supply some code...');
     return;
   }
@@ -66,21 +66,21 @@ function processCode () {
   $('.spinner').fadeIn('fast');
 
   // Track it
-  mixpanel.track('Code Run', {'code': code});
+  mixpanel.track('Code Run', {code: code});
 
   sendingCode(code)
     .done(processResponse)
     .fail(processFatalError);
 }
 
-function processResponse (res) {
-  if (! res) return;
+function processResponse(res) {
+  if (!res) return;
 
   var result    = res.result,
       error     = res.error,
       errorMsg  = '';
 
-  if (! error) {
+  if (!error) {
     editorHelpers.setOutput(result);
 
   } else {
@@ -98,17 +98,17 @@ function processResponse (res) {
   }
 }
 
-function processFatalError (error) {
-  if (! error) return;
+function processFatalError(error) {
+  if (!error) return;
 
   var textLine = editorHelpers.getPrettyFatalErrorMessage(error.responseText);
 
   editorHelpers.setOutput(textLine[0], true);
   editorHelpers.showLineError(textLine[1]);
-  mixpanel.track('Error', {'error' : error.responseText});
+  mixpanel.track('Error', {error: error.responseText});
 }
 
-function checkForShortcuts (e) {
+function checkForShortcuts(e) {
   // CMD + Enter or CTRL + Enter to run code
   if (e.which === 13 && (e.ctrlKey || e.metaKey)) {
     processCode();

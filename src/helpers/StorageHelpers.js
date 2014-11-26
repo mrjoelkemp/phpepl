@@ -1,11 +1,12 @@
-var editor = require('../editor');
+var editor = require('../editor'),
+    $ = require('jquery');
 
-module.exports.saveCode = function () {
-  if (! window.localStorage) return;
+module.exports.saveCode = function() {
+  if (!window.localStorage) return;
 
   var code = editor.getValue();
 
-  localStorage.setItem('code', code);
+  window.localStorage.setItem('code', code);
 
   // Show the saved message
   $('.timestamp')
@@ -16,12 +17,12 @@ module.exports.saveCode = function () {
 };
 
 // Preload where you last left off
-module.exports.loadSavedCode = function () {
-  if (! window.localStorage) return;
+module.exports.loadSavedCode = function() {
+  if (!window.localStorage) return;
 
   var greeting = 'echo "We\'re running php version: " . phpversion();',
-      result = localStorage.getItem('code'),
-      code   = ! result ? greeting : result;
+      result = window.localStorage.getItem('code'),
+      code   = !result ? greeting : result;
 
   editor.setValue(code);
 };
