@@ -30,6 +30,6 @@
   },
   "main": "./src/phpepl.js",
   "scripts": {
-    "test": "jscs -p airbnb src/ && jshint src"
+    "test": "jscs -p google src/ && jshint src"
   }
 }

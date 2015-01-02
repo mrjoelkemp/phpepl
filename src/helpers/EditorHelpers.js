@@ -1,20 +1,21 @@
-var moment = require('moment'),
-    $ = require('jquery');
+var moment = require('moment');
+var $ = require('jquery');
 
 // Set the html of the output div
 module.exports.setOutput = function(text) {
-  var isError = !!arguments[1],
-      $output = $('.output span');
+  var isError = !!arguments[1];
+  var $output = $('.output span');
 
   // Remove error classes if any
   $output.html(text).removeClass('error');
 
-  if (isError) $output.addClass('error');
+  if (isError) { $output.addClass('error'); }
 
   // Turn off the spinner
   $('.spinner').fadeOut('fast');
   // Set the timestamp
-  $('.timestamp').find('span').html(moment(new Date().getTime()).format('h:mm a'));
+  var time = moment(new Date().getTime()).format('h:mm a');
+  $('.timestamp').find('span').html(time);
 };
 
 // Highlights the line in the gutter with the error
@@ -35,11 +36,14 @@ module.exports.showLineError = function(line) {
 // generated the error.
 // Note: Implementation is fairly naive but works
 module.exports.getPrettyFatalErrorMessage = function(responseText) {
-  if (!responseText.length) return;
+  if (!responseText.length) { return; }
 
-  var text = responseText,
-      tokensToReplace = ['\n', /<br \/>/g, /<b>/g, /<\/b>/g, /(Fatal error: +)/g],
-      splitTokens, err, line, lineNum;
+  var text = responseText;
+  var tokensToReplace = ['\n', /<br \/>/g, /<b>/g, /<\/b>/g, /(Fatal error: +)/g];
+  var splitTokens;
+  var err;
+  var line;
+  var lineNum;
 
   // If the error message doesn't contain 'fatal error',
   // then just print it

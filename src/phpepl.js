@@ -1,25 +1,23 @@
 'use strict';
 
-var
-    $ = window.$ = window.jQuery = require('jquery'),
+var $ = window.$ = window.jQuery = require('jquery');
+// Detect the port that localhost is running on
+var port = window.location.host.split(':')[1] || '80';
+// Auto add the port number
+var origin = window.location.origin.indexOf(':') !== -1 ?
+             window.location.origin :
+             window.location.origin + ':' + port;
 
-    // Detect the port that localhost is running on
-    port = window.location.host.split(':')[1] || '80',
-    // Auto add the port number
-    origin = window.location.origin.indexOf(':') !== -1 ?
-            window.location.origin :
-            window.location.origin + ':' + port,
+var evalURL = origin + '/src/eval/index.php';
 
-    evalURL = origin + '/src/eval/index.php',
-
-    mixpanel = window.mixpanel || {},
-    editor = require('./editor'),
-    editorHelpers = require('./helpers/EditorHelpers'),
-    storageHelpers = require('./helpers/StorageHelpers');
+var mixpanel = window.mixpanel || {};
+var editor = require('./editor');
+var editorHelpers = require('./helpers/EditorHelpers');
+var storageHelpers = require('./helpers/StorageHelpers');
 
 storageHelpers.loadSavedCode();
 
-if (!onPHP5Version() && isLiveEnv()) $('.link-to-heroku').fadeIn('fast');
+if (!onPHP5Version() && isLiveEnv()) { $('.link-to-heroku').fadeIn('fast'); }
 
 $(document).keydown(checkForShortcuts);
 
@@ -31,7 +29,7 @@ function sendingCode(code) {
   return $.ajax({
     type:     'POST',
     url:      evalURL,
-    data:     { code: code },
+    data:     {code: code},
     dataType: 'json'
   });
 }
@@ -68,11 +66,11 @@ function processCode() {
 }
 
 function processResponse(res) {
-  if (!res) return;
+  if (!res) { return; }
 
-  var result    = res.result,
-      error     = res.error,
-      errorMsg  = '';
+  var result    = res.result;
+  var error     = res.error;
+  var errorMsg  = '';
 
   if (!error) {
     editorHelpers.setOutput(result);
@@ -92,7 +90,7 @@ function processResponse(res) {
 }
 
 function processFatalError(error) {
-  if (!error) return;
+  if (!error) { return; }
 
   var textLine = editorHelpers.getPrettyFatalErrorMessage(error.responseText);
 
