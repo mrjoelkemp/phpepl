@@ -33,7 +33,6 @@ You can then point your web server to serve files from the `phpepl/` root folder
 * Namely, you should be able to visit the index page (`phpepl/index.html`) from `http://localhost` (include a custom port if necessary)
  * Ex: `http://localhost:8000/index.html` or simply `http://localhost:8000`, assuming your server is configured to listen to port 8000.
 
-**You then need to disable sandboxing** by toggling the `$sandbox_me` var in `src/eval/index.php` to disable the sandbox locally.
 You'll then have free reign to execute any commands.
 
 #### Vagrant
@@ -64,8 +63,9 @@ If you'd like to tinker around with the code, you can do the following:
 `src/phpepl.js` is the main script for the website. This gets built into `dist/phpepl.js`
 which is referenced by `phpepl/index.html`.
 
-The php evaluation code is in `src/eval/index.php`. That endpoint is sandboxed by default,
-so toggle the `$sandbox_me` var in `src/eval/index.php` to disable the sandbox locally.
+The php evaluation code is in `src/eval/index.php`. That endpoint checks for the existence of a
+`PHPEPL_PROD` environment variable (which is set on the production hosts) for sandboxing. Locally, you won't
+have that set, so you'll have the unsandboxed version by default.
 
 * With grunt running, that change should rebuild the app and you can just refresh the page.
 

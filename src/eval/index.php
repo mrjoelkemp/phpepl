@@ -1,7 +1,7 @@
 <?php
-	// set me to false to turn off sandboxing
-	$sandbox_me = true;
-
+	// Only production environments will have this set – turning on sandboxing
+	// DEP_VERSION is for cloud control
+	$sandbox_me = isset($_ENV['PHPEPL_PROD']) || isset($_ENV['DEP_VERSION']);
 	require_once('../../vendor/autoload.php');
 
 	// Turn off errors since eval will throw them on invalid syntax
@@ -85,7 +85,7 @@
 		    	foreach($pattern as $_pattern){
 			    if(strtolower(substr($_pattern, -1)) == 'e'){
 			        throw new Exception("Can not use PREG_REPLACE_EVAL!");
-			    }	
+			    }
 		    	}
 		    } else if(strtolower(substr($pattern, -1)) == 'e'){
 		        throw new Exception("Can not use PREG_REPLACE_EVAL!");
