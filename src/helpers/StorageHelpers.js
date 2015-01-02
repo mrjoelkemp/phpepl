@@ -1,8 +1,8 @@
-var editor = require('../editor'),
-    $ = require('jquery');
+var editor = require('../editor');
+var $ = require('jquery');
 
 module.exports.saveCode = function() {
-  if (!window.localStorage) return;
+  if (!window.localStorage) { return; }
 
   var code = editor.getValue();
 
@@ -18,11 +18,11 @@ module.exports.saveCode = function() {
 
 // Preload where you last left off
 module.exports.loadSavedCode = function() {
-  if (!window.localStorage) return;
+  if (!window.localStorage) { return; }
 
-  var greeting = 'echo "We\'re running php version: " . phpversion();',
-      result = window.localStorage.getItem('code'),
-      code   = !result ? greeting : result;
+  var greeting = 'echo "We\'re running php version: " . phpversion();';
+  var result = window.localStorage.getItem('code');
+  var code   = !result ? greeting : result;
 
   editor.setValue(code);
 };
