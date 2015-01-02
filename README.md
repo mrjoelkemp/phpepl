@@ -33,8 +33,15 @@ You can then point your web server to serve files from the `phpepl/` root folder
 * Namely, you should be able to visit the index page (`phpepl/index.html`) from `http://localhost` (include a custom port if necessary)
  * Ex: `http://localhost:8000/index.html` or simply `http://localhost:8000`, assuming your server is configured to listen to port 8000.
 
-The app will automatically disable the sandbox and give you free reign over the REPL to
-execute any commands.
+**You then need to disable sandboxing** by toggling the `$sandbox_me` var in `src/eval/index.php` to disable the sandbox locally.
+You'll then have free reign to execute any commands.
+
+#### Vagrant
+
+If you use vagrant, you can `vagrant up` within the phpepl root. This will spawn a virtual machine serving phpepl
+at the `http://phpepl.dev` address.
+
+You can also do `vagrant plugin install vagrant-hostsupdater` if you need to fetch the hostname from `/etc/hosts` or another host file.
 
 ### Contact Me
 
@@ -45,7 +52,8 @@ Close to 100 people use this REPL every day; don't ruin it for them. Please play
 
 ### Contribute
 
-This app uses Browserify for bundling, Make for a build script, and Watchify for building on file save.
+This app uses Browserify for bundling and Grunt for task running.
+
 If you'd like to tinker around with the code, you can do the following:
 
 * Clone the repo
@@ -56,11 +64,8 @@ If you'd like to tinker around with the code, you can do the following:
 `src/phpepl.js` is the main script for the website. This gets built into `dist/phpepl.js`
 which is referenced by `phpepl/index.html`.
 
-The php evaluation code is in `src/eval/`. The file `src/eval/unsafe.php` is the unsandboxed version,
-whereas `src/eval/index.php` is the PHPSandboxed version.
-
-If you'd like to simulate the sandboxed environment in development,
-change the `evalUrl` in `phpepl.js` to the `sandboxed` url. This will be made easier in the future.
+The php evaluation code is in `src/eval/index.php`. That endpoint is sandboxed by default,
+so toggle the `$sandbox_me` var in `src/eval/index.php` to disable the sandbox locally.
 
 * With grunt running, that change should rebuild the app and you can just refresh the page.
 

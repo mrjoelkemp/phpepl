@@ -4,23 +4,17 @@ var
     $ = window.$ = window.jQuery = require('jquery'),
 
     // Detect the port that localhost is running on
-    port        = window.location.host.split(':')[1] || '80',
+    port = window.location.host.split(':')[1] || '80',
     // Auto add the port number
-    origin      = window.location.origin.indexOf(':') !== -1 ?
-                  window.location.origin :
-                  window.location.origin + ':' + port,
+    origin = window.location.origin.indexOf(':') !== -1 ?
+            window.location.origin :
+            window.location.origin + ':' + port,
 
-    // Evals for different environments
-    unsafe    = origin + '/src/eval/unsafe.php',
-    sandboxed = origin + '/src/eval/index.php',
+    evalURL = origin + '/src/eval/index.php',
 
-    // Safeguard to always use the live eval on the remote server
-    // and the unsafe dev version otherwise.
-    evalURL        = isLiveEnv() ? sandboxed : unsafe,
-
-    mixpanel       = window.mixpanel || {},
-    editor         = require('./editor'),
-    editorHelpers  = require('./helpers/EditorHelpers'),
+    mixpanel = window.mixpanel || {},
+    editor = require('./editor'),
+    editorHelpers = require('./helpers/EditorHelpers'),
     storageHelpers = require('./helpers/StorageHelpers');
 
 storageHelpers.loadSavedCode();
@@ -82,7 +76,6 @@ function processResponse(res) {
 
   if (!error) {
     editorHelpers.setOutput(result);
-
   } else {
     if (error.line && error.message) {
       // Show the line in red
