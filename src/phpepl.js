@@ -1,14 +1,8 @@
 'use strict';
 
 var $ = window.$ = window.jQuery = require('jquery');
-// Detect the port that localhost is running on
-var port = window.location.host.split(':')[1] || '80';
-// Auto add the port number
-var origin = window.location.origin.indexOf(':') !== -1 ?
-             window.location.origin :
-             window.location.origin + ':' + port;
 
-var evalURL = origin + '/src/eval/index.php';
+var evalURL = 'src/eval/index.php';
 
 var mixpanel = window.mixpanel || {};
 var editor = require('./editor');
