@@ -20,6 +20,22 @@ This has, of course, crippled the tool a bit – as you can't run code that has 
 
 ### Running it locally
 
+#### Vagrant
+
+If you use vagrant, you can `vagrant up` within the phpepl root. This will spawn a virtual machine serving phpepl
+at the `http://phpepl.dev` address.
+
+You can also do `vagrant plugin install vagrant-hostsupdater` if you need to fetch the hostname from `/etc/hosts` or another host file.
+
+#### Docker
+
+If you use Docker, you can run `./docker-bootstrap` to start a container that serves the app using PHP5 and Apache.
+
+To view the served app, visit the IP address of the host. Note, if you're using boot2docker, you need to visit the ip
+found via the `boot2dock ip` command.
+
+#### Manually
+
 To serve this application locally, you'll need any php-capable web server:
 
 * Mac: [MAMP](http://www.mamp.info/en/index.html)
@@ -34,13 +50,6 @@ You can then point your web server to serve files from the `phpepl/` root folder
  * Ex: `http://localhost:8000/index.html` or simply `http://localhost:8000`, assuming your server is configured to listen to port 8000.
 
 You'll then have free reign to execute any commands.
-
-#### Vagrant
-
-If you use vagrant, you can `vagrant up` within the phpepl root. This will spawn a virtual machine serving phpepl
-at the `http://phpepl.dev` address.
-
-You can also do `vagrant plugin install vagrant-hostsupdater` if you need to fetch the hostname from `/etc/hosts` or another host file.
 
 ### Contact Me
 
