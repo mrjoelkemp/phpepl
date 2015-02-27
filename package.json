@@ -2,6 +2,7 @@
   "name": "phpepl",
   "description": "The PHP repl",
   "version": "2.2.0",
+  "author": "Joel Kemp <joel@mrjoelkemp.com>",
   "dependencies": {
     "jquery": "1.x",
     "moment": "*"
@@ -10,6 +11,11 @@
     "type": "git",
     "url": "https://github.com/mrjoelkemp/phpepl"
   },
+  "keywords": [
+    "php",
+    "repl",
+    "sandbox"
+  ],
   "engines": {
     "node": "0.10.x",
     "npm": "1.2.x"
