@@ -1,17 +1,19 @@
 <?php
 
+namespace Demo;
+
 // Include the autoloader
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . '.composer'
-    . DIRECTORY_SEPARATOR . 'autoload.php';
+require_once __DIR__.'/../vendor/autoload.php'
 
 use FunctionParser\FunctionParser;
+use ReflectionFunction;
 
 $foo = 2;
 $closure = function($bar) use($foo) {
     return $foo + $bar;
 };
 
-$parser = new FunctionParser(new \ReflectionFunction($closure));
+$parser = new FunctionParser(new ReflectionFunction($closure));
 
 echo "CODE:" . PHP_EOL;
 echo $parser->getCode() . PHP_EOL;

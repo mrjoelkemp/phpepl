@@ -3,8 +3,7 @@
 namespace Demo;
 
 // Include the autoloader
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . '.composer'
-    . DIRECTORY_SEPARATOR . 'autoload.php';
+require_once __DIR__.'/../vendor/autoload.php'
 
 use FunctionParser\FunctionParser;
 

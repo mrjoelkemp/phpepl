@@ -12,21 +12,21 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fieryprophet/php-sandbox.git",
-                "reference": "db9ca30c51d3d6a5644fc0288d6408562c5011a4"
+                "reference": "4a30e96e1a525a4a6b74e24034d7f505133eb8cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fieryprophet/php-sandbox/zipball/db9ca30c51d3d6a5644fc0288d6408562c5011a4",
-                "reference": "db9ca30c51d3d6a5644fc0288d6408562c5011a4",
+                "url": "https://api.github.com/repos/fieryprophet/php-sandbox/zipball/4a30e96e1a525a4a6b74e24034d7f505133eb8cb",
+                "reference": "4a30e96e1a525a4a6b74e24034d7f505133eb8cb",
                 "shasum": ""
             },
             "require": {
-                "jeremeamia/functionparser": "dev-master",
-                "nikic/php-parser": "0.9.*@dev",
+                "jeremeamia/functionparser": "~1.0.0",
+                "nikic/php-parser": "~0.9.5",
                 "php": ">=5.3.2"
             },
             "require-dev": {
-                "phpdocumentor/phpdocumentor": "v2.3.0",
+                "phpdocumentor/phpdocumentor": "v2.3.2",
                 "phpunit/phpunit": "3.7.*"
             },
             "type": "library",
@@ -56,7 +56,7 @@
                 "sandbox",
                 "whitelist"
             ],
-            "time": "2014-10-27 14:56:02"
+            "time": "2015-02-27 20:09:02"
         },
         {
             "name": "jeremeamia/FunctionParser",
@@ -64,21 +64,26 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jeremeamia/FunctionParser.git",
-                "reference": "9e1ea101f2680dcce65c338bba76dac380d921c6"
+                "reference": "035b52000b88ea8d72a6647dd4cd39f080cf7ada"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jeremeamia/FunctionParser/zipball/9e1ea101f2680dcce65c338bba76dac380d921c6",
-                "reference": "9e1ea101f2680dcce65c338bba76dac380d921c6",
+                "url": "https://api.github.com/repos/jeremeamia/FunctionParser/zipball/035b52000b88ea8d72a6647dd4cd39f080cf7ada",
+                "reference": "035b52000b88ea8d72a6647dd4cd39f080cf7ada",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
             "autoload": {
-                "psr-0": {
-                    "FunctionParser": "src/"
+                "psr-4": {
+                    "FunctionParser\\": "src/"
                 }
             },
             "notification-url": "http://packagist.org/downloads/",
@@ -98,7 +103,7 @@
                 "parser",
                 "tokenizer"
             ],
-            "time": "2014-01-14 23:32:26"
+            "time": "2015-02-02 17:30:47"
         },
         {
             "name": "nikic/php-parser",

@@ -14,6 +14,11 @@
         "php": ">=5.3.2"
     },
     "autoload": {
-        "psr-0": { "FunctionParser": "src/" }
+        "psr-4": { "FunctionParser\\": "src/" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
     }
 }
