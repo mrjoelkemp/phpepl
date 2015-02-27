@@ -1,6 +1,6 @@
-.idea/*
-vendor/*
-build/*
-.DS_Store
+/.idea
+/vendor
+/build
 cache.properties
+composer.lock
 phpunit.xml

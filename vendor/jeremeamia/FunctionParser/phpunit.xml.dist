@@ -1,36 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit
-  bootstrap="./tests/bootstrap.php"
-  colors="true"
-  processIsolation="false"
-  stopOnFailure="false"
-  syntaxCheck="false"
-  convertErrorsToExceptions="true"
-  convertNoticesToExceptions="true"
-  convertWarningsToExceptions="true"
-  testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnError="false"
+         stopOnFailure="false"
+         syntaxCheck="true"
+         strict="false"
+         verbose="true"
 >
-
-  <testsuites>
-    <testsuite name="FunctionParser">
-      <directory>./tests/FunctionParser/UnitTest</directory>
-      <directory>./tests/FunctionParser/IntegrationTest</directory>
-    </testsuite>
-  </testsuites>
-
-  <filter>
-    <whitelist>
-      <directory suffix=".php">./src/FunctionParser</directory>
-    </whitelist>
-  </filter>
-
-  <logging>
-    <log type="coverage-html" target="./build/tests/coverage"
-         yui="true" highlight="false" charset="UTF-8"
-         lowUpperBound="35" highLowerBound="70"/>
-    <log type="coverage-clover" target="./build/tests/coverage.xml"/>
-    <log type="junit" target="./build/tests/log.xml" logIncompleteSkipped="false"/>
-    <log type="testdox-html" target="./build/tests/testdox.html"/>
-  </logging>
-
+    <testsuites>
+        <testsuite name="FunctionParser">
+            <directory suffix="Test.php">./tests</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-html" target="./build/tests/coverage"
+             yui="true" highlight="false" charset="UTF-8"
+             lowUpperBound="35" highLowerBound="70"/>
+        <log type="coverage-clover" target="./build/tests/coverage.xml"/>
+        <log type="junit" target="./build/tests/log.xml" logIncompleteSkipped="false"/>
+        <log type="testdox-html" target="./build/tests/testdox.html"/>
+    </logging>
 </phpunit>

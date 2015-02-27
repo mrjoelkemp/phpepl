@@ -7,5 +7,4 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'PHPParser' => array($vendorDir . '/nikic/php-parser/lib'),
-    'FunctionParser' => array($vendorDir . '/jeremeamia/FunctionParser/src'),
 );

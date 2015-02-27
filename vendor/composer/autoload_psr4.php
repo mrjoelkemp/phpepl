@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'PHPSandbox\\' => array($vendorDir . '/fieryprophet/php-sandbox/src'),
+    'FunctionParser\\' => array($vendorDir . '/jeremeamia/FunctionParser/src'),
 );
