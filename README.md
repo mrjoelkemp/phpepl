@@ -8,7 +8,7 @@ I simply wanted an online repl that allowed me to play with *multiline* php scri
 There's already a console-based repl `php -a`, but it and many other
 console-based repls are not great for multiline snippets.
 
-I've used this quick hack a ton since building it. I hope you get some use out of it as well.
+Folks have even been using `src/eval/index.php` as a sandboxed, php eval script to power their own services. Pretty awesome!
 
 ### Sandboxing
 
@@ -72,8 +72,10 @@ If you'd like to tinker around with the code, you can do the following:
 `src/phpepl.js` is the main script for the website. This gets built into `dist/phpepl.js`
 which is referenced by `phpepl/index.html`.
 
-The php evaluation code is in `src/eval/index.php`. That endpoint checks for the existence of a
-`PHPEPL_PROD` environment variable (which is set on the production hosts) for sandboxing. Locally, you won't
+The php evaluation code is in `src/eval/index.php`.
+
+That endpoint checks for the existence of a `PHPEPL_PROD` environment variable
+(which is set on the production hosts) for sandboxing. Locally, you won't
 have that set, so you'll have the unsandboxed version by default.
 
 * With grunt running, that change should rebuild the app and you can just refresh the page.
