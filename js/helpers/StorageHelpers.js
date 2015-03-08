@@ -1,9 +1,7 @@
 var editor = require('../editor');
 
-module.exports.saveCode = function() {
+module.exports.saveCode = function(code) {
   if (!window.localStorage) { return; }
-
-  var code = editor.getValue();
 
   window.localStorage.setItem('code', code);
 
@@ -16,12 +14,11 @@ module.exports.saveCode = function() {
 };
 
 // Preload where you last left off
-module.exports.loadSavedCode = function() {
+module.exports.getSavedCode = function() {
   if (!window.localStorage) { return; }
 
   var greeting = 'echo "We\'re running php version: " . phpversion();';
   var result = window.localStorage.getItem('code');
-  var code   = !result ? greeting : result;
 
-  editor.setValue(code);
+  return !result ? greeting : result;
 };

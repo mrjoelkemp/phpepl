@@ -1,20 +1,29 @@
 'use strict';
 
-var evalURL = 'eval/index.php';
-
-var mixpanel = window.mixpanel || {};
-var editor = require('./editor');
+var Editor = require('./editor');
+var Console = require('./console');
 var editorHelpers = require('./helpers/EditorHelpers');
 var storageHelpers = require('./helpers/StorageHelpers');
 
-storageHelpers.loadSavedCode();
+var editor = new Editor($('#editor'));
+var console = new Console($('.console'));
+
+var mixpanel = window.mixpanel || {};
+var evalURL = 'eval/index.php';
+
+var savedCode = storageHelpers.getSavedCode();
+if (savedCode) {
+  editor.setValue(savedCode);
+}
 
 if (!onPHP5Version() && isLiveEnv()) { $('.link-to-heroku').fadeIn('fast'); }
 
 $(document).keydown(checkForShortcuts);
 
 // Remember the code in the editor before navigating away
-$(window).unload(storageHelpers.saveCode.bind(storageHelpers));
+$(window).unload(function() {
+  storageHelpers.saveCode(editor.getValue());
+});
 
 // Helpers
 function sendingCode(code) {
@@ -43,11 +52,11 @@ function processCode() {
   var code = editor.getValue();
 
   if (!code.length) {
-    editorHelpers.setOutput('Please supply some code...');
+    console.setOutput('Please supply some code...');
     return;
   }
 
-  $('.spinner').fadeIn('fast');
+  console.toggleSpinner(true);
 
   // Track it
   mixpanel.track('Code Run', {code: code});
@@ -60,25 +69,19 @@ function processCode() {
 function processResponse(res) {
   if (!res) { return; }
 
-  var result    = res.result;
-  var error     = res.error;
-  var errorMsg  = '';
+  if (!res.error) {
+    console.setOutput(res.result);
 
-  if (!error) {
-    editorHelpers.setOutput(result);
   } else {
-    if (error.line && error.message) {
+    console.setError(res.error);
+
+    if (res.error.line) {
       // Show the line in red
-      editorHelpers.showLineError(error.line);
-
-      // Show the error message
-      errorMsg = 'Line ' + error.line + ': ';
+      editor.showLineError(res.error.line);
     }
-
-    errorMsg += error.message;
-
-    editorHelpers.setOutput(errorMsg, true);
   }
+
+  console.toggleSpinner(false);
 }
 
 function processFatalError(error) {
@@ -86,8 +89,9 @@ function processFatalError(error) {
 
   var textLine = editorHelpers.getPrettyFatalErrorMessage(error.responseText);
 
-  editorHelpers.setOutput(textLine[0], true);
-  editorHelpers.showLineError(textLine[1]);
+  console.setOutput(textLine[0], true);
+  console.toggleSpinner(false);
+  editor.showLineError(textLine[1]);
   mixpanel.track('Error', {error: error.responseText});
 }
 
