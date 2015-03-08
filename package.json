@@ -32,6 +32,6 @@
   },
   "main": "./src/phpepl.js",
   "scripts": {
-    "test": "jscs -p google src/ && jshint src"
+    "test": "jscs -p google js/*.js js/helpers && jshint js/*.js js/helpers"
   }
 }
