@@ -5,6 +5,16 @@ module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
+    cacheBust: {
+      options: {
+        deleteOriginals: true
+      },
+      assets: {
+        files: [{
+          src: ['index.html']
+        }]
+      }
+    },
     sass: {
       dist: {
         files: [
@@ -60,11 +70,12 @@ module.exports = function (grunt) {
       js: {
         files: [
           "js/**/*.js",
-          "!vendor/**/*.js"
+          "!js/vendor/**/*.js"
         ],
         tasks: [
           "browserify",
-          "uglify"
+          "uglify",
+          'cacheBust'
         ]
       }
     }
