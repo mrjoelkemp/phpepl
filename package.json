@@ -3,10 +3,7 @@
   "description": "The PHP repl",
   "version": "2.2.1",
   "author": "Joel Kemp <joel@mrjoelkemp.com>",
-  "dependencies": {
-    "jquery": "1.x",
-    "moment": "*"
-  },
+  "dependencies": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/mrjoelkemp/phpepl"
@@ -21,10 +18,9 @@
     "npm": "1.2.x"
   },
   "devDependencies": {
-    "browserify": "~3.31.2",
-    "browserify-shim": "~3.3.0",
     "grunt": "^0.4.5",
     "grunt-browserify": "~3.2.1",
+    "grunt-cache-bust": "~0.4.13",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-sass": "^0.8.1",
     "grunt-contrib-uglify": "~0.6.0",
@@ -36,6 +32,6 @@
   },
   "main": "./src/phpepl.js",
   "scripts": {
-    "test": "jscs -p google src/ && jshint src"
+    "test": "jscs -p google js/*.js js/helpers && jshint js/*.js js/helpers"
   }
 }

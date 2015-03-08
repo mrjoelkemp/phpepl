@@ -69,10 +69,10 @@ If you'd like to tinker around with the code, you can do the following:
 * `grunt`
 * Point your browser to your localhost (assuming you have the app being [served locally](#running-it-locally))
 
-`src/phpepl.js` is the main script for the website. This gets built into `dist/phpepl.js`
-which is referenced by `phpepl/index.html`.
+`js/phpepl.js` is the main script for the website. This gets built into a hashed `dist/phpepl.js`
+which is referenced by `index.html`.
 
-The php evaluation code is in `src/eval/index.php`.
+The php evaluation code is in `eval/index.php`.
 
 That endpoint checks for the existence of a `PHPEPL_PROD` environment variable
 (which is set on the production hosts) for sandboxing. Locally, you won't

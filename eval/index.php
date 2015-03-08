@@ -2,7 +2,7 @@
 	// Only production environments will have this set – turning on sandboxing
 	// DEP_VERSION is for cloud control
 	$sandbox_me = isset($_ENV['PHPEPL_PROD']) || isset($_ENV['DEP_VERSION']);
-	require_once('../../vendor/autoload.php');
+	require_once('../vendor/autoload.php');
 
 	// Turn off errors since eval will throw them on invalid syntax
 	@ini_set('log_errors', false);

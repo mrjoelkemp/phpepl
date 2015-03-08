@@ -1,6 +1,3 @@
-var moment = require('moment');
-var $ = require('jquery');
-
 // Set the html of the output div
 module.exports.setOutput = function(text) {
   var isError = !!arguments[1];
