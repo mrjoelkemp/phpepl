@@ -1,5 +1,4 @@
 var editor = require('../editor');
-var $ = require('jquery');
 
 module.exports.saveCode = function() {
   if (!window.localStorage) { return; }

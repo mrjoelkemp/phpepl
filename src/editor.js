@@ -1,5 +1,3 @@
-var $ = require('jquery');
-
 module.exports = window.CodeMirror($('#editor')[0], {
   lineNumbers:       true,
   matchBrackets:     true,

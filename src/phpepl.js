@@ -1,7 +1,5 @@
 'use strict';
 
-var $ = window.$ = window.jQuery = require('jquery');
-
 var evalURL = 'src/eval/index.php';
 
 var mixpanel = window.mixpanel || {};
