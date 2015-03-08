@@ -28,7 +28,7 @@ module.exports = function (grunt) {
       },
       dist: {
         files: {
-          "dist/phpepl.js": ["src/phpepl.js"]
+          "dist/phpepl.js": ["js/phpepl.js"]
         }
       }
     },
@@ -59,7 +59,8 @@ module.exports = function (grunt) {
       },
       js: {
         files: [
-          "src/**/*.js"
+          "js/**/*.js",
+          "!vendor/**/*.js"
         ],
         tasks: [
           "browserify",
