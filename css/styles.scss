@@ -66,37 +66,62 @@ body {
         border: 1px solid black;
         background-color: #eee;
         overflow: auto;
-        .spinner {
-          position: absolute;
+        .loader {
           display: none;
-          top: 8%;
-          left: 45%;
-          width: 100px;
-          height: 100px;
-          margin: 0 auto;
-          div {
-            width: 12%;
-            height: 26%;
-            background: #000;
-            position: absolute;
-            left: 44.5%;
-            top: 37%;
-            opacity: 0;
-            -webkit-animation: fade 1s linear infinite;
-            -webkit-border-radius: 50px;
-            -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.2);
-            &.bar1 {-webkit-transform:rotate(0deg) translate(0, -142%); -webkit-animation-delay: 0s;}
-            &.bar2 {-webkit-transform:rotate(30deg) translate(0, -142%); -webkit-animation-delay: -0.9167s;}
-            &.bar3 {-webkit-transform:rotate(60deg) translate(0, -142%); -webkit-animation-delay: -0.833s;}
-            &.bar4 {-webkit-transform:rotate(90deg) translate(0, -142%); -webkit-animation-delay: -0.75s;}
-            &.bar5 {-webkit-transform:rotate(120deg) translate(0, -142%); -webkit-animation-delay: -0.667s;}
-            &.bar6 {-webkit-transform:rotate(150deg) translate(0, -142%); -webkit-animation-delay: -0.5833s;}
-            &.bar7 {-webkit-transform:rotate(180deg) translate(0, -142%); -webkit-animation-delay: -0.5s;}
-            &.bar8 {-webkit-transform:rotate(210deg) translate(0, -142%); -webkit-animation-delay: -0.41667s;}
-            &.bar9 {-webkit-transform:rotate(240deg) translate(0, -142%); -webkit-animation-delay: -0.333s;}
-            &.bar10 {-webkit-transform:rotate(270deg) translate(0, -142%); -webkit-animation-delay: -0.25s;}
-            &.bar11 {-webkit-transform:rotate(300deg) translate(0, -142%); -webkit-animation-delay: -0.1667s;}
-            &.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -webkit-animation-delay: -0.0833s;}
+        }
+        .loader,
+        .loader:before,
+        .loader:after {
+          background: #FFF;
+          -webkit-animation: load1 1s infinite ease-in-out;
+          animation: load1 1s infinite ease-in-out;
+          width: 1em;
+          height: 4em;
+        }
+        .loader:before,
+        .loader:after {
+          position: absolute;
+          top: 0;
+          content: '';
+        }
+        .loader:before {
+          left: -1.5em;
+        }
+        .loader {
+          text-indent: -9999em;
+          margin: 4em auto;
+          position: relative;
+          font-size: 11px;
+          -webkit-animation-delay: -0.16s;
+          animation-delay: -0.16s;
+        }
+        .loader:after {
+          left: 1.5em;
+          -webkit-animation-delay: -0.32s;
+          animation-delay: -0.32s;
+        }
+        @-webkit-keyframes load1 {
+          0%,
+          80%,
+          100% {
+            box-shadow: 0 0 #FFF;
+            height: 4em;
+          }
+          40% {
+            box-shadow: 0 -2em #ffffff;
+            height: 5em;
+          }
+        }
+        @keyframes load1 {
+          0%,
+          80%,
+          100% {
+            box-shadow: 0 0 #FFF;
+            height: 4em;
+          }
+          40% {
+            box-shadow: 0 -2em #ffffff;
+            height: 5em;
           }
         }
         .output-container{
