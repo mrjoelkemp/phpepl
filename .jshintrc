@@ -8,6 +8,8 @@
     "mocha"    : true,
     "globals"  : {
       "window": false,
-      "document": false
+      "document": false,
+      "$": false,
+      "moment": false
     }
 }
