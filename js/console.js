@@ -1,5 +1,3 @@
-var timestamp = require('./lib/timestamp');
-
 /**
  * An output console
  * @param {$} $element
@@ -16,8 +14,6 @@ Console.prototype.setOutput = function(text) {
   this.$output
   .html(text)
   .removeClass('error');
-
-  this.$element.find('.timestamp span').html(timestamp());
 };
 
 /**

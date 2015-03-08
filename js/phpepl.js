@@ -2,8 +2,8 @@
 
 var Editor = require('./editor');
 var Console = require('./console');
-var editorHelpers = require('./helpers/EditorHelpers');
-var storageHelpers = require('./helpers/StorageHelpers');
+var getPrettyFatalErrorMessage = require('./lib/getPrettyFatalErrorMessage');
+var timestamp = require('./lib/timestamp');
 
 var editor = new Editor($('#editor'));
 var console = new Console($('.console'));
@@ -11,9 +11,12 @@ var console = new Console($('.console'));
 var mixpanel = window.mixpanel || {};
 var evalURL = 'eval/index.php';
 
-var savedCode = storageHelpers.getSavedCode();
+var savedCode = editor.getSavedCode();
 if (savedCode) {
   editor.setValue(savedCode);
+
+} else {
+  editor.setValue('echo "We\'re running php version: " . phpversion();');
 }
 
 if (!onPHP5Version() && isLiveEnv()) { $('.link-to-heroku').fadeIn('fast'); }
@@ -22,18 +25,8 @@ $(document).keydown(checkForShortcuts);
 
 // Remember the code in the editor before navigating away
 $(window).unload(function() {
-  storageHelpers.saveCode(editor.getValue());
+  editor.saveCode();
 });
-
-// Helpers
-function sendingCode(code) {
-  return $.ajax({
-    type:     'POST',
-    url:      evalURL,
-    data:     {code: code},
-    dataType: 'json'
-  });
-}
 
 function hostHas(part) {
   return window.location.host.indexOf(part) !== -1;
@@ -58,10 +51,9 @@ function processCode() {
 
   console.toggleSpinner(true);
 
-  // Track it
   mixpanel.track('Code Run', {code: code});
 
-  sendingCode(code)
+  editor.evaluateCode({evalURL: evalURL})
     .done(processResponse)
     .fail(processFatalError);
 }
@@ -71,6 +63,7 @@ function processResponse(res) {
 
   if (!res.error) {
     console.setOutput(res.result);
+    $('.timestamp span').html(timestamp());
 
   } else {
     console.setError(res.error);
@@ -87,11 +80,16 @@ function processResponse(res) {
 function processFatalError(error) {
   if (!error) { return; }
 
-  var textLine = editorHelpers.getPrettyFatalErrorMessage(error.responseText);
+  var textLine = getPrettyFatalErrorMessage(error.responseText);
 
-  console.setOutput(textLine[0], true);
+  console.setError({
+    message: textLine[0],
+    line: textLine[1]
+  });
+
   console.toggleSpinner(false);
   editor.showLineError(textLine[1]);
+
   mixpanel.track('Error', {error: error.responseText});
 }
 
@@ -104,8 +102,9 @@ function checkForShortcuts(e) {
 
   // CMD + S or CTRL + S to save code
   if (e.which === 83 && (e.ctrlKey || e.metaKey)) {
-    storageHelpers.saveCode();
+    editor.saveCode();
     e.preventDefault();
     mixpanel.track('Save Shortcut');
+    $('.timestamp span').html('Code Saved!');
   }
 }

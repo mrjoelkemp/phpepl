@@ -21,4 +21,4 @@ module.exports = function() {
   }
 
   return time.join(':') + ' ' + suffix;
-}
+};

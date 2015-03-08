@@ -18,10 +18,16 @@ function Editor($element) {
   });
 }
 
+/**
+ * @return {String}
+ */
 Editor.prototype.getValue = function() {
   return this._editor.getValue();
 };
 
+/**
+ * @param {String} val
+ */
 Editor.prototype.setValue = function(val) {
   this._editor.setValue(val);
 };
@@ -40,6 +46,42 @@ Editor.prototype.showLineError = function(line) {
       $(this).addClass('error-gutter');
       return;
     }
+  });
+};
+
+/**
+ * @param  {String} code
+ */
+Editor.prototype.saveCode = function() {
+  if (!window.localStorage) { return; }
+
+  window.localStorage.setItem('code', this.getValue());
+  window.mixpanel.track('Code Saved');
+};
+
+/**
+ * Preload where you last left off
+ * @return {String}
+ */
+Editor.prototype.getSavedCode = function() {
+  if (!window.localStorage) { return; }
+
+  return window.localStorage.getItem('code') || '';
+};
+
+/**
+ * Process/Eval the code
+ *
+ * @param  {Object} options
+ * @param  {Object} options.evalURL - Url to use for evaluation
+ * @return {Deferred}
+ */
+Editor.prototype.evaluateCode = function(options) {
+  return $.ajax({
+    type:     'POST',
+    url:      options.evalURL,
+    data:     {code: this.getValue()},
+    dataType: 'json'
   });
 };
 

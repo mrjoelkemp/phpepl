@@ -1,6 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var timestamp = require('./lib/timestamp');
-
 /**
  * An output console
  * @param {$} $element
@@ -17,8 +15,6 @@ Console.prototype.setOutput = function(text) {
   this.$output
   .html(text)
   .removeClass('error');
-
-  this.$element.find('.timestamp span').html(timestamp());
 };
 
 /**
@@ -55,7 +51,8 @@ Console.prototype.toggleSpinner = function(state) {
 };
 
 module.exports = Console;
-},{"./lib/timestamp":5}],2:[function(require,module,exports){
+
+},{}],2:[function(require,module,exports){
 /**
  * A code editor wrapper around Codemirror
  *
@@ -76,10 +73,16 @@ function Editor($element) {
   });
 }
 
+/**
+ * @return {String}
+ */
 Editor.prototype.getValue = function() {
   return this._editor.getValue();
 };
 
+/**
+ * @param {String} val
+ */
 Editor.prototype.setValue = function(val) {
   this._editor.setValue(val);
 };
@@ -101,37 +104,85 @@ Editor.prototype.showLineError = function(line) {
   });
 };
 
-module.exports = Editor;
-
-},{}],3:[function(require,module,exports){
-
-},{}],4:[function(require,module,exports){
-var editor = require('../editor');
-
-module.exports.saveCode = function(code) {
+/**
+ * @param  {String} code
+ */
+Editor.prototype.saveCode = function() {
   if (!window.localStorage) { return; }
 
-  window.localStorage.setItem('code', code);
-
-  // Show the saved message
-  $('.timestamp')
-    .find('span')
-      .html('Code Saved!');
-
+  window.localStorage.setItem('code', this.getValue());
   window.mixpanel.track('Code Saved');
 };
 
-// Preload where you last left off
-module.exports.getSavedCode = function() {
+/**
+ * Preload where you last left off
+ * @return {String}
+ */
+Editor.prototype.getSavedCode = function() {
   if (!window.localStorage) { return; }
 
-  var greeting = 'echo "We\'re running php version: " . phpversion();';
-  var result = window.localStorage.getItem('code');
-
-  return !result ? greeting : result;
+  return window.localStorage.getItem('code') || '';
 };
 
-},{"../editor":2}],5:[function(require,module,exports){
+/**
+ * Process/Eval the code
+ *
+ * @param  {Object} options
+ * @param  {Object} options.evalURL - Url to use for evaluation
+ * @return {Deferred}
+ */
+Editor.prototype.evaluateCode = function(options) {
+  return $.ajax({
+    type:     'POST',
+    url:      options.evalURL,
+    data:     {code: this.getValue()},
+    dataType: 'json'
+  });
+};
+
+module.exports = Editor;
+
+},{}],3:[function(require,module,exports){
+/**
+ * Helper to show the fatal errors nicely
+ *
+ * @param  {String} responseText
+ * @return {String} A list of the error text and line number that generated the error.
+ */
+module.exports = function(responseText) {
+  if (!responseText.length) { return ''; }
+
+  var text = responseText;
+  var tokensToReplace = ['\n', /<br \/>/g, /<b>/g, /<\/b>/g, /(Fatal error: +)/g];
+  var splitTokens;
+  var err;
+  var line;
+  var lineNum;
+
+  // If the error message doesn't contain 'fatal error',
+  // then just print it
+  if (!responseText.toLowerCase().indexOf('fatal error')) {
+    return [responseText, 1];
+  }
+
+  tokensToReplace.forEach(function(val) {
+    text = text.replace(val, '');
+  });
+
+  splitTokens = text.split('in');
+  err = splitTokens[0].trim();
+  splitTokens = text.split('on');
+  line = splitTokens[1].trim();
+
+  text = (err + ' on ' + line).trim();
+
+  lineNum = line.split(' ');
+  lineNum = Number(lineNum[1]);
+
+  return [text, lineNum];
+};
+
+},{}],4:[function(require,module,exports){
 /**
  * Returns a pretty timestamp (only time)
  * @return {String}
@@ -155,14 +206,15 @@ module.exports = function() {
   }
 
   return time.join(':') + ' ' + suffix;
-}
-},{}],6:[function(require,module,exports){
+};
+
+},{}],5:[function(require,module,exports){
 'use strict';
 
 var Editor = require('./editor');
 var Console = require('./console');
-var editorHelpers = require('./helpers/EditorHelpers');
-var storageHelpers = require('./helpers/StorageHelpers');
+var getPrettyFatalErrorMessage = require('./lib/getPrettyFatalErrorMessage');
+var timestamp = require('./lib/timestamp');
 
 var editor = new Editor($('#editor'));
 var console = new Console($('.console'));
@@ -170,9 +222,12 @@ var console = new Console($('.console'));
 var mixpanel = window.mixpanel || {};
 var evalURL = 'eval/index.php';
 
-var savedCode = storageHelpers.getSavedCode();
+var savedCode = editor.getSavedCode();
 if (savedCode) {
   editor.setValue(savedCode);
+
+} else {
+  editor.setValue('echo "We\'re running php version: " . phpversion();');
 }
 
 if (!onPHP5Version() && isLiveEnv()) { $('.link-to-heroku').fadeIn('fast'); }
@@ -181,18 +236,8 @@ $(document).keydown(checkForShortcuts);
 
 // Remember the code in the editor before navigating away
 $(window).unload(function() {
-  storageHelpers.saveCode(editor.getValue());
+  editor.saveCode();
 });
-
-// Helpers
-function sendingCode(code) {
-  return $.ajax({
-    type:     'POST',
-    url:      evalURL,
-    data:     {code: code},
-    dataType: 'json'
-  });
-}
 
 function hostHas(part) {
   return window.location.host.indexOf(part) !== -1;
@@ -217,10 +262,9 @@ function processCode() {
 
   console.toggleSpinner(true);
 
-  // Track it
   mixpanel.track('Code Run', {code: code});
 
-  sendingCode(code)
+  editor.evaluateCode({evalURL: evalURL})
     .done(processResponse)
     .fail(processFatalError);
 }
@@ -230,6 +274,7 @@ function processResponse(res) {
 
   if (!res.error) {
     console.setOutput(res.result);
+    $('.timestamp span').html(timestamp());
 
   } else {
     console.setError(res.error);
@@ -246,11 +291,16 @@ function processResponse(res) {
 function processFatalError(error) {
   if (!error) { return; }
 
-  var textLine = editorHelpers.getPrettyFatalErrorMessage(error.responseText);
+  var textLine = getPrettyFatalErrorMessage(error.responseText);
 
-  console.setOutput(textLine[0], true);
+  console.setError({
+    message: textLine[0],
+    line: textLine[1]
+  });
+
   console.toggleSpinner(false);
   editor.showLineError(textLine[1]);
+
   mixpanel.track('Error', {error: error.responseText});
 }
 
@@ -263,10 +313,11 @@ function checkForShortcuts(e) {
 
   // CMD + S or CTRL + S to save code
   if (e.which === 83 && (e.ctrlKey || e.metaKey)) {
-    storageHelpers.saveCode();
+    editor.saveCode();
     e.preventDefault();
     mixpanel.track('Save Shortcut');
+    $('.timestamp span').html('Code Saved!');
   }
 }
 
-},{"./console":1,"./editor":2,"./helpers/EditorHelpers":3,"./helpers/StorageHelpers":4}]},{},[6]);
+},{"./console":1,"./editor":2,"./lib/getPrettyFatalErrorMessage":3,"./lib/timestamp":4}]},{},[5]);
