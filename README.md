@@ -8,7 +8,7 @@ I simply wanted an online repl that allowed me to play with *multiline* php scri
 There's already a console-based repl `php -a`, but it and many other
 console-based repls are not great for multiline snippets.
 
-Folks have even been using `src/eval/index.php` as a sandboxed, php eval script to power their own services. Pretty awesome!
+Folks have even been using `eval/index.php` as a sandboxed, php eval script to power their own services. Pretty awesome!
 
 ### Sandboxing
 
@@ -17,6 +17,9 @@ plus some blacklisting of methods at the application level via [PHP-Sandbox](htt
 
 This has, of course, crippled the tool a bit – as you can't run code that has blacklisted methods.
 **For an unsandboxed experience, I recommend serving this app locally.**
+
+*Big thanks to [Elijah Horton](https://twitter.com/ElijahHorton), creator of PHP-Sandbox, for his great sandbox
+and assistance in maintaining PHPepl.*
 
 ### Running it locally
 
@@ -80,6 +83,24 @@ have that set, so you'll have the unsandboxed version by default.
 
 * With grunt running, that change should rebuild the app and you can just refresh the page.
 
-### License
+### License: MIT
 
-MIT
+Copyright (C) 2014 by Joel Kemp <joel@mrjoelkemp.com> and others
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
