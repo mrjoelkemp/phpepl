@@ -1,6 +1,6 @@
 'use strict';
 
-var evalURL = 'src/eval/index.php';
+var evalURL = 'eval/index.php';
 
 var mixpanel = window.mixpanel || {};
 var editor = require('./editor');
