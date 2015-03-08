@@ -1,18 +1,16 @@
+var timestamp = require('../lib/timestamp');
+
 // Set the html of the output div
 module.exports.setOutput = function(text) {
   var isError = !!arguments[1];
   var $output = $('.output span');
 
-  // Remove error classes if any
   $output.html(text).removeClass('error');
 
   if (isError) { $output.addClass('error'); }
 
-  // Turn off the spinner
   $('.spinner').fadeOut('fast');
-  // Set the timestamp
-  var time = moment(new Date().getTime()).format('h:mm a');
-  $('.timestamp').find('span').html(time);
+  $('.timestamp').find('span').html(timestamp());
 };
 
 // Highlights the line in the gutter with the error

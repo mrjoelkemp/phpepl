@@ -7,7 +7,7 @@ module.exports = function (grunt) {
   grunt.initConfig({
     cacheBust: {
       options: {
-        deleteOriginals: true
+        rename: false
       },
       assets: {
         files: [{
@@ -16,6 +16,9 @@ module.exports = function (grunt) {
       }
     },
     sass: {
+      options: {
+        style: 'compressed'
+      },
       dist: {
         files: [
           {

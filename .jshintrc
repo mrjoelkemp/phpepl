@@ -9,7 +9,6 @@
     "globals"  : {
       "window": false,
       "document": false,
-      "$": false,
-      "moment": false
+      "$": false
     }
 }
