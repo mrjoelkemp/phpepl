@@ -49,6 +49,10 @@ Editor.prototype.showLineError = function(line) {
   });
 };
 
+Editor.prototype.clearLineErrors = function() {
+  this.$element.find('.CodeMirror-linenumber').removeClass('error-gutter');
+};
+
 /**
  * @param  {String} code
  */
