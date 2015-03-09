@@ -187,6 +187,27 @@ module.exports = function(responseText) {
 };
 
 },{}],4:[function(require,module,exports){
+// http://stackoverflow.com/a/1099670/700897
+module.exports = function(qs) {
+  qs = qs.split('+').join(' ');
+
+  var params = {};
+  var tokens;
+  var re = /[?&]?([^=]+)=([^&]*)/g;
+  var token1;
+
+  tokens = re.exec(qs);
+
+  while (tokens) {
+    token1 = decodeURIComponent(tokens[1]);
+    params[token1] = decodeURIComponent(tokens[2]);
+    tokens = re.exec(qs);
+  }
+
+  return params;
+};
+
+},{}],5:[function(require,module,exports){
 /**
  * Returns a pretty timestamp (only time)
  * @return {String}
@@ -212,12 +233,13 @@ module.exports = function() {
   return time.join(':') + ' ' + suffix;
 };
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 var Editor = require('./editor');
 var Console = require('./console');
 var getPrettyFatalErrorMessage = require('./lib/getPrettyFatalErrorMessage');
+var getQueryParams = require('./lib/getQueryParams');
 var timestamp = require('./lib/timestamp');
 
 var editor = new Editor($('#editor'));
@@ -226,13 +248,18 @@ var console = new Console($('.console'));
 var mixpanel = window.mixpanel || {};
 var evalURL = 'eval/index.php';
 
-var savedCode = editor.getSavedCode();
-if (savedCode) {
-  editor.setValue(savedCode);
+var code = getQueryParams(document.location.search).code;
+if (code) {
+  code = window.decodeURIComponent(code);
+  mixpanel.track('Visit Code Url', {code: code});
 
 } else {
-  editor.setValue('echo "We\'re running php version: " . phpversion();');
+  code = editor.getSavedCode() ||
+        'echo "We\'re running php version: " . phpversion();';
 }
+
+editor.setValue(code);
+shareCode(code);
 
 if (!onPHP5Version() && isLiveEnv()) { $('.link-to-heroku').fadeIn('fast'); }
 
@@ -241,6 +268,10 @@ $(document).keydown(checkForShortcuts);
 // Remember the code in the editor before navigating away
 $(window).unload(function() {
   editor.saveCode();
+});
+
+$('input.share').focus(function() {
+  mixpanel.track('Code Share');
 });
 
 function hostHas(part) {
@@ -255,6 +286,14 @@ function onPHP5Version() {
   return hostHas('herokuapp');
 }
 
+function shareCode(code) {
+  var shareUrl = window.location.origin +
+                '?code=' +
+                window.encodeURIComponent(code);
+
+  $('input.share').val(shareUrl);
+}
+
 // Handles the sending of the code to the eval server
 function processCode() {
   var code = editor.getValue();
@@ -263,6 +302,8 @@ function processCode() {
     console.setOutput('Please supply some code...');
     return;
   }
+
+  shareCode(code);
 
   console.toggleSpinner(true);
 
@@ -326,4 +367,4 @@ function checkForShortcuts(e) {
   }
 }
 
-},{"./console":1,"./editor":2,"./lib/getPrettyFatalErrorMessage":3,"./lib/timestamp":4}]},{},[5]);
+},{"./console":1,"./editor":2,"./lib/getPrettyFatalErrorMessage":3,"./lib/getQueryParams":4,"./lib/timestamp":5}]},{},[6]);
