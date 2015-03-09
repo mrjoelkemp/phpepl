@@ -1,7 +1,7 @@
 {
   "name": "phpepl",
   "description": "The PHP repl",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "author": "Joel Kemp <joel@mrjoelkemp.com>",
   "dependencies": {},
   "repository": {
