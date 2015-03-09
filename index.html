@@ -12,7 +12,7 @@
     <link rel="icon" href="/favicon.ico?316280cb6879b222" type="image/x-icon">
 
     <link href='js/vendor/codemirror/lib/codemirror.css?69882100f431f700' rel='stylesheet'>
-    <link href='css/styles.css?a71693c5d5c533f2' rel='stylesheet'>
+    <link href='css/styles.css?85682962a3400314' rel='stylesheet'>
     <script>
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-36055599-1']);
@@ -40,45 +40,55 @@
     }(document, 'script', 'facebook-jssdk'));</script>
 
     <!-- Built by Mr. Joel Kemp, @mrjoelkemp, www.mrjoelkemp.com -->
-    <!-- Yes, there's php -a, but it stinks. I really wanted a repl to play with particular parts of PHP. -->
+    <!-- Yes, there's php -a, but it isn't great for multi-line snippets.
+    I really wanted a repl to play with particular parts of PHP. -->
     <div class='container'>
-      <div class='header'>
+      <a href='https://github.com/mrjoelkemp/phpepl'>
+        <img alt='Fork me on GitHub' src='https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png' style='position: absolute; top: 0; right: 0; border: 0;'>
+      </a>
+      <div class="sidebar">
         <div class='title'>
           <span class='code'>PHPepl: The PHP repl</span>
+        </div>
+        <div>
+          <span>Built by <a href="https://twitter.com/mrjoelkemp" target="_blank" rel="nofollow">@mrjoelkemp</a></span>
+          and
+          <a href="https://twitter.com/ElijahHorton" target="_blank" rel="nofollow">@ElijahHorton</a></span>
+        </div>
+        <div>
           <a class="link-to-heroku" href="http://phpepl.herokuapp.com">Click for a PHP 5.5 version</a>
-          <a href='https://github.com/mrjoelkemp/phpepl'>
-            <img alt='Fork me on GitHub' src='https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png' style='position: absolute; top: 0; right: 0; border: 0;'>
-          </a>
+        </div>
+        <div class='submit'>
+          <span class='code'>
+            <span class='shortcut'>⌘ + Enter</span>
+            or
+            <span class='shortcut'>Ctrl + Enter</span>
+            <br />
+            to run code
+          </span>
+        </div>
+        <div class='fork-info'>
+          <iframe src="github-btn.html?user=mrjoelkemp&amp;repo=phpepl&amp;type=fork" allowtransparency="true" frameborder="0" scrolling="0" width="50px" height="20px"></iframe>
+          <span> the project for an unsandboxed experience </span>
+        </div>
+        <div class='credits'>
+          <a href="https://twitter.com/share" class="twitter-share-button" data-text="Try out some PHP in PHPepl: The PHP Repl" data-via="mrjoelkemp" data-hashtags="php">Tweet</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          <div class="fb-like" data-href="http://phpepl.herokuapp.com/" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
         </div>
       </div>
-      <div class='codebox'>
-        <div class='codebox-cont'>
-          <div id='editor'></div>
-          <div class='console output'>
-            <div class='loader spinner'>Loading...</div>
-            <div class='output-container'>
-              <span></span>
-            </div>
-          </div>
-          <div class='timestamp'>
+      <div class="rightcol">
+        <div id='editor'></div>
+        <div class='console output'>
+          <div class='loader spinner'>Loading...</div>
+          <div class='output-container'>
             <span></span>
           </div>
         </div>
+        <div class='timestamp'>
+          <span></span>
+        </div>
       </div>
-      <div class='submit'>
-        <span class='code'>
-          <span class='shortcut'>⌘ + Enter</span> or <span class='shortcut'>Ctrl + Enter</span> to run code</span>
-      </div>
-      <div class='fork-info'>
-        <iframe src="github-btn.html?user=mrjoelkemp&amp;repo=phpepl&amp;type=fork" allowtransparency="true" frameborder="0" scrolling="0" width="50px" height="20px"></iframe>
-        <span> the project for an unsandboxed experience </span>
-      </div>
-      <div class='credits'>
-        <a href="https://twitter.com/share" class="twitter-share-button" data-text="Try out some PHP in PHPepl: The PHP Repl" data-via="mrjoelkemp" data-hashtags="php">Tweet</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-        <div class="fb-like" data-href="http://phpepl.herokuapp.com/" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
-      </div>
-
     </div>
     <div class='mixpanel'>
       <a href='http://mixpanel.com/f/partner' style='display:none'>
@@ -98,5 +108,5 @@
   <script src='js/vendor/codemirror/mode/clike/clike.js?a38e006a81a7baab'></script>
   <script src='js/vendor/codemirror/mode/php/php.js?ce287cd834646250'></script>
 
-  <script src='dist/phpepl.js?9431a7320233c3a0'></script>
+  <script src='dist/phpepl.js?96242c2d83c894ce'></script>
 </html>
