@@ -61,6 +61,8 @@ function processCode() {
 function processResponse(res) {
   if (!res) { return; }
 
+  editor.clearLineErrors();
+
   if (!res.error) {
     console.setOutput(res.result);
     $('.timestamp span').html(timestamp());
