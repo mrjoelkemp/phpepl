@@ -1,16 +1,7 @@
+@import "_keyframes.scss";
+
 $page-width: 860px;
 $error-red: #F00;
-
-@mixin border-radius($radius) {
-  border-top-radius: $radius;
-  -moz-border-radius-top: $radius;
-  -webkit-border-top-radius: $radius;
-}
-
-@-webkit-keyframes fade {
-  0%   { opacity: 1; }
-  100% { opacity: 0.25; }
-}
 
 body {
   font-family: sans-serif;
@@ -57,6 +48,10 @@ body {
           display: inline-block !important;
         }
       }
+
+      button {
+        display: none;
+      }
     }
   }
   .rightcol {
@@ -76,6 +71,7 @@ body {
       position: relative;
       border: 1px solid black;
       background-color: #eee;
+      font-size: 16px;
       overflow: auto;
       .loader {
         display: none;
@@ -111,36 +107,11 @@ body {
         -webkit-animation-delay: -0.32s;
         animation-delay: -0.32s;
       }
-      @-webkit-keyframes load1 {
-        0%,
-        80%,
-        100% {
-          box-shadow: 0 0 #FFF;
-          height: 4em;
-        }
-        40% {
-          box-shadow: 0 -2em #ffffff;
-          height: 5em;
-        }
-      }
-      @keyframes load1 {
-        0%,
-        80%,
-        100% {
-          box-shadow: 0 0 #FFF;
-          height: 4em;
-        }
-        40% {
-          box-shadow: 0 -2em #ffffff;
-          height: 5em;
-        }
-      }
       .output-container{
         margin: 5px 10px;
         span {
           font-family: "Lucida Console", Monaco, monospace;
           color: black;
-          font-size: 16px;
           &.error {
             color: $error-red;
           }
@@ -158,12 +129,14 @@ body {
     text-align: right;
     right: -1px;
     top: -21px;
+    font-size: 15px;
+
     span {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
       color: #888;
-      font-size: 15px;
       font-style: italic;
-      margin-top: 5px;
-      margin-right: 5px;
       text-shadow: 2px 2px #FFFFFF;
     }
   }
@@ -196,4 +169,54 @@ body {
 
 .error-gutter {
   background-color: $error-red;
+}
+
+// Mobile breakpoint styles (large screen first for now)
+@media screen and (max-width: 40.5em) {
+  .container {
+    width: 95%;
+    padding-top: 0;
+
+    .fork-me {
+      display: none;
+    }
+
+    .sidebar {
+      width: 100%;
+      text-align: left;
+
+      .title {
+        position: relative;
+        span {
+          font-size: 18px;
+          display: inline-block;
+        }
+
+        button {
+          display: inline-block;
+          position: absolute;
+          right: 0;
+        }
+      }
+
+      .built-by,
+      .heroku-version,
+      .fork-info,
+      .credits,
+      .share-code,
+      .submit {
+        display: none;
+      }
+    }
+
+    .rightcol {
+      width: 100%;
+
+      #editor,
+      .console,
+      .timestamp {
+        font-size: 12px;
+      }
+    }
+  }
 }

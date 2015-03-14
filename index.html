@@ -5,6 +5,7 @@
     <meta content='Mr. Joel Kemp' name='author'>
     <meta content='A PHP read evaluate print loop (REPL) for executing PHP code online in the browser.' name='description'>
     <meta content='PHP, repl, programming, read evaluate print loop, phpepl, online repl' name='keywords'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>PHPepl: The PHP REPL</title>
 
@@ -12,7 +13,7 @@
     <link rel="icon" href="/favicon.ico?316280cb6879b222" type="image/x-icon">
 
     <link href='js/vendor/codemirror/lib/codemirror.css?69882100f431f700' rel='stylesheet'>
-    <link href='css/styles.css?85682962a3400314' rel='stylesheet'>
+    <link href='css/styles.css?e4c6cf31ca217dc7' rel='stylesheet'>
     <script>
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-36055599-1']);
@@ -43,19 +44,20 @@
     <!-- Yes, there's php -a, but it isn't great for multi-line snippets.
     I really wanted a repl to play with particular parts of PHP. -->
     <div class='container'>
-      <a href='https://github.com/mrjoelkemp/phpepl'>
+      <a class="fork-me" href='https://github.com/mrjoelkemp/phpepl'>
         <img alt='Fork me on GitHub' src='https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png' style='position: absolute; top: 0; right: 0; border: 0;'>
       </a>
       <div class="sidebar">
         <div class='title'>
           <span class='code'>PHPepl: The PHP repl</span>
+          <button>Submit Code</button>
         </div>
-        <div>
+        <div class="built-by">
           <span>Built by <a href="https://twitter.com/mrjoelkemp" target="_blank" rel="nofollow">@mrjoelkemp</a></span>
           and
           <a href="https://twitter.com/ElijahHorton" target="_blank" rel="nofollow">@ElijahHorton</a></span>
         </div>
-        <div>
+        <div class="heroku-version">
           <a class="link-to-heroku" href="http://phpepl.herokuapp.com">Click for a PHP 5.5 version</a>
         </div>
         <div class='submit'>
@@ -112,5 +114,5 @@
   <script src='js/vendor/codemirror/mode/clike/clike.js?a38e006a81a7baab'></script>
   <script src='js/vendor/codemirror/mode/php/php.js?ce287cd834646250'></script>
 
-  <script src='dist/phpepl.js?431a87773362c709'></script>
+  <script src='dist/phpepl.js?d51c0f9eb888d8cc'></script>
 </html>
