@@ -2,12 +2,16 @@
 
 var Editor = require('./editor');
 var Console = require('./console');
+var Sidebar = require('./sidebar');
+
 var getPrettyFatalErrorMessage = require('./lib/getPrettyFatalErrorMessage');
 var getQueryParams = require('./lib/getQueryParams');
 var timestamp = require('./lib/timestamp');
+var utils = require('./lib/utils');
 
 var editor = new Editor($('#editor'));
 var console = new Console($('.console'));
+var sidebar = new Sidebar($('.sidebar'));
 
 var mixpanel = window.mixpanel || {};
 var evalURL = 'eval/index.php';
@@ -15,51 +19,62 @@ var evalURL = 'eval/index.php';
 var code = getQueryParams(document.location.search).code;
 if (code) {
   code = window.decodeURIComponent(code);
+  editor.setValue(code);
   mixpanel.track('Visit Code Url', {code: code});
 
 } else {
-  code = editor.getSavedCode() ||
-        'echo "We\'re running php version: " . phpversion();';
+  editor.loadLastSession();
+  code = editor.getValue();
 }
 
-editor.setValue(code);
-shareCode(code);
+sidebar.shareCode(code);
 
-if (!onPHP5Version() && isLiveEnv()) { $('.link-to-heroku').fadeIn('fast'); }
+if (!utils.onPHP5Version() && utils.isLiveEnv()) {
+  $('.link-to-heroku').fadeIn('fast');
+}
 
-$(document).keydown(checkForShortcuts);
+$(document).keydown(function(e) {
+  // CMD + Enter or CTRL + Enter to run code
+  if (e.which === 13 && (e.ctrlKey || e.metaKey)) {
+    processCode();
+    return false;
+  }
+
+  // CMD + S or CTRL + S to save code
+  if (e.which === 83 && (e.ctrlKey || e.metaKey)) {
+    editor.saveSession();
+    mixpanel.track('Save Shortcut');
+    $('.timestamp span').html('Code Saved!');
+    return false;
+  }
+
+  // (CMD or CTRL) + Shift + Up to get previous session
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.which === 38) {
+    mixpanel.track('Previous Session Shortcut');
+    editor.loadPreviousSession();
+    return false;
+  }
+
+  // (CMD or CTRL) + Shift + Down to get next session
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.which === 40) {
+    mixpanel.track('Next Session Shortcut');
+    editor.loadNextSession();
+    return false;
+  }
+});
+
+// TODO: Move to sidebar binding, but need to emit an event
+// that phpepl listens to and then calls process code
 $('.title button').click(processCode);
 
 // Remember the code in the editor before navigating away
 $(window).unload(function() {
-  editor.saveCode();
+  editor.saveSession();
 });
 
-$('input.share').focus(function() {
-  mixpanel.track('Code Share');
-});
-
-function hostHas(part) {
-  return window.location.host.indexOf(part) !== -1;
-}
-
-function isLiveEnv() {
-  return hostHas('cloudcontrolled') || hostHas('herokuapp');
-}
-
-function onPHP5Version() {
-  return hostHas('herokuapp');
-}
-
-function shareCode(code) {
-  var shareUrl = window.location.origin +
-                '?code=' +
-                window.encodeURIComponent(code);
-
-  $('input.share').val(shareUrl);
-}
-
-// Handles the sending of the code to the eval server
+/**
+ * Handles the sending of the code to the eval server
+ */
 function processCode() {
   var code = editor.getValue();
 
@@ -68,7 +83,7 @@ function processCode() {
     return;
   }
 
-  shareCode(code);
+  sidebar.shareCode(code);
 
   console.toggleSpinner(true);
 
@@ -79,6 +94,11 @@ function processCode() {
     .fail(processFatalError);
 }
 
+/**
+ * @param  {Object} res
+ * @param  {Object} res.error
+ * @param  {String} res.result
+ */
 function processResponse(res) {
   if (!res) { return; }
 
@@ -92,7 +112,6 @@ function processResponse(res) {
     console.setError(res.error);
 
     if (res.error.line) {
-      // Show the line in red
       editor.showLineError(res.error.line);
     }
   }
@@ -100,6 +119,9 @@ function processResponse(res) {
   console.toggleSpinner(false);
 }
 
+/**
+ * @param  {Object} error
+ */
 function processFatalError(error) {
   if (!error) { return; }
 
@@ -114,20 +136,4 @@ function processFatalError(error) {
   editor.showLineError(textLine[1]);
 
   mixpanel.track('Error', {error: error.responseText});
-}
-
-function checkForShortcuts(e) {
-  // CMD + Enter or CTRL + Enter to run code
-  if (e.which === 13 && (e.ctrlKey || e.metaKey)) {
-    processCode();
-    e.preventDefault();
-  }
-
-  // CMD + S or CTRL + S to save code
-  if (e.which === 83 && (e.ctrlKey || e.metaKey)) {
-    editor.saveCode();
-    e.preventDefault();
-    mixpanel.track('Save Shortcut');
-    $('.timestamp span').html('Code Saved!');
-  }
 }

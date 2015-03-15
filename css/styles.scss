@@ -17,7 +17,7 @@ body {
     width: $sidebar-width;
     display: inline-block;
     vertical-align: top;
-    text-align: center;
+    text-align: left;
     font-size: 12px;
     > div {
       padding: 5px 0;
@@ -29,6 +29,9 @@ body {
         color: black;
         font-size: 23px;
       }
+      button {
+        display: none;
+      }
     }
     .link-to-heroku {
       display: none;
@@ -36,21 +39,45 @@ body {
     .submit {
       width: 100%;
       position: relative;
-      text-align: center;
       margin-bottom: 3px;
+      font-size: 11px;
       span {
         display: block;
         font-family: Courier;
         margin-bottom: 5px;
         &.shortcut {
           border: 1px solid #ddd;
-          padding: 5px;
+          padding: 3px;
           display: inline-block !important;
         }
       }
 
       button {
         display: none;
+      }
+    }
+    .share-code {
+      input {
+        width: 62%;
+      }
+    }
+    .credits {
+      width: 100%;
+      & > iframe {
+        position: relative;
+        top: -1px;
+      }
+      .fb-like {
+        top: -4px;
+      }
+    }
+    .fork-info {
+      width: 100%;
+      span {
+        font-style: italic;
+        font-size: 12px;
+        position: relative;
+        top: -5px;
       }
     }
   }
@@ -139,31 +166,6 @@ body {
       font-style: italic;
       text-shadow: 2px 2px #FFFFFF;
     }
-  }
-}
-
-.fork-info {
-  width: 100%;
-  text-align: center;
-  span {
-    font-style: italic;
-    font-size: 12px;
-    position: relative;
-    top: -5px;
-  }
-}
-
-.credits {
-  width: 100%;
-  margin-top: 5px;
-  position: relative;
-  text-align: center;
-  .fb-like {
-    top: -4px;
-  }
-  span, a {
-    font-style: italic;
-    font-size: 13px;
   }
 }
 

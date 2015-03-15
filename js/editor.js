@@ -1,3 +1,4 @@
+var SessionStore = require('./sessionstore');
 /**
  * A code editor wrapper around Codemirror
  *
@@ -16,6 +17,10 @@ function Editor($element) {
     autofocus:         true,
     autoCloseBrackets: true
   });
+
+  this._sessionStore = new SessionStore();
+
+  this._defaultValue = 'echo "We\'re running php version: " . phpversion();';
 }
 
 /**
@@ -53,24 +58,28 @@ Editor.prototype.clearLineErrors = function() {
   this.$element.find('.CodeMirror-linenumber').removeClass('error-gutter');
 };
 
-/**
- * @param  {String} code
- */
-Editor.prototype.saveCode = function() {
-  if (!window.localStorage) { return; }
+Editor.prototype.saveSession = function() {
+  this._sessionStore.save(this.getValue());
+};
 
-  window.localStorage.setItem('code', this.getValue());
-  window.mixpanel.track('Code Saved');
+Editor.prototype.loadPreviousSession = function() {
+  this.setValue(this._sessionStore.getPrevious());
+};
+
+Editor.prototype.loadNextSession = function() {
+  this.setValue(this._sessionStore.getNext());
+};
+
+Editor.prototype.loadLastSession = function() {
+  this.setValue(this.getLastSession() || this._defaultValue);
 };
 
 /**
  * Preload where you last left off
  * @return {String}
  */
-Editor.prototype.getSavedCode = function() {
-  if (!window.localStorage) { return; }
-
-  return window.localStorage.getItem('code') || '';
+Editor.prototype.getLastSession = function() {
+  return this._sessionStore.getLast() || '';
 };
 
 /**
@@ -81,12 +90,18 @@ Editor.prototype.getSavedCode = function() {
  * @return {Deferred}
  */
 Editor.prototype.evaluateCode = function(options) {
-  return $.ajax({
+  var promise = $.ajax({
     type:     'POST',
     url:      options.evalURL,
     data:     {code: this.getValue()},
     dataType: 'json'
   });
+
+  promise.then(function() {
+    this.saveSession();
+  }.bind(this));
+
+  return promise;
 };
 
 module.exports = Editor;
