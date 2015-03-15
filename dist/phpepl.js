@@ -53,6 +53,7 @@ Console.prototype.toggleSpinner = function(state) {
 module.exports = Console;
 
 },{}],2:[function(require,module,exports){
+var SessionStore = require('./sessionstore');
 /**
  * A code editor wrapper around Codemirror
  *
@@ -71,6 +72,10 @@ function Editor($element) {
     autofocus:         true,
     autoCloseBrackets: true
   });
+
+  this._sessionStore = new SessionStore();
+
+  this._defaultValue = 'echo "We\'re running php version: " . phpversion();';
 }
 
 /**
@@ -108,24 +113,28 @@ Editor.prototype.clearLineErrors = function() {
   this.$element.find('.CodeMirror-linenumber').removeClass('error-gutter');
 };
 
-/**
- * @param  {String} code
- */
-Editor.prototype.saveCode = function() {
-  if (!window.localStorage) { return; }
+Editor.prototype.saveSession = function() {
+  this._sessionStore.save(this.getValue());
+};
 
-  window.localStorage.setItem('code', this.getValue());
-  window.mixpanel.track('Code Saved');
+Editor.prototype.loadPreviousSession = function() {
+  this.setValue(this._sessionStore.getPrevious());
+};
+
+Editor.prototype.loadNextSession = function() {
+  this.setValue(this._sessionStore.getNext());
+};
+
+Editor.prototype.loadLastSession = function() {
+  this.setValue(this.getLastSession() || this._defaultValue);
 };
 
 /**
  * Preload where you last left off
  * @return {String}
  */
-Editor.prototype.getSavedCode = function() {
-  if (!window.localStorage) { return; }
-
-  return window.localStorage.getItem('code') || '';
+Editor.prototype.getLastSession = function() {
+  return this._sessionStore.getLast() || '';
 };
 
 /**
@@ -136,17 +145,23 @@ Editor.prototype.getSavedCode = function() {
  * @return {Deferred}
  */
 Editor.prototype.evaluateCode = function(options) {
-  return $.ajax({
+  var promise = $.ajax({
     type:     'POST',
     url:      options.evalURL,
     data:     {code: this.getValue()},
     dataType: 'json'
   });
+
+  promise.then(function() {
+    this.saveSession();
+  }.bind(this));
+
+  return promise;
 };
 
 module.exports = Editor;
 
-},{}],3:[function(require,module,exports){
+},{"./sessionstore":8}],3:[function(require,module,exports){
 /**
  * Helper to show the fatal errors nicely
  *
@@ -236,14 +251,43 @@ module.exports = function() {
 },{}],6:[function(require,module,exports){
 'use strict';
 
+/**
+ * @param  {String} part
+ * @return {Boolean}
+ */
+module.exports.hostHas = function(part) {
+  return window.location.host.indexOf(part) !== -1;
+};
+
+/**
+ * @return {Boolean}
+ */
+module.exports.isLiveEnv = function() {
+  return this.hostHas('cloudcontrolled') || this.hostHas('herokuapp');
+};
+
+/**
+ * @return {Boolean}
+ */
+module.exports.onPHP5Version = function() {
+  return this.hostHas('herokuapp');
+};
+
+},{}],7:[function(require,module,exports){
+'use strict';
+
 var Editor = require('./editor');
 var Console = require('./console');
+var Sidebar = require('./sidebar');
+
 var getPrettyFatalErrorMessage = require('./lib/getPrettyFatalErrorMessage');
 var getQueryParams = require('./lib/getQueryParams');
 var timestamp = require('./lib/timestamp');
+var utils = require('./lib/utils');
 
 var editor = new Editor($('#editor'));
 var console = new Console($('.console'));
+var sidebar = new Sidebar($('.sidebar'));
 
 var mixpanel = window.mixpanel || {};
 var evalURL = 'eval/index.php';
@@ -251,50 +295,62 @@ var evalURL = 'eval/index.php';
 var code = getQueryParams(document.location.search).code;
 if (code) {
   code = window.decodeURIComponent(code);
+  editor.setValue(code);
   mixpanel.track('Visit Code Url', {code: code});
 
 } else {
-  code = editor.getSavedCode() ||
-        'echo "We\'re running php version: " . phpversion();';
+  editor.loadLastSession();
+  code = editor.getValue();
 }
 
-editor.setValue(code);
-shareCode(code);
+sidebar.shareCode(code);
 
-if (!onPHP5Version() && isLiveEnv()) { $('.link-to-heroku').fadeIn('fast'); }
+if (!utils.onPHP5Version() && utils.isLiveEnv()) {
+  $('.link-to-heroku').fadeIn('fast');
+}
 
-$(document).keydown(checkForShortcuts);
+$(document).keydown(function(e) {
+  // CMD + Enter or CTRL + Enter to run code
+  if (e.which === 13 && (e.ctrlKey || e.metaKey)) {
+    processCode();
+    return false;
+  }
+
+  // CMD + S or CTRL + S to save code
+  if (e.which === 83 && (e.ctrlKey || e.metaKey)) {
+    editor.saveSession();
+    mixpanel.track('Save Shortcut');
+    $('.timestamp span').html('Code Saved!');
+    return false;
+  }
+
+  // (CMD or CTRL) + Shift + Up to get previous session
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.which === 38) {
+    mixpanel.track('Previous Session Shortcut');
+    editor.loadPreviousSession();
+    return false;
+  }
+
+  // (CMD or CTRL) + Shift + Down to get next session
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.which === 40) {
+    mixpanel.track('Next Session Shortcut');
+    editor.loadNextSession();
+    return false;
+  }
+});
+
+// TODO: Move to sidebar binding, but need to emit an event
+// that phpepl listens to and then calls process code
+$('.title button').click(processCode);
 
 // Remember the code in the editor before navigating away
 $(window).unload(function() {
-  editor.saveCode();
+  editor.saveSession();
 });
 
-$('input.share').focus(function() {
-  mixpanel.track('Code Share');
-});
-
-function hostHas(part) {
-  return window.location.host.indexOf(part) !== -1;
-}
-
-function isLiveEnv() {
-  return hostHas('cloudcontrolled') || hostHas('herokuapp');
-}
-
-function onPHP5Version() {
-  return hostHas('herokuapp');
-}
-
-function shareCode(code) {
-  var shareUrl = window.location.origin +
-                '?code=' +
-                window.encodeURIComponent(code);
-
-  $('input.share').val(shareUrl);
-}
-
-// Handles the sending of the code to the eval server
+/**
+ * Handles the sending of the code to the eval server
+ */
 function processCode() {
   var code = editor.getValue();
 
@@ -303,7 +359,7 @@ function processCode() {
     return;
   }
 
-  shareCode(code);
+  sidebar.shareCode(code);
 
   console.toggleSpinner(true);
 
@@ -314,6 +370,11 @@ function processCode() {
     .fail(processFatalError);
 }
 
+/**
+ * @param  {Object} res
+ * @param  {Object} res.error
+ * @param  {String} res.result
+ */
 function processResponse(res) {
   if (!res) { return; }
 
@@ -327,7 +388,6 @@ function processResponse(res) {
     console.setError(res.error);
 
     if (res.error.line) {
-      // Show the line in red
       editor.showLineError(res.error.line);
     }
   }
@@ -335,6 +395,9 @@ function processResponse(res) {
   console.toggleSpinner(false);
 }
 
+/**
+ * @param  {Object} error
+ */
 function processFatalError(error) {
   if (!error) { return; }
 
@@ -351,20 +414,146 @@ function processFatalError(error) {
   mixpanel.track('Error', {error: error.responseText});
 }
 
-function checkForShortcuts(e) {
-  // CMD + Enter or CTRL + Enter to run code
-  if (e.which === 13 && (e.ctrlKey || e.metaKey)) {
-    processCode();
-    e.preventDefault();
-  }
+},{"./console":1,"./editor":2,"./lib/getPrettyFatalErrorMessage":3,"./lib/getQueryParams":4,"./lib/timestamp":5,"./lib/utils":6,"./sidebar":9}],8:[function(require,module,exports){
+'use strict';
 
-  // CMD + S or CTRL + S to save code
-  if (e.which === 83 && (e.ctrlKey || e.metaKey)) {
-    editor.saveCode();
-    e.preventDefault();
-    mixpanel.track('Save Shortcut');
-    $('.timestamp span').html('Code Saved!');
-  }
+function SessionStore() {
+  this._sessionLimit = 100;
+  this._dataKey = 'sessions';
+
+  this._sessions = this._getAllSessions();
+  this._currentSessionIndex = this._sessions.length - 1;
 }
 
-},{"./console":1,"./editor":2,"./lib/getPrettyFatalErrorMessage":3,"./lib/getQueryParams":4,"./lib/timestamp":5}]},{},[6]);
+/**
+ * Returns the last execution
+ * @return {?String}
+ */
+SessionStore.prototype.getLast = function() {
+  return this._sessions[this._sessions.length - 1];
+};
+
+/**
+ * @param {String} code
+ */
+SessionStore.prototype.save = function(code) {
+  // Don't store a just repeated session
+  if (code === this.getLast()) { return; }
+
+  this._sessions.push(code);
+
+  if (this._sessions.length > this._sessionLimit) {
+    this._sessions.shift();
+  }
+
+  this._currentSessionIndex = this._sessions.length - 1;
+  this._storeSessions();
+};
+
+/**
+ * Get the previous session in the history
+ * @return {String}
+ */
+SessionStore.prototype.getPrevious = function() {
+  if (!this._sessions.length) { return ''; }
+
+  --this._currentSessionIndex;
+
+  if (this._currentSessionIndex < 0) {
+    this._currentSessionIndex = this._sessions.length - 1;
+  }
+
+  return this._sessions[this._currentSessionIndex];
+};
+
+/**
+ * Get the next session in the history
+ * @return {String}
+ */
+SessionStore.prototype.getNext = function() {
+  if (!this._sessions.length) { return ''; }
+
+  ++this._currentSessionIndex;
+
+  if (this._currentSessionIndex === this._sessions.length) {
+    this._currentSessionIndex = 0;
+  }
+
+  return this._sessions[this._currentSessionIndex];
+};
+
+/**
+ * @private
+ */
+SessionStore.prototype._storeSessions = function() {
+  if (!window.localStorage) { return; }
+
+  // TODO: Maybe async this if it slows the UI
+  window.localStorage.setItem(this._dataKey, JSON.stringify(this._sessions));
+};
+
+/**
+ * @private
+ * @return {String[]}
+ */
+SessionStore.prototype._getAllSessions = function() {
+  if (!window.localStorage) { return []; }
+
+  var sessions = window.localStorage.getItem(this._dataKey);
+  var legacySession;
+
+  if (!sessions || !sessions.length) {
+    legacySession = this._getLegacySession();
+
+    return legacySession ? [legacySession] : [];
+  }
+
+  try {
+    return JSON.parse(sessions);
+  } catch (e) {
+    return [];
+  }
+};
+
+/**
+ * The old sessions used a 'code' key
+ * @private
+ * @return {?String}
+ */
+SessionStore.prototype._getLegacySession = function() {
+  return window.localStorage.getItem('code');
+};
+
+module.exports = SessionStore;
+
+},{}],9:[function(require,module,exports){
+function Sidebar($container) {
+  this.$container = $container;
+  this.$share = this.$container.find('input.share');
+
+  this.$share.focus(function() {
+    window.mixpanel.track('Code Share');
+  });
+}
+
+/**
+ * Set the share url
+ * @param  {String} code
+ */
+Sidebar.prototype.shareCode = function(code) {
+  this.$share.val(this._getShareUrl(code));
+};
+
+/**
+ * @private
+ * @param  {String} code
+ * @return {String}
+ */
+Sidebar.prototype._getShareUrl = function(code) {
+  var encoded = window.encodeURIComponent(code);
+  return window.location.origin + '?code=' + encoded;
+};
+
+module.exports = Sidebar;
+
+},{}]},{},[7]);

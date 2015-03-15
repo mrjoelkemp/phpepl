@@ -1,16 +1,7 @@
+@import "_keyframes.scss";
+
 $page-width: 860px;
 $error-red: #F00;
-
-@mixin border-radius($radius) {
-  border-top-radius: $radius;
-  -moz-border-radius-top: $radius;
-  -webkit-border-top-radius: $radius;
-}
-
-@-webkit-keyframes fade {
-  0%   { opacity: 1; }
-  100% { opacity: 0.25; }
-}
 
 body {
   font-family: sans-serif;
@@ -26,7 +17,7 @@ body {
     width: $sidebar-width;
     display: inline-block;
     vertical-align: top;
-    text-align: center;
+    text-align: left;
     font-size: 12px;
     > div {
       padding: 5px 0;
@@ -38,6 +29,9 @@ body {
         color: black;
         font-size: 23px;
       }
+      button {
+        display: none;
+      }
     }
     .link-to-heroku {
       display: none;
@@ -45,17 +39,45 @@ body {
     .submit {
       width: 100%;
       position: relative;
-      text-align: center;
       margin-bottom: 3px;
+      font-size: 11px;
       span {
         display: block;
         font-family: Courier;
         margin-bottom: 5px;
         &.shortcut {
           border: 1px solid #ddd;
-          padding: 5px;
+          padding: 3px;
           display: inline-block !important;
         }
+      }
+
+      button {
+        display: none;
+      }
+    }
+    .share-code {
+      input {
+        width: 62%;
+      }
+    }
+    .credits {
+      width: 100%;
+      & > iframe {
+        position: relative;
+        top: -1px;
+      }
+      .fb-like {
+        top: -4px;
+      }
+    }
+    .fork-info {
+      width: 100%;
+      span {
+        font-style: italic;
+        font-size: 12px;
+        position: relative;
+        top: -5px;
       }
     }
   }
@@ -76,6 +98,7 @@ body {
       position: relative;
       border: 1px solid black;
       background-color: #eee;
+      font-size: 16px;
       overflow: auto;
       .loader {
         display: none;
@@ -111,36 +134,11 @@ body {
         -webkit-animation-delay: -0.32s;
         animation-delay: -0.32s;
       }
-      @-webkit-keyframes load1 {
-        0%,
-        80%,
-        100% {
-          box-shadow: 0 0 #FFF;
-          height: 4em;
-        }
-        40% {
-          box-shadow: 0 -2em #ffffff;
-          height: 5em;
-        }
-      }
-      @keyframes load1 {
-        0%,
-        80%,
-        100% {
-          box-shadow: 0 0 #FFF;
-          height: 4em;
-        }
-        40% {
-          box-shadow: 0 -2em #ffffff;
-          height: 5em;
-        }
-      }
       .output-container{
         margin: 5px 10px;
         span {
           font-family: "Lucida Console", Monaco, monospace;
           color: black;
-          font-size: 16px;
           &.error {
             color: $error-red;
           }
@@ -158,42 +156,69 @@ body {
     text-align: right;
     right: -1px;
     top: -21px;
+    font-size: 15px;
+
     span {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
       color: #888;
-      font-size: 15px;
       font-style: italic;
-      margin-top: 5px;
-      margin-right: 5px;
       text-shadow: 2px 2px #FFFFFF;
     }
   }
 }
 
-.fork-info {
-  width: 100%;
-  text-align: center;
-  span {
-    font-style: italic;
-    font-size: 12px;
-    position: relative;
-    top: -5px;
-  }
-}
-
-.credits {
-  width: 100%;
-  margin-top: 5px;
-  position: relative;
-  text-align: center;
-  .fb-like {
-    top: -4px;
-  }
-  span, a {
-    font-style: italic;
-    font-size: 13px;
-  }
-}
-
 .error-gutter {
   background-color: $error-red;
+}
+
+// Mobile breakpoint styles (large screen first for now)
+@media screen and (max-width: 40.5em) {
+  .container {
+    width: 95%;
+    padding-top: 0;
+
+    .fork-me {
+      display: none;
+    }
+
+    .sidebar {
+      width: 100%;
+      text-align: left;
+
+      .title {
+        position: relative;
+        span {
+          font-size: 18px;
+          display: inline-block;
+        }
+
+        button {
+          display: inline-block;
+          position: absolute;
+          right: 0;
+        }
+      }
+
+      .built-by,
+      .heroku-version,
+      .fork-info,
+      .credits,
+      .share-code,
+      .submit {
+        display: none;
+      }
+    }
+
+    .rightcol {
+      width: 100%;
+
+      #editor,
+      .console,
+      .timestamp {
+        font-size: 12px;
+      }
+    }
+  }
 }
