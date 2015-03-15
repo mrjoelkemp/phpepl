@@ -80,6 +80,9 @@ body {
         top: -5px;
       }
     }
+    .google {
+      max-height: 185px;
+    }
   }
   .rightcol {
     width: 100% - $sidebar-width - 1%;
