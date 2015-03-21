@@ -1,21 +1,24 @@
 var SessionStore = require('./sessionstore');
-/**
- * A code editor wrapper around Codemirror
- *
- * @param {$} $element - Dom element the editor should bind to
- * @returns {CodeMirror}
- */
-function Editor($element) {
-  this.$element = $element;
 
-  this._editor = window.CodeMirror(this.$element.get(0), {
-    lineNumbers:       true,
-    matchBrackets:     true,
-    mode:              'text/x-php',
-    indentUnit:        2,
-    tabSize:           2,
-    autofocus:         true,
-    autoCloseBrackets: true
+/**
+ * A code editor wrapper around the client-side text editor
+ *
+ * @param {String} selector - Dom element the editor should bind to
+ */
+function Editor(selector) {
+  this.$element = $('#' + selector);
+
+  this._editor = window.ace.edit(selector);
+  this._editor.getSession().setMode({path: 'ace/mode/php', inline: true});
+  this._editor.getSession().setUseSoftTabs(true);
+  this._editor.getSession().setTabSize(2);
+
+  this._editor.$blockScrolling = Infinity;
+  this._editor.setShowPrintMargin(false);
+  this._editor.setOptions({
+    enableBasicAutocompletion: true,
+    enableSnippets: true,
+    enableLiveAutocompletion: false
   });
 
   this._sessionStore = new SessionStore();
@@ -43,19 +46,13 @@ Editor.prototype.setValue = function(val) {
  * @param  {Number} line
  */
 Editor.prototype.showLineError = function(line) {
-  // Find the dom element in the gutter
-  this.$element.find('.CodeMirror-linenumber').each(function() {
-    // If the cell's line number matches the error line
-    if (Number($(this).html()) === line) {
-      // Make the background red
-      $(this).addClass('error-gutter');
-      return;
-    }
-  });
+  this.$element
+  .find('.ace_gutter-cell:nth-child(' + line + ')')
+    .addClass('error-gutter');
 };
 
 Editor.prototype.clearLineErrors = function() {
-  this.$element.find('.CodeMirror-linenumber').removeClass('error-gutter');
+  this.$element.find('.ace_gutter-cell').removeClass('error-gutter');
 };
 
 Editor.prototype.saveSession = function() {
