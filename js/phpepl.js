@@ -9,7 +9,7 @@ var getQueryParams = require('./lib/getQueryParams');
 var timestamp = require('./lib/timestamp');
 var utils = require('./lib/utils');
 
-var editor = new Editor($('#editor'));
+var editor = new Editor('editor');
 var console = new Console($('.console'));
 var sidebar = new Sidebar($('.sidebar'));
 
