@@ -303,6 +303,8 @@ if (code) {
 sidebar.shareCode(code);
 
 if (!utils.onPHP5Version() && utils.isLiveEnv()) {
+  // Cloudcontrol has shut down
+  window.location = 'http://phpepl.herokuapp.com';
   $('.link-to-heroku').fadeIn('fast');
 }
 
